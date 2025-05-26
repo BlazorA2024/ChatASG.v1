@@ -1,0 +1,81 @@
+﻿@inherits StylesTogglesIcon
+@using global::Data.HeaderModels
+@if (Prams != null)
+{
+    <span class="@ClassContainer">@Prams.DataBuild.Name</span>
+    <div class="@ClassItem ">
+            <input type="checkbox" id="Idtoggle"
+                   class="@ClassCheckbox"
+                   checked="@Prams.DataBuild.IsAdultModeEnabled" />
+        <label for="adult-toggle" class="@ClassLabel"></label>
+        </div>
+     
+
+       
+    @* 
+    <div class="flex items-center">
+        <span class="@ClassLabel">Adult Mode:</span>
+        <div class="relative inline-block w-12 mr-4 align-middle select-none">
+            <input type="checkbox" id="adult-toggle"
+                   class="@ClassCheckbox"
+                   checked="@Prams.DataBuild.IsAdultModeEnabled" />
+            <label for="adult-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+        </div>
+
+        <span class="@ClassLabel">Blur NSFW:</span>
+        <div class="relative inline-block w-12 align-middle select-none">
+            <input type="checkbox" id="blur-toggle"
+                   class="@ClassCheckbox"
+                   checked="@Prams.DataBuild.IsBlurNsfwEnabled" />
+            <label for="blur-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+        </div>
+    </div> *@
+}
+
+@code {
+    [Parameter] public CardTogglesModul? Prams { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}
+
+
+
+@* @using Data.HeaderModels
+@using dApp.Spectral
+@using dApp.Spectral.Styles
+@using dApp.Spectral.Model;
+
+@inherits StylesButtonIcon
+
+@if (Prams != null)
+{
+    <div class="flex items-center">
+        <span class="text-sm text-gray-400 mr-2">Adult Mode:</span>
+        <div class="relative inline-block w-12 mr-4 align-middle select-none">
+            <input type="checkbox" id="adult-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" @(Prams.DataBuild.IsAdultModeEnabled ? "checked" : "" ) />
+            <label for="adult-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+        </div>
+
+        <span class="text-sm text-gray-400 mr-2">Blur NSFW:</span>
+        <div class="relative inline-block w-12 align-middle select-none">
+            <input type="checkbox" id="blur-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" @(Prams.DataBuild.IsBlurNsfwEnabled ? "checked" : "" ) />
+            <label for="blur-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public CardButtonsModul? Prams { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+
+        await base.OnInitializedAsync();
+    }
+}
+ *@

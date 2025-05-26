@@ -1,0 +1,69 @@
+@using global::Data.ContactSection
+@inherits StylesCardform
+@if (Prams != null)
+{
+    <div>
+        <form class="@ClassForm">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="@ClassLabel">@Prams.DataBuild.NameLabel</label>
+                    <input type="text" class="@ClassInput" />
+                </div>
+                <div>
+                    <label class="@ClassLabel">@Prams.DataBuild.EmailLabel</label>
+                    <input type="email" class="@ClassInput" />
+                </div>
+            </div>
+
+            <div>
+                <label class="@ClassLabel">@Prams.DataBuild.SubjectLabel</label>
+                <input type="text" class="@ClassInput" />
+            </div>
+
+            <div>
+                <label class="@ClassLabel">@Prams.DataBuild.MessageLabel</label>
+                <textarea rows="5" class="@ClassInput"></textarea>
+            </div>
+
+            <button type="submit" class="@ClassButton">
+                @Prams.DataBuild.SubmitButtonText <i class="fas fa-paper-plane mr-2"></i>
+            </button>
+        </form>
+    </div>
+}
+@code {
+    [Parameter] public Cardform? Prams { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}
+  @*  <div>
+                <form class="@ClassForm">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="@ClassLabel">@Prams.NameLabel</label>
+                            <input type="text" class="@ClassInput" />
+                        </div>
+                        <div>
+                            <label class="@ClassLabel">@Prams.EmailLabel</label>
+                            <input type="email" class="@ClassInput" />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="@ClassLabel">@Prams.SubjectLabel</label>
+                        <input type="text" class="@ClassInput" />
+                    </div>
+
+                    <div>
+                        <label class="@ClassLabel">@Prams.MessageLabel</label>
+                        <textarea rows="5" class="@ClassInput"></textarea>
+                    </div>
+
+                    <button type="submit" class="@ClassButton">
+                        @Prams.SubmitButtonText <i class="fas fa-paper-plane mr-2"></i>
+                    </button>
+                </form>
+            </div> *@

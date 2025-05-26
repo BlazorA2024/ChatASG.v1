@@ -1,0 +1,149 @@
+﻿@* @page "/characters"
+@using Data.CharacterModels
+
+<CharacterModels1 Prams="Prams" />
+
+@code {
+   
+    private CardListAddProjectModul Prams;
+    [Parameter]
+    public DataCardAddProjectModul? DataBuild { get; set; }
+
+    protected override void OnInitialized()
+    {
+        var characters = new List<DataListProjectModul>
+        {
+            new DataListProjectModul
+            {
+                Name = "Dr. Sarah Chen",
+                Description = "Medical Researcher",
+                Image = "https://randomuser.me/api/portraits/women/44.jpg",
+                IsSelected = true
+            },
+            new DataListProjectModul
+            {
+                Name = "Professor James Wilson",
+                Description = "History Expert",
+                Image = "https://randomuser.me/api/portraits/men/32.jpg"
+            },
+            new DataListProjectModul
+            {
+                Name = "Emma, the Creative Writer",
+                Description = "Storytelling AI",
+                Image = "https://randomuser.me/api/portraits/women/68.jpg"
+            },
+            new DataListProjectModul
+            {
+                Name = "CodeMaster Alex",
+                Description = "Programming Assistant",
+                Image = "https://randomuser.me/api/portraits/men/75.jpg"
+            }
+        };
+
+        
+         DataBuild = new DataCardAddProjectModul
+            {
+                Title = "AI Chat Characters",
+                Description = "Interact with AI characters in real-time",
+                ICharact = new DataCardListProjectModul
+                {
+                    Title = "Character List",
+                    Items = characters,
+                    IButtons = new DataButtons
+                    {
+                        Buttons = "Add Custom Character",
+                        Icon = "fa fa-plus",
+                        Title = "Add Custom Character"
+                    }
+                }
+            };
+
+        Prams = CardListAddProjectModul.Create(DataBuild);
+    }
+}
+
+@* @using Data.CharacterModels
+
+<CharacterModels1 Prams="Prams" />
+
+@code {
+
+
+    // private List<DataListProjectModul> Pramss = new List<DataListProjectModul>
+    // {
+    //      new DataListProjectModul
+    //     {
+    //         Name = "AI Chat",
+    //         Title ="Experience",
+    //         Description = " Interact with advanced AI characters and experience natural conversations",
+    //     },
+    // };
+    private List<DataCardAddProjectModul> Character = new List<DataCardAddProjectModul>
+    {
+            IICharact = new DataCardListProjectModul
+        {
+            
+            new DataListProjectModul
+            {
+                Name = "Dr. Sarah Chen",
+                Description = "Medical Researcher",
+                Image = "https://randomuser.me/api/portraits/women/44.jpg",
+                IsSelected = true
+            },
+            new DataListProjectModul
+            {
+                Name = "Professor James Wilson",
+                Description = "History Expert",
+                Image = "https://randomuser.me/api/portraits/men/32.jpg",
+                IsSelected = false
+            },
+            new DataListProjectModul
+            {
+                Name = "Emma, the Creative Writer",
+                Description = "Storytelling AI",
+                Image = "https://randomuser.me/api/portraits/women/68.jpg",
+                IsSelected = false
+            },
+            new DataListProjectModul
+            {
+                Name = "CodeMaster Alex",
+                Description = "Programming Assistant",
+                Image = "https://randomuser.me/api/portraits/men/75.jpg",
+                IsSelected = false
+            }
+        }
+    };
+    [Parameter]
+    public DataCardAddProjectModul? DataBuild { get; set; }
+
+
+
+    private CardListAddProjectModul Prams;
+
+    protected override void OnInitialized()
+    {
+        if (DataBuild == null)
+        {
+
+            DataBuild = new DataCardAddProjectModul
+                {
+                    Name = "AI Chat",
+                    Title ="Experience",
+                    Description = "Interact with advanced AI characters and experience natural conversations ",
+                    
+                    Items = Character,
+
+
+
+
+                };
+        }
+
+        Prams = CardListAddProjectModul.Create(DataBuild);
+
+        // Prams.ClassItem = "gdfgd";
+        base.OnInitialized();
+    }
+}
+
+ *@ 

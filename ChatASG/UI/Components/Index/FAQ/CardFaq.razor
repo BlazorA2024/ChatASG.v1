@@ -1,0 +1,44 @@
+@using global::Data.FAQ
+@inherits StylesFaqCard
+@if (Prams != null)
+{
+    <div class="@ClassContainer" >
+        <button class="@ClassHeader" @onclick="HandleClick">
+        <h4 class="font-bold text-lg">@Prams.DataBuild.Question</h4>
+        <i class="@ClassIcon"></i>
+    </button>
+    <div class="@ClassContent">
+        <p>@Prams.DataBuild.Answer</p>
+        @if (Prams.DataBuild.BulletPoints != null && Prams.DataBuild.BulletPoints.Any())
+        {
+            <ul class="@ClassBulletList mt-4">
+                @foreach (var point in Prams.DataBuild.BulletPoints)
+                {
+                    <li class="@ClassBulletItem">
+                        @if (Prams.DataBuild.HasIconList)
+                        {
+                            <div class="text-accent mr-2 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                        }
+                        <span>@point</span>
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+</div>
+}
+@code {
+    [Parameter] public CardFAQ? Prams { get; set; }
+
+    private async Task HandleClick()
+    {
+        
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}

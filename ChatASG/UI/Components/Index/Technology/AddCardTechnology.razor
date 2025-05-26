@@ -1,0 +1,42 @@
+﻿@inherits StylesTechnologySection
+@using ChatASG.UI.Components.Index.Technology.MarketSection
+@using global::Data.Technology
+
+
+<section id="technology" class="@ClassContainer">
+    <div class="@ClassItem">
+        <div class="@ClassTitle">
+            <h2 class="@ClassName">@Prams.DataBuild.Title</h2>
+            <p class="@ClassDescription">@Prams.DataBuild.Description</p>
+        </div>
+
+        <div class="@ClassGrid">
+            <div>
+                <h3 class="@ClassSubTitle">@Prams.DataBuild.Name</h3>
+                <p class="@ClassSubDescription">@Prams.DataBuild.Label</p>
+
+                <div class="space-y-6">
+                    @foreach (var item in Prams.Items)
+                    {
+                        <TechnologyCard Prams="item" />
+                    }
+                </div>
+            </div>
+
+            <TechnologyImageCard Prams="Prams.ITechnol" />
+        </div>
+    </div>
+   
+     <MarketSection Prams="Prams.IMarket" />
+ </section>
+
+@code {
+    [Parameter]
+    public CardAddTechnology Prams { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}

@@ -1,0 +1,27 @@
+@inherits StylesTechnologyImageCard
+@using global::Data.Technology
+
+<div class="@ClassContainer relative">
+    <div class="cyber-border rounded-2xl overflow-hidden">
+        <img src="@Prams.DataBuild.ImageUrl" alt="@Prams.DataBuild.AltText" class="@ClassImage" />
+    </div>
+
+    <div class="@ClassLabel absolute -bottom-6 -right-6 bg-blue-600 p-4 rounded-xl shadow-xl">
+        <div class="@ClassText text-white text-center">
+            <p class="text-sm">@Prams.DataBuild.LabelTop</p>
+            <p class="text-2xl font-bold">@Prams.DataBuild.LabelNumber</p>
+            <p class="text-sm">@Prams.DataBuild.LabelBottom</p>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public CardTechnologyImage Prams { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}

@@ -1,0 +1,45 @@
+﻿<MudProgressCircular Color="Color.Primary" Indeterminate="@(!IsSearch)" />
+<MudTable Items="@Senarios">
+    <HeaderContent>
+        <MudTh>Tactic</MudTh>
+        <MudTh>Technique</MudTh>
+        <MudTh>Software</MudTh>
+
+    </HeaderContent>
+    <RowTemplate>
+
+        <MudTd>@context.Tactic</MudTd>
+        <MudTd>@context.FristTechnique</MudTd>
+        <MudTd>@context.Software</MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
+
+@if (IsSearch)
+{
+    <div style="background:#fff;padding:6%">
+        <CircleTemplate Orders="Orders"
+                    Title=" Percentage of generating scenarios"
+                    Height="250" />
+
+    </div>
+
+
+    <MudText class="d-flex" Style=@("direction:"+((IsRtl)?"rtl":"ltr"))>
+        LG[7]
+        <MudLink Href="/generatingai"
+             Color="Color.Primary">
+            Generating AI
+        </MudLink>
+    </MudText>
+}
+@code{
+
+    [Parameter] public List<Senario> Senarios { set; get; }
+    [Parameter] public bool IsSearch { set; get; }
+    [Parameter] public bool IsRtl { set; get; } = false;
+    [Parameter] public string [] LG{ set; get; }
+    public List<Order> Orders { get; set; }
+}

@@ -1,0 +1,38 @@
+@inherits StylesTargetMarketSection
+@using global::Data.Technology
+@if (Prams !=null)
+{
+<div class="@ClassContainer">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        <div>
+            <h3 class="@ClassTitle">@Prams.DataBuild.Title</h3>
+            <p class="@ClassDescription">@Prams.DataBuild.Description</p>
+
+                <div class="@ClassItem ">
+                @foreach (var item in Prams.Items)
+                {
+                    <CardMarketItems Prams="item" />
+                }
+            </div>
+        </div>
+
+        <div>
+            <h3 class="@ClassTitle">@Prams.DataBuild.TitleGrowth</h3>
+            <p class="@ClassDescription">@Prams.DataBuild.DescriptionGrowth</p>
+
+            <GrowthAnalyticsBox Prams="Prams.IGrowth" />
+        
+        </div>
+    </div>
+</div>
+}
+@code {
+    [Parameter]
+    public CardAddTargetMarket Prams { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}

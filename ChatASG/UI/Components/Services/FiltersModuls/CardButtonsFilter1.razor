@@ -1,0 +1,38 @@
+﻿
+@inherits StyleCardListUnifiedButtonModel
+@using global::Data.FiltersModul
+@using global::Data.StyleModul
+
+@if (Prams != null)
+{
+    <div class="@ClassContainer">
+        <h2 class="@ClassTitle">
+            <span class="@ClassNameHighlight">@Prams.DataBuild.Name</span> @Prams.DataBuild.Title
+        </h2>
+        <p class="@ClassDescription">
+            @Prams.DataBuild.Description
+        </p>
+    </div>
+
+    @foreach (var item in Prams.Items)
+    {
+        <ButtonFiltersCard1 Prams="item" />
+    }
+}
+
+@code {
+    [Parameter] public CardListUnifiedButtonModel? Prams { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}
+
+
+
+
+
+
+

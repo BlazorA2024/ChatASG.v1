@@ -1,0 +1,17 @@
+﻿
+
+<MudAlert Severity="Severity.Success"> <MudText Typo="Typo.caption">@Answer.Body</MudText></MudAlert>
+<MudChipSet MultiSelection="true" Style="padding:2%">
+
+    @foreach(var sug in Answer.SuggtionAnswers){
+    <MudChip Text="blue" Style="text-wrap:wrap" Size="Size.Small" OnClick="@(() => Action(sug))" Variant="Variant.Text" Color="Color.Info">@sug.Body </MudChip>
+    }
+
+</MudChipSet>
+
+@code{
+    [Parameter] public Answer Answer{ set; get; }
+    [Parameter] public Action<SuggtionAnswer> Action{ set; get; }
+
+
+}

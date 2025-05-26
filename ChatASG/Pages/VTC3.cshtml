@@ -1,0 +1,898 @@
+﻿@page "/vtc3"
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة محاكاة الهجمات السيبرانية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+
+        :root {
+            --primary: #7C3AED;
+            --secondary: #8B5CF6;
+            --accent: #A78BFA;
+            --dark: #0F172A;
+            --light: #F8FAFC;
+            --success: #10B981;
+            --danger: #EF4444;
+            --warning: #F59E0B;
+            --mitre-red: #FF2E2E;
+            --mitre-blue: #2E86FF;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #0B1120 0%, #1E293B 100%);
+            min-height: 100vh;
+            color: white;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+
+        .mitre-gradient {
+            background: linear-gradient(135deg, var(--mitre-red) 0%, var(--mitre-blue) 100%);
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        
+        /* Floating Mic Button */
+        .floating-mic {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+            .floating-mic.listening {
+                transform: scale(1.2);
+                box-shadow: 0 0 0 10px rgba(124, 58, 237, 0.3);
+            }
+
+            .floating-mic i {
+                font-size: 1.8rem;
+                color: white;
+            }
+
+        /* Fullscreen Execution Panel */
+        .execution-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .execution-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .execution-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .execution-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .execution-item {
+            background: rgba(30, 41, 59, 0.7);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--accent);
+            transition: all 0.3s ease;
+        }
+
+            .execution-item.mitre {
+                border-left: 4px solid var(--mitre-red);
+            }
+
+            .execution-item.technique {
+                border-left: 4px solid var(--mitre-blue);
+            }
+
+            .execution-item.tactic {
+                border-left: 4px solid var(--warning);
+            }
+
+            .execution-item:hover {
+                background: rgba(124, 58, 237, 0.2);
+            }
+
+        .execution-command {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+
+        .execution-status {
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .status-success {
+            color: var(--success);
+        }
+
+        .status-error {
+            color: var(--danger);
+        }
+
+        .status-pending {
+            color: var(--warning);
+        }
+
+        .execution-time {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 5px;
+        }
+
+        .execution-details {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .mitre-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+
+        .mitre-tactic {
+            background-color: var(--warning);
+            color: black;
+        }
+
+        .mitre-technique {
+            background-color: var(--mitre-blue);
+            color: white;
+        }
+
+        .mitre-matrix {
+            background-color: var(--mitre-red);
+            color: white;
+        }
+
+        /* Voice Visualization */
+        .voice-visualization {
+            position: fixed;
+            bottom: 120px;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+            .voice-visualization.active {
+                opacity: 1;
+            }
+
+        .voice-bars {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 8px;
+            height: 60px;
+        }
+
+        .voice-bar {
+            width: 10px;
+            background: linear-gradient(to top, var(--primary), var(--accent));
+            border-radius: 5px;
+            animation: voiceBar 1.5s infinite ease-in-out;
+        }
+
+      
+
+        .voice-bar:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .voice-bar:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .voice-bar:nth-child(3) {
+            animation-delay: 0.5s;
+        }
+
+        .voice-bar:nth-child(4) {
+            animation-delay: 0.7s;
+        }
+
+        .voice-bar:nth-child(5) {
+            animation-delay: 0.9s;
+        }
+
+        /* Command Input */
+        .command-input {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            right: 120px;
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 50px;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+        }
+
+            .command-input input {
+                flex: 1;
+                background: transparent;
+                border: none;
+                color: white;
+                font-size: 1rem;
+                padding: 5px 10px;
+                outline: none;
+            }
+
+            .command-input button {
+                background: var(--primary);
+                color: white;
+                border: none;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+                .command-input button:hover {
+                    background: var(--secondary);
+                    transform: scale(1.1);
+                }
+
+        /* Attack Scenario Visualization */
+        .attack-visualization {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .attack-step {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            position: relative;
+        }
+
+        .attack-step-number {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-left: 10px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .attack-step-content {
+            flex: 1;
+        }
+
+       
+    </style>
+</head>
+<body>
+    <!-- Fullscreen Execution Panel -->
+    <div class="execution-panel" id="execution-panel">
+        <div class="execution-header">
+            <div class="execution-title">منصة محاكاة الهجمات السيبرانية</div>
+            <div id="execution-status" class="execution-status status-pending">
+                <i class="fas fa-circle-notch fa-spin mr-2"></i>
+                جاهز للاستماع
+            </div>
+        </div>
+
+        <div class="execution-content" id="execution-content">
+            <div class="text-center py-10 text-gray-400" id="empty-state">
+                <i class="fas fa-shield-alt fa-3x mb-4"></i>
+                <p class="text-xl mb-2">مرحباً بكم في منصة محاكاة الهجمات السيبرانية</p>
+                <p class="mb-4">يمكنك استخدام الأوامر الصوتية لإنشاء سيناريوهات هجومية، تقنيات، تكتيكات، أو استعراض إطار MITRE ATT&CK</p>
+                <div class="max-w-md mx-auto bg-gray-800 p-4 rounded-lg text-right">
+                    <p class="font-bold mb-2">أمثلة للأوامر:</p>
+                    <p>"إنشاء سيناريو هجومي لاختراق شبكة"</p>
+                    <p>"عرض تقنيات MITRE ATT&CK للمرحلة الأولية"</p>
+                    <p>"شرح تكتيك التخفي في الهجمات"</p>
+                    <p>"إنشاء هجوم متعدد المراحل"</p>
+                </div>
+            </div>
+
+            <div id="execution-items"></div>
+        </div>
+    </div>
+
+    <!-- Voice Visualization -->
+    <div class="voice-visualization" id="voice-visualization">
+        <div class="voice-bars">
+            <div class="voice-bar"></div>
+            <div class="voice-bar"></div>
+            <div class="voice-bar"></div>
+            <div class="voice-bar"></div>
+            <div class="voice-bar"></div>
+        </div>
+    </div>
+
+    <!-- Command Input -->
+    <div class="command-input">
+        <input type="text" id="command-text" placeholder="أكتب الأمر هنا أو استخدم الميكروفون..." dir="rtl">
+        <button id="send-command">
+            <i class="fas fa-paper-plane"></i>
+        </button>
+    </div>
+
+    <!-- Floating Mic Button -->
+    <div class="floating-mic mitre-gradient pulse" id="floating-mic">
+        <i class="fas fa-microphone"></i>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // DOM Elements
+            const floatingMic = document.getElementById('floating-mic');
+            const voiceVisualization = document.getElementById('voice-visualization');
+            const executionPanel = document.getElementById('execution-panel');
+            const executionContent = document.getElementById('execution-content');
+            const executionItems = document.getElementById('execution-items');
+            const emptyState = document.getElementById('empty-state');
+            const executionStatus = document.getElementById('execution-status');
+            const commandText = document.getElementById('command-text');
+            const sendCommand = document.getElementById('send-command');
+
+            // App State
+            let isListening = false;
+            let recognition;
+            let executionLog = [];
+
+            // MITRE ATT&CK Data (simplified for demo)
+            const mitreData = {
+                tactics: {
+                    "الاستطلاع": ["T1595", "T1592", "T1589", "T1590"],
+                    "التطوير": ["T1583", "T1584", "T1587", "T1588"],
+                    "الدخول": ["T1195", "T1133", "T1200", "T1078"],
+                    "التنفيذ": ["T1059", "T1053", "T1047", "T1569"],
+                    "الثبات": ["T1547", "T1137", "T1053", "T1078"],
+                    "التصعيد": ["T1548", "T1547", "T1068", "T1055"],
+                    "الوصول للشبكة": ["T1210", "T1534", "T1570", "T1563"],
+                    "جمع المعلومات": ["T1119", "T1005", "T1039", "T1025"],
+                    "التخفي": ["T1140", "T1134", "T1070", "T1027"],
+                    "التأثير": ["T1485", "T1486", "T1491", "T1565"]
+                },
+                techniques: {
+                    "T1595": {
+                        name: "Active Scanning",
+                        description: "المجرمون الإلكترونيون يقومون بمسح الشبكات والأنظمة لاكتشاف الثغرات",
+                        examples: ["استخدام أدوات مثل Nmap أو Nessus للمسح"]
+                    },
+                    "T1059": {
+                        name: "Command-Line Interface",
+                        description: "استخدام سطر الأوامر لتنفيذ العمليات الخبيثة",
+                        examples: ["تنفيذ أوامر PowerShell خبيثة", "استخدام bash scripts للهجوم"]
+                    },
+                    "T1078": {
+                        name: "Valid Accounts",
+                        description: "استخدام حسابات شرعية للوصول غير المصرح به",
+                        examples: ["استخدام بيانات اعتماد مسروقة", "استغلال الحسابات ذات الصلاحيات العالية"]
+                    },
+                    "T1027": {
+                        name: "Obfuscated Files or Information",
+                        description: "إخفاء التعليمات البرمجية الخبيثة لتجنب الاكتشاف",
+                        examples: ["تشفير payloads", "استخدام تقنيات steganography"]
+                    }
+                }
+            };
+
+            // Attack Scenarios
+            const attackScenarios = {
+                "network_breach": {
+                    name: "اختراق الشبكة",
+                    steps: [
+                        "جمع المعلومات عن الشبكة المستهدفة",
+                        "مسح الشبكة للعثور على نقاط ضعف",
+                        "استغلال ثغرة للوصول الأولي",
+                        "تصعيد الصلاحيات داخل النظام",
+                        "تحريك جانبي عبر الشبكة",
+                        "سرقة البيانات الحساسة",
+                        "إخفاء الآثار"
+                    ]
+                },
+                "phishing_attack": {
+                    name: "هجوم التصيد الاحتيالي",
+                    steps: [
+                        "جمع معلومات عن الضحايا المحتملين",
+                        "إنشاء رسائل تصيد احتيالي مقنعة",
+                        "إعداد خادم لتسجيل بيانات الاعتماد",
+                        "إرسال رسائل التصيد",
+                        "خداع الضحايا لإدخال بياناتهم",
+                        "استخدام بيانات الاعتماد المسروقة",
+                        "تثبيت برمجيات خبيثة"
+                    ]
+                },
+                "supply_chain": {
+                    name: "هجوم سلسلة التوريد",
+                    steps: [
+                        "تحديد مورد أو شريك موثوق به",
+                        "اختراق أنظمة المورد",
+                        "تعديل البرمجيات أو التحديثات",
+                        "توزيع البرمجيات الملوثة",
+                        "تنشيط الحمولة الخبيثة عند الضحايا",
+                        "إنشاء نقاط ارتكاز خلفية",
+                        "التوسع في الشبكات المستهدفة"
+                    ]
+                }
+            };
+
+            // Initialize the app
+            function initApp() {
+                initSpeechRecognition();
+                loadExecutionLog();
+                setupEventListeners();
+            }
+
+            // Initialize speech recognition
+            function initSpeechRecognition() {
+                if (!('webkitSpeechRecognition' in window)) {
+                    showStatus('عذراً، متصفحك لا يدعم ميزة التعرف على الصوت', 'error');
+                    floatingMic.style.display = 'none';
+                    return;
+                }
+
+                recognition = new webkitSpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = 'ar-SA';
+
+                recognition.onstart = onListeningStart;
+                recognition.onresult = onSpeechResult;
+                recognition.onerror = onRecognitionError;
+                recognition.onend = onListeningEnd;
+            }
+
+            // Setup event listeners
+            function setupEventListeners() {
+                // Floating mic button
+                floatingMic.addEventListener('click', toggleListening);
+
+                // Send command button
+                sendCommand.addEventListener('click', () => {
+                    const command = commandText.value.trim();
+                    if (command) {
+                        processCommand(command);
+                        commandText.value = '';
+                    }
+                });
+
+                // Enter key in command input
+                commandText.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        const command = commandText.value.trim();
+                        if (command) {
+                            processCommand(command);
+                            commandText.value = '';
+                        }
+                    }
+                });
+            }
+
+            // Load execution log from localStorage
+            function loadExecutionLog() {
+                const savedLog = localStorage.getItem('executionLog');
+                if (savedLog) {
+                    executionLog = JSON.parse(savedLog);
+                    renderExecutionLog();
+                }
+            }
+
+            // Save execution log to localStorage
+            function saveExecutionLog() {
+                localStorage.setItem('executionLog', JSON.stringify(executionLog));
+            }
+
+            // Render execution log
+            function renderExecutionLog() {
+                if (executionLog.length === 0) {
+                    emptyState.style.display = 'block';
+                    executionItems.innerHTML = '';
+                    return;
+                }
+
+                emptyState.style.display = 'none';
+                executionItems.innerHTML = '';
+
+                executionLog.forEach((item, index) => {
+                    const executionItem = document.createElement('div');
+                    executionItem.className = `execution-item ${item.type || ''}`;
+
+                    let detailsHTML = '';
+                    if (item.details) {
+                        if (item.details.type === 'mitre_tactic') {
+                            detailsHTML = `
+                                    <div class="execution-details">
+                                        <p class="font-bold mb-2">تقنيات ${item.details.tactic}:</p>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                            ${mitreData.tactics[item.details.tactic].map(techId => `
+                                                <div class="bg-gray-800 p-2 rounded">
+                                                    <span class="mitre-badge mitre-technique">${techId}</span>
+                                                    ${mitreData.techniques[techId].name}
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                `;
+                        } else if (item.details.type === 'mitre_technique') {
+                            const tech = mitreData.techniques[item.details.technique];
+                            detailsHTML = `
+                                    <div class="execution-details">
+                                        <p><span class="mitre-badge mitre-technique">${item.details.technique}</span></p>
+                                        <p class="mt-2">${tech.description}</p>
+                                        <p class="font-bold mt-2">أمثلة:</p>
+                                        <ul class="list-disc mr-4 mt-1">
+                                            ${tech.examples.map(ex => `<li>${ex}</li>`).join('')}
+                                        </ul>
+                                    </div>
+                                `;
+                        } else if (item.details.type === 'attack_scenario') {
+                            detailsHTML = `
+                                    <div class="execution-details">
+                                        <p class="font-bold mb-2">خطوات ${item.details.scenario.name}:</p>
+                                        <div class="attack-visualization">
+                                            ${item.details.scenario.steps.map((step, i) => `
+                                                <div class="attack-step">
+                                                    <div class="attack-step-number">${i + 1}</div>
+                                                    <div class="attack-step-content">${step}</div>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                `;
+                        }
+                    }
+
+                    executionItem.innerHTML = `
+                            <div class="execution-command">${item.command}</div>
+                            <div class="execution-status status-${item.status}">
+                                <i class="fas ${getStatusIcon(item.status)} mr-2"></i>
+                                ${item.message}
+                            </div>
+                            ${detailsHTML}
+                            <div class="execution-time">${formatTime(item.timestamp)}</div>
+                        `;
+
+                    executionItems.appendChild(executionItem);
+                });
+
+                // Scroll to bottom
+                executionContent.scrollTop = executionContent.scrollHeight;
+            }
+
+            // Get status icon
+            function getStatusIcon(status) {
+                switch (status) {
+                    case 'success': return 'fa-check-circle';
+                    case 'error': return 'fa-times-circle';
+                    case 'pending': return 'fa-clock';
+                    default: return 'fa-info-circle';
+                }
+            }
+
+            // Format time
+            function formatTime(timestamp) {
+                const date = new Date(timestamp);
+                return date.toLocaleTimeString('ar-SA') + ' - ' + date.toLocaleDateString('ar-SA');
+            }
+
+            // Show status
+            function showStatus(message, status = 'pending') {
+                executionStatus.className = `execution-status status-${status}`;
+                executionStatus.innerHTML = `
+                        <i class="fas ${getStatusIcon(status)} mr-2"></i>
+                        ${message}
+                    `;
+            }
+
+            // Toggle listening state
+            function toggleListening() {
+                if (!isListening) {
+                    startListening();
+                } else {
+                    stopListening();
+                }
+            }
+
+            // Start listening
+            function startListening() {
+                try {
+                    recognition.start();
+                    showStatus('جاري الاستماع...', 'pending');
+                    voiceVisualization.classList.add('active');
+                    floatingMic.classList.add('listening');
+                } catch (e) {
+                    showStatus('حدث خطأ في بدء الاستماع', 'error');
+                    resetMicButton();
+                }
+            }
+
+            // Stop listening
+            function stopListening() {
+                isListening = false;
+                recognition.stop();
+                voiceVisualization.classList.remove('active');
+                floatingMic.classList.remove('listening');
+                showStatus('جاهز للاستماع', 'pending');
+            }
+
+            // On listening start
+            function onListeningStart() {
+                isListening = true;
+                showStatus('يتعرف على الصوت...', 'pending');
+            }
+
+            // On speech result
+            function onSpeechResult(event) {
+                const transcript = event.results[0][0].transcript;
+                
+                processCommand(transcript);
+            }
+            async function runAndSpeak(txt) {
+                const clientt = await Client.connect("wasmdashai/RunTasking");
+
+                const result = await clientt.predict("/predict", {
+                    text: txt,
+                    name_model: "wasmdashai/vits-ar-sa-huba-v2",
+                    speaking_rate: 0.9,
+                });
+
+                const audioUrl = result.data[0].url;
+
+                if (!audioUrl) {
+                    console.error("❌ لم يتم العثور على رابط الصوت.");
+                    return;
+                }
+
+                // إنشاء مشغل صوتي وتشغيله
+                const audio = new Audio(audioUrl);
+                audio.play().then(() => {
+                    console.log("✅ يتم الآن تشغيل الصوت...");
+                }).catch(err => {
+                    console.error("❌ فشل في تشغيل الصوت:", err);
+                });
+            }
+
+
+
+            // T2T API function
+            async function t2t(data) {
+                data = JSON.parse(data);
+
+
+
+                const client = await Client.connect("wasmdashai/T2T");
+                const result = await client.predict("/predict", {
+                    text: data.Text,
+                    key: data.Key,
+                });
+
+                console.log(result.data);
+
+                //await runAndSpeak(result.data[0]);
+                return result.data[0];
+            }
+                
+            // Process command
+            function processCommand(command) {
+                // Add to execution log
+                addToExecutionLog(command, 'جاري المعالجة...', 'pending');
+
+                // Simulate processing delay
+                setTimeout(() => {
+                    let response, status, type, details;
+
+                    // Determine response based on command
+                    if (command.includes('سيناريو') || command.includes('هجوم') || command.includes('اختراق')) {
+                        let scenarioType = 'network_breach';
+
+                        if (command.includes('تصيد') || command.includes('احتيال')) {
+                            scenarioType = 'phishing_attack';
+                        } else if (command.includes('سلسلة') || command.includes('توريد')) {
+                            scenarioType = 'supply_chain';
+                        }
+
+                        response = `تم إنشاء سيناريو هجومي: ${attackScenarios[scenarioType].name}`;
+                        status = 'success';
+                        type = 'mitre';
+                        details = {
+                            type: 'attack_scenario',
+                            scenario: attackScenarios[scenarioType]
+                        };
+                    }
+                    else if (command.includes('MITRE') || command.includes('ميتري') || command.includes('إطار')) {
+                        if (command.includes('تقنية') || command.includes('تقنيات')) {
+                            // Find a technique example
+                            const techIds = Object.keys(mitreData.techniques);
+                            const randomTech = techIds[Math.floor(Math.random() * techIds.length)];
+                            const tech = mitreData.techniques[randomTech];
+
+                            response = `تقنية MITRE ATT&CK: ${tech.name} (${randomTech})`;
+                            status = 'success';
+                            type = 'mitre';
+                            details = {
+                                type: 'mitre_technique',
+                                technique: randomTech
+                            };
+                        } else {
+                            // Show tactics
+                            const tactics = Object.keys(mitreData.tactics);
+                            const randomTactic = tactics[Math.floor(Math.random() * tactics.length)];
+
+                            response = `تكتيكات MITRE ATT&CK للمرحلة: ${randomTactic}`;
+                            status = 'success';
+                            type = 'mitre';
+                            details = {
+                                type: 'mitre_tactic',
+                                tactic: randomTactic
+                            };
+                        }
+                    }
+                    else if (command.includes('تكتيك') || command.includes('تكتيكات')) {
+                        const tactics = Object.keys(mitreData.tactics);
+                        const randomTactic = tactics[Math.floor(Math.random() * tactics.length)];
+
+                        response = `تكتيكات الهجوم: ${randomTactic}`;
+                        status = 'success';
+                        type = 'tactic';
+                        details = {
+                            type: 'mitre_tactic',
+                            tactic: randomTactic
+                        };
+                    }
+                    else if (command.includes('تقنية') || command.includes('تقنيات')) {
+                        const techIds = Object.keys(mitreData.techniques);
+                        const randomTech = techIds[Math.floor(Math.random() * techIds.length)];
+                        const tech = mitreData.techniques[randomTech];
+
+                        response = `تقنية هجومية: ${tech.name}`;
+                        status = 'success';
+                        type = 'technique';
+                        details = {
+                            type: 'mitre_technique',
+                            technique: randomTech
+                        };
+                    }
+                    else {
+                        response = 'لم يتم التعرف على الأمر بشكل كامل. يرجى استخدام مصطلحات مثل "سيناريو هجومي"، "تقنيات MITRE"، أو "تكتيكات الهجوم"';
+                        status = 'error';
+                    }
+
+                    // Update execution log
+                    updateLastExecution(command, response, status, type, details);
+                }, 1500);
+            }
+
+            // Add to execution log
+            function addToExecutionLog(command, message, status, type = null, details = null) {
+                executionLog.push({
+                    command,
+                    message,
+                    status,
+                    type,
+                    details,
+                    timestamp: new Date().toISOString()
+                });
+
+                // Keep only last 50 items
+                if (executionLog.length > 50) {
+                    executionLog.shift();
+                }
+
+                saveExecutionLog();
+                renderExecutionLog();
+            }
+
+            // Update last execution
+            function updateLastExecution(command, message, status, type = null, details = null) {
+                if (executionLog.length > 0) {
+                    executionLog[executionLog.length - 1] = {
+                        command,
+                        message,
+                        status,
+                        type,
+                        details,
+                        timestamp: new Date().toISOString()
+                    };
+
+                    saveExecutionLog();
+                    renderExecutionLog();
+                    showStatus(message, status);
+                }
+            }
+
+            // On recognition error
+            function onRecognitionError(event) {
+                console.error('Recognition error:', event.error);
+                showStatus('حدث خطأ في التعرف على الصوت', 'error');
+                resetMicButton();
+            }
+
+            // On listening end
+            function onListeningEnd() {
+                if (isListening) {
+                    recognition.start();
+                } else {
+                    resetMicButton();
+                }
+            }
+
+            // Reset mic button
+            function resetMicButton() {
+                isListening = false;
+                floatingMic.classList.remove('listening');
+                voiceVisualization.classList.remove('active');
+            }
+
+            // Initialize the app
+            initApp();
+        });
+    </script>
+</body>
+</html>

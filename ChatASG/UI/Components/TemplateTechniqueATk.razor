@@ -1,0 +1,14 @@
+﻿
+<MudTabs Elevation="1" Rounded="true" PanelClass="pa-6">
+    <MudTabPanel Text="Pre-Condition" ToolTip="ToolTip One">
+
+        <TemplateForm Values="Model.PreCondition" Label="State Pre-Condition " />
+    </MudTabPanel>
+    <MudTabPanel Text="Post-Condition" ToolTip="ToolTip Two">
+        <TemplateForm Values="Model.PostCondition" Label="State Post-Condition" />
+    </MudTabPanel>
+</MudTabs>
+@code{
+
+    [Parameter] public TechniqueATk Model { set; get; }
+}

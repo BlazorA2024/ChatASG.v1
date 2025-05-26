@@ -1,0 +1,40 @@
+﻿@inject ISnackbar Snackbar
+<MudTabs Elevation="1" Rounded="true" PanelClass="pa-6">
+    <MudTabPanel Text="Init State " ToolTip="ToolTip One">
+       
+    <TemplateForm Values="Model.Values" />
+</MudTabPanel>
+    <MudTabPanel Text="Technique ATk" ToolTip="ToolTip Two">
+       <TemplateMainTechniqueATk Model="Model" />
+    </MudTabPanel>
+</MudTabs>
+@code{
+    [Parameter] public FormStateBased Model{set;get;}
+    [Parameter] public Color MColor { set; get; } = Color.Primary;
+    StateBasedValue basedValue { set; get; } = null;
+    async  void cheackType(StateBasedValue state)
+    {
+        basedValue = state;
+
+    }
+    private bool _processing = false;
+
+    async Task ProcessSomething()
+    {
+        if(basedValue!=null){
+            _processing = true;
+            await Task.Delay(2000);
+            _processing = false;
+            basedValue.Items.Add(new ValueSB());
+            StateHasChanged();
+            Snackbar.Add("Success", Severity.Success);
+            
+        }
+        else
+        {
+            Snackbar.Add("Please select the system status", Severity.Error);
+           
+        }
+    }
+    
+}

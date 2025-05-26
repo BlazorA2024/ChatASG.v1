@@ -1,0 +1,42 @@
+﻿@inherits StylesExperienceFeatureItem
+@using global::Data.Experience
+
+@if (Prams != null)
+{
+    <div class="@ClassItem">
+        <i class="@Prams.DataBuild.Icon @ClassIcon"></i>
+        <p class="@ClassText">@Prams.DataBuild.Description</p>
+    </div>
+}
+
+@code {
+    [Parameter] public CardExperienceFeatureModul? Prams { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}
+
+
+@* 
+
+@using Data.Experience
+@using Microsoft.AspNetCore.Components
+
+@if (Prams != null )
+{
+    <div class="flex items-start">
+        <i class="@Prams.DataBuild.Icon mr-3 mt-1 text-blue-400"></i>
+        <p>@Prams.DataBuild.Description</p>
+    </div>
+}
+
+
+@code {
+    [Parameter] public UnifiedExperienceDetailsModel? Prams { get; set; }
+    <!-- تأكد من أن Prams هي قائمة من العناصر -->
+}
+  
+ *@

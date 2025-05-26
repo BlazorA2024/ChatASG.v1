@@ -1,0 +1,51 @@
+@using global::Data.Pricing
+@inherits StylesPricingCard
+@if (Prams != null)
+{
+<div class="@Prams.DataBuild.ClassCard ">
+    @if (Prams.DataBuild.IsPopular)
+    {
+        <div class="@ClassBadge ">@Prams.DataBuild.BadgeText</div>
+    }
+
+    <h3 class="@ClassTitle">@Prams.DataBuild.Title</h3>
+    <p class="@ClassDescription">@Prams.DataBuild.Description</p>
+
+    <div class="@ClassPrice">
+        @Prams.DataBuild.Price
+        @if (!string.IsNullOrWhiteSpace(Prams.DataBuild.Period))
+        {
+            <span class="@ClassPeriod">@Prams.DataBuild.Period</span>
+        }
+    </div>
+
+    <ul class="@ClassFeatureList">
+        @foreach (var feature in Prams.DataBuild.Features)
+        {
+            <li class="@ClassFeatureItem">
+                <i class="fas fa-check @ClassFeatureIconAvailable"></i>
+                <span>@feature</span>
+            </li>
+        }
+        @foreach (var feature in Prams.DataBuild.DisabledFeatures)
+        {
+            <li class="@ClassFeatureItemDisabled">
+                <i class="fas fa-times @ClassFeatureIconUnavailable"></i>
+                <span class="@ClassFeatureTextUnavailable">@feature</span>
+            </li>
+        }
+    </ul>
+
+    <button class="@ClassButton   @Prams.DataBuild.ClassButton  ">
+        @Prams.DataBuild.Button
+    </button>
+</div>
+}
+@code {
+    [Parameter] public CardPricing? Prams { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}

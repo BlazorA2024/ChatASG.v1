@@ -1,0 +1,56 @@
+﻿
+@using global::Data.ContactSection
+
+<AddCardContact Prams="Prams" />
+@code {
+    private ContactData2 studios = new()
+    {
+            Title = "معلومات التواصل",
+            Label = "تابعنا على ",
+            Info = new List<ContactInfo>
+                {
+                    new() { Icon = "fas fa-map-marker-alt", Title = "العنوان", Text = "الرياض، المملكة العربية السعودية", Bg = "bg-blue-900/20 text-blue-400" },
+                    new() { Icon = "fas fa-envelope", Title = "البريد الإلكتروني", Text = "info@asg-platform.com", Bg = "bg-purple-900/20 text-purple-400" },
+                    new() { Icon = "fas fa-phone-alt", Title = "الهاتف", Text = "+966 12 345 6789", Bg = "bg-red-900/20 text-red-400" },
+                    new() { Icon = "fas fa-clock", Title = "ساعات العمل", Text = "الأحد - الخميس: 8 صباحًا - 5 مساءً", Bg = "bg-green-900/20 text-green-400" }
+                },
+            Socials = new List<SocialLink>
+                {
+                    new() { Icon = "fab fa-twitter", Url = "#", BgColor = "bg-gray-700 hover:bg-blue-600" },
+                    new() { Icon = "fab fa-linkedin-in", Url = "#", BgColor = "bg-gray-700 hover:bg-blue-800" },
+                    new() { Icon = "fab fa-youtube", Url = "#", BgColor = "bg-gray-700 hover:bg-red-600" },
+                    new() { Icon = "fab fa-instagram", Url = "#", BgColor = "bg-gray-700 hover:bg-purple-600" }
+                },
+    };
+    private Dataform form = new()
+    {
+
+            NameLabel = "الاسم",
+            EmailLabel = "البريد الإلكتروني",
+            SubjectLabel = "الموضوع",
+            MessageLabel = "الرسالة",
+            SubmitButtonText = "إرسال الرسالة"
+    };
+    [Parameter]
+    public ContactData? DataBuild { get; set; }
+
+    private CardContact Prams = new();
+
+    protected override void OnInitialized()
+    {
+        if (DataBuild == null)
+        {
+            DataBuild = new ContactData
+                {
+                    Title = "تواصل معنا",
+                    Description = "لديك استفسار أو ترغب في معرفة المزيد عن منصة ASG؟ فريقنا جاهز لمساعدتك",
+                    contact2 = studios,
+                    Iform = form,
+                   
+                };
+        }
+
+        Prams = CardContact.Create(DataBuild);
+        base.OnInitialized();
+    }
+}

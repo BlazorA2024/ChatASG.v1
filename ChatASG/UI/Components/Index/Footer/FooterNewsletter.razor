@@ -1,0 +1,27 @@
+@using global::Data.FooterSection
+@inherits StylesCardFooterNewsletter
+
+@if (Prams != null)
+{
+    <div>
+        <h4 class="@ClassName ">@Prams.DataBuild.Name </h4>
+        <p class="@ClassTitle ">@Prams.DataBuild.Title</p>
+        <form class="flex">
+            <input type="email" placeholder="@Prams.DataBuild.Label     " class="@KeyLabel" />
+            <button type="submit" class="@ClassSubmitButton">
+                <i class="@Prams.DataBuild.Icon"></i>
+            </button>
+        </form>
+    </div>
+}
+
+@code {
+
+    [Parameter] public CardFooterNewsletter? Prams { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}

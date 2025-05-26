@@ -1,0 +1,35 @@
+﻿@using global::Data.ServicesSection
+<AddCardServicesSection Prams="Prams"    />
+
+
+@code {
+    private CardAddStudios Prams = new();
+
+    private List<DataStudios> studios = new()
+    {
+        new() { Name = "ASG-2B", Description = "A slider component for selecting numeric values.", Link = "/vtc", FrameSrc = "/vtc" },
+        new() { Name = "ASG-8B", Description = "A slider component for selecting numeric values.", Link = "/vtc2", FrameSrc = "/vtc2" },
+        new() { Name = "ASG-16B", Description = "A slider component for selecting numeric values.", Link = "/vtc3", FrameSrc = "/vtc3" },
+        new() { Name = "ASG-32B", Description = "A slider component for selecting numeric values.", Link = "/Chat", FrameSrc = "/Chat" },
+    };
+
+    [Parameter]
+    public DataAddStudios? DataBuild { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (DataBuild == null)
+        {
+            DataBuild = new DataAddStudios
+                {
+                    Name = " Explore of Studios",
+                    Items = studios
+                };
+        }
+
+        Prams = CardAddStudios.Create(DataBuild);
+        base.OnInitialized();
+    }
+}
+
+ 

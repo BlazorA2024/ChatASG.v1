@@ -1,0 +1,53 @@
+﻿@using global::Data.Hero
+@inherits StylesSocialIcon
+
+@if (Prams != null)
+{
+    <a href="@Prams.DataBuild.Link" class="@ClassIconContainer @Prams.DataBuild.IconColor" target="_blank">
+        @if (!string.IsNullOrEmpty(Prams.DataBuild.Icon))
+        {
+            <i class="@Prams.DataBuild.Icon"></i>
+        }
+    </a>
+}
+
+@code {
+    [Parameter] public CardIconModule? Prams { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+@* 
+@using Data.HeroModul
+
+@if (Prams != null)
+{
+    <a href="@Prams.DataBuild.Link" class="@Prams.DataBuild.IconColor
+           ">
+        @if (!string.IsNullOrEmpty(Prams.DataBuild.Icon))
+        {
+            <i class="@Prams.DataBuild.Icon"></i>
+        }
+    </a>
+
+}
+
+@code {
+
+    [Parameter] public ListUnifiedToolsModul? Prams { get; set; }
+}  *@

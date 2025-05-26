@@ -1,0 +1,36 @@
+﻿
+@using global::Data.FiltersModul
+@using global::Data.StyleModul
+
+@inherits StyleUnifiedButtonModel
+
+@if (Prams != null)
+{
+    @if (!string.IsNullOrEmpty(Prams.DataBuild.Label))
+    {
+        <button class="@ClassButton @(Prams.DataBuild.IsPrimary ? ClassPrimary : ClassSecondary) @(Prams.DataBuild.IsActive ? ClassActive : "")">
+            @if (!string.IsNullOrEmpty(Prams.DataBuild.Icon))
+            {
+                <i class="@($"{Prams.DataBuild.Icon} {ClassIcon}")"></i>
+            }
+            @Prams.DataBuild.Label
+        </button>
+    }
+}
+
+@code {
+    [Parameter] public UnifiedButtonModel? Prams { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}
+
+
+
+
+
+
+

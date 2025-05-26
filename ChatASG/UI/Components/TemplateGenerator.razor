@@ -1,0 +1,249 @@
+﻿@inject NavigationManager navigator;
+@inject ISnackbar Snackbar
+<MudDialog DefaultFocus="DefaultFocus.LastChild" @bind-IsVisible=isVisible Options="dialogOptions">
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIconButton  Icon="@Icons.Material.Filled.ArrowBack" aria-label="delete"></MudIconButton>
+
+            Generating scenarios using a model: 
+        </MudText>
+    </TitleContent>
+    <DialogActions>
+        <MudButton Disabled="@(index==0)" Variant="Variant.Text" OnClick="@(()=>checkstep(-1))" StartIcon="@Icons.Material.Filled.NavigateBefore" Color="Color.Primary">Before</MudButton>
+        <MudButton Variant="Variant.Text" OnClick="@(()=>checkstep(1))" EndIcon="@Icons.Material.Filled.NavigateNext" Color="Color.Primary">Next</MudButton>
+    </DialogActions>
+    <DialogContent>
+        <MudContainer >
+         
+            
+        <MudTimeline Reverse="true" TimelinePosition="TimelinePosition.Bottom" TimelineOrientation="TimelineOrientation.Horizontal">
+                <MudTimelineItem Color="@(GetColorByActive(0))" >
+                    <MudText Typo="Typo.caption" Align="Align.End">Choose  generate scenarios</MudText>
+                </MudTimelineItem>
+                <MudTimelineItem Color="@(GetColorByActive(1))">
+                    <MudText Typo="Typo.caption" Align="Align.End">Enter Text</MudText>
+            </MudTimelineItem>
+
+
+
+                <MudTimelineItem Color="@(GetColorByActive(2))">
+                <MudText Typo="Typo.caption" Align="Align.End">Filtering </MudText>
+                   
+                
+            </MudTimelineItem>
+                <MudTimelineItem Color="@(GetColorByActive(3))">
+                    <MudText Typo="Typo.caption" Align="Align.End">Generting</MudText>
+            </MudTimelineItem>
+        </MudTimeline>
+         
+            <div class="d-flex gsc mkp" >
+               @if (index==0)
+            {
+               
+                        <div Class="wgs100   RCardP" style="display:flex;justify-content:center;align-items:center;" >
+
+                    @foreach (var cht in SampleData.TG)
+                    {
+
+                        <div>
+                                <MudPaper Class="mdbt mmmk" >
+                                    <MudChip Style="font-size:12px " Variant="Variant.Outlined" Label="true" OnClick="@(()=>cheackType(cht.TypeGeneratingModel))" Color="(Color)(int)cht.TypeGeneratingModel">  @cht.Name</MudChip>
+                            </MudPaper>
+                        </div>
+                    }
+
+                </div>
+             }
+            else if (index==1)
+            {
+                <div class="wgs100  RCardP">
+
+                        @if (TypeGenerating?.TypeGeneratingModel == TypeGeneratingModel.Threatbased){
+                    <div class="  RCardP  " style="padding:2%;background:#fff;border-radius:12px !important">
+
+
+
+
+                                <MudTextField @bind-Value="valuetext" T="string" Label="enter any text" Lines="6" Class="mt-n2 mx-4" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Send" OnAdornmentClick="@(()=>checkstep(1))" />
+
+
+                     
+
+
+
+
+                    </div>
+                            <br>
+                        }else
+                        {
+                            <TemplateFormBased Model="@((FormStateBased)TypeGenerating.Form)" />
+                        }
+                      
+                  
+
+
+
+
+                </div>
+            }
+            else if(index==2){
+            <div class=" wgs100 RCardP ">
+
+                        <AMudChipSet Model="@ModelGroup3" />
+                          <br>
+                  <MudDivider />
+                    <br>
+                <AMudChipSet Model="@ModelIncidents" />
+
+                        <br>
+                        <MudDivider />
+                <AMudChipSet Model="@ModelGroup" />
+
+                       
+            
+               
+
+            
+                    </div>
+                }
+                else
+                {
+                    <div class=" wgs100 RCardP " style="display:flex;justify-content:center;align-items:center;flex-direction:column">
+                        <MudProgressCircular Color="Color.Primary" Style="height:100px;width:100px;" Value="@Value" />
+                        <MudText Typo="Typo.subtitle2">@SampleData.ArrayDataSoftwares[Value%15]</MudText>
+                      </div>
+                }
+
+</div>
+</MudContainer>
+    </DialogContent>
+    
+</MudDialog>
+@code {
+
+
+    [Parameter]
+    public List<Senario> Senarios { get; set; } = new List<Senario>();
+    bool isvisablenext = true;
+    private AMudChipSetModel ModelIncidents = new AMudChipSetModel() { Title = "Incidents", Items = SampleData.ArrayDataSoftwares };
+    string valuetext = "api";
+    async void checkstep(int i)
+    {
+        if(TypeGenerating!=null){
+            if ((i > 0 && index < 4)||(i<0&&index>0))
+                index += i;
+
+            if (index == 3){
+                StateHasChanged();
+
+                SimulateProgress();
+              //  var output = await GetGSenariosAsync();
+                isVisible = false;
+                navigator.NavigateTo("/generatingai/" + valuetext, true);
+            }
+
+            StateHasChanged();}
+        else
+        {
+            Snackbar.Add("Please choose a scenario generation method ....", Severity.Error);
+        }
+
+    }
+    private async Task<OutputModel> GetGSenariosAsync()
+    {
+        try
+        {
+            var client = new HttpClient();
+            var request = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Get,
+                    RequestUri = new Uri("https://asgmodel.pythonanywhere.com/api/generatingai/" + valuetext),
+
+
+                };
+
+
+            using (var response = await client.SendAsync(request))
+            {
+                response.EnsureSuccessStatusCode();
+
+                var Output = (await response.Content.ReadFromJsonAsync<OutputModel>());
+
+                return Output;
+
+            }
+        }
+        catch
+        {
+            return null;
+        }
+    }
+    private AMudChipSetModel ModelGroup = new AMudChipSetModel() { Title = "Groups", Items = SampleData.ArrayDataGroups };
+    private AMudChipSetModel ModelGroup2 = new AMudChipSetModel() { Title = "Groups", Items = SampleData.ArrayDataGroups };
+    private AMudChipSetModel ModelGroup3 = new AMudChipSetModel() { Title = "Types of scenarios to be generated", Items = SampleData.ArrayDataAnlayses };
+    int index = 0;
+    private TypeGenerating? TypeGenerating;
+
+    protected override void OnInitialized()
+    {
+
+
+
+
+    }
+
+    Color GetColorByActive(int act)
+    {
+        if(index==act)
+            return Color.Primary;
+        if (index > act)
+            return Color.Success;
+
+        return Color.Default;
+
+    }
+    void cheackType(TypeGeneratingModel type)
+    {
+        index=1;
+        if (TypeGenerating == null)
+            if (type == TypeGeneratingModel.Threatbased)
+                TypeGenerating = TypeGenerating.getThreadBase();
+            else
+                TypeGenerating = TypeGenerating.getStateBase();
+        else 
+        if (TypeGenerating.TypeGeneratingModel == TypeGeneratingModel.Threatbased)
+            TypeGenerating = TypeGenerating.getStateBase();
+            else
+              TypeGenerating = TypeGenerating.getThreadBase();
+   
+
+        StateHasChanged();
+    }
+    private bool isVisible = true;
+    private DialogOptions dialogOptions = new() { FullScreen = true, CloseButton = true };
+
+    public int Value { get; set; }
+
+    public async  Task SimulateProgress()
+    {
+        Value = 0;
+        do
+        {
+            if (_disposed)
+            {
+                return;
+            }
+
+            Value += 1;
+           
+            StateHasChanged();
+            await Task.Delay(100);
+
+        } while (Value < 100);
+
+        SimulateProgress();
+    }
+    bool _disposed=false;
+   
+
+}

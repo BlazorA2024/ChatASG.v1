@@ -1,0 +1,39 @@
+﻿@using global::Data.FinalCTA
+<AddCardFinalCTA Prams="Prams" />
+
+@code {
+
+  private DataCardFinalCTA FinalCTA = new()
+    {
+      InputPlaceholder = "Enter your email",
+       Button = "Get Started",
+    };
+
+    [Parameter]
+    public FinalCtaData? DataBuild { get; set; }
+
+    private CardFinalCta Prams = new();
+
+    protected override void OnInitialized()
+    {
+        if (DataBuild == null)
+        {
+            DataBuild = new FinalCtaData
+                {
+                    Title = "Ready to Transform How You Work?",
+                    Description = "Join thousands of professionals who have boosted their productivity with AI. Sign up today and experience the difference.",
+                    //InputPlaceholder = "Enter your email",
+                   // ButtonText = "Get Started",
+                    ICTA = FinalCTA,
+                    Features = new()
+                            {
+                                "Free 14-day trial",
+                                "No credit card required"
+                            }
+                };
+        }
+
+        Prams = CardFinalCta.Create(DataBuild);
+        base.OnInitialized();
+    }
+}

@@ -1,0 +1,96 @@
+﻿@using global::Data.Technology
+<AddCardTechnology Prams="Prams" />
+
+@code {
+
+
+    private List<DataTechnology> studios = new()
+{
+    new()
+    {
+        Icon = "fas fa-server",
+        Title = "خوادم تحليلية عالية الأداء",
+        Description = "خوادم مخصصة لتحليل البيانات الضخمة من الحوادث السيبرانية باستخدام خوارزميات الذكاء الاصطناعي المتقدمة.",
+        ColorIcon = "text-blue-400",
+        BgIcon = "bg-blue-900/20"
+    },
+    new()
+    {
+        Icon = "fas fa-vr-cardboard",
+        Title = "نظم الواقع المعزز",
+        Description = "بيئات تدريب تفاعلية باستخدام تقنيات AR/VR لمحاكاة سيناريوهات الهجمات بدرجة عالية من الواقعية.",
+        ColorIcon = "text-purple-400",
+        BgIcon = "bg-purple-900/20"
+    },
+    new()
+    {
+        Icon = "fas fa-robot",
+        Title = "أنظمة الروبوتات",
+        Description = "روبوتات ذكية متصلة بالنظام الأساسي لتقديم حلول مراقبة واستجابة آلية للحوادث الأمنية.",
+        ColorIcon = "text-red-400",
+        BgIcon = "bg-red-900/20"
+    },
+    new()
+    {
+        Icon = "fas fa-shield-alt",
+        Title = "نظام حماية متكامل",
+        Description = "نظام يجمع بين تقنيات الكشف عن التهديدات والاستجابة الفورية لحماية البنية التحتية.",
+        ColorIcon = "text-green-400",
+        BgIcon = "bg-green-900/20"
+    }
+};
+    private DataTechnologyImage techImage = new()
+        {
+            ImageUrl = "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=2065&auto=format&fit=crop",
+            AltText = "Technology",
+            LabelTop = "أكثر من",
+            LabelNumber = "50+",
+            LabelBottom = "خوارزمية ذكاء اصطناعي"
+        };
+    private DataTargetMarket marketData = new()
+        {
+            Title = "السوق المستهدف",
+            Description = "تستهدف منصة ASG مجموعة واسعة من المستخدمين في القطاعات المختلفة الذين يحتاجون إلى حلول أمنية متقدمة.",
+            Items = new()
+        {
+            new() { IconClass = "fas fa-building text-blue-400 text-2xl", Title = "الشركات", Description = "حماية البنية التحتية الرقمية" },
+            new() { IconClass = "fas fa-user-tie text-purple-400 text-2xl", Title = "الأفراد", Description = "حماية الأجهزة والبيانات الشخصية" },
+            new() { IconClass = "fas fa-landmark text-red-400 text-2xl", Title = "الحكومة", Description = "حماية البنية التحتية الوطنية" },
+            new() { IconClass = "fas fa-graduation-cap text-green-400 text-2xl", Title = "الجامعات", Description = "برامج التدريب والتأهيل" }
+        },
+            TitleGrowth = "التكلفة والعائدات",
+            DescriptionGrowth = "مع نمو سوق الأمن السيبراني المتوقع إلى 183 مليار دولار بحلول 2024، تقدم ASG حلولاً مبتكرة في سوق واعد.",
+            IGrowth = new DataGrowthAnalytics
+            {
+                Title = "سوق الأمن السيبراني",
+                Description = "النمو السنوي المتوقع 10.56%",
+                GrowthRange = "2024-2028",
+                GrowthAmount = "183.10 مليار دولار",
+                Progress = 85
+            }
+        };
+     [Parameter]
+    public DataAddTechnology? DataBuild { get; set; }
+    private CardAddTechnology Prams = new();
+    protected override void OnInitialized()
+    {
+        if (DataBuild == null)
+        {
+            DataBuild = new DataAddTechnology
+                {
+                    Title = "التقنية المتقدمة",
+                    Description = "تعتمد منصة ASG على أحدث التقنيات في مجال الذكاء الاصطناعي والأمن السيبراني",
+                    Name = "بنية المنصة التقنية",
+                    Label = "تم تصميم بنية ASG لتكون قابلة للتوسع والمواكبة للتطورات السريعة في مجال الأمن السيبراني، مع التركيز على الأداء العالي والأمان.",
+                    Items = studios,
+                    ITechnol = techImage,
+                    IMarket = marketData,
+                };
+        }
+
+        Prams = CardAddTechnology.Create(DataBuild);
+        base.OnInitialized();
+    }
+}
+
+

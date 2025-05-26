@@ -1,0 +1,32 @@
+﻿@using global::Data.Section
+
+@inherits StylesButtonIcon
+
+@if (Prams != null)
+{
+    <button class="@Prams.DataBuild.ClassButton  @ClassButton">
+        <a href="@Prams.DataBuild.Link ">  @Prams.DataBuild.Button <i class="@Prams.DataBuild.Icon    @Prams.DataBuild.IconColor @ClassIcon "></i> </a>
+    </button>
+   
+}
+
+@code {
+  
+    [Parameter] public CardButtonsModul? Prams { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+
+        await base.OnInitializedAsync();
+    }
+}
+
+@* 
+ <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md text-lg font-medium transition duration-300 flex items-center justify-center">
+                <a href="/Chat">  ابدأ الآن <i class="fas fa-arrow-left ml-2"></i> </a>
+            </button>
+            <button class="bg-gray-800 hover:bg-gray-700 text-white px-6 py-3 rounded-md text-lg font-medium transition duration-300 flex items-center justify-center">
+                شاهد الفيديو <i class="fas fa-play-circle ml-2"></i>
+            </button> *@

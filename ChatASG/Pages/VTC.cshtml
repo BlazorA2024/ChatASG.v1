@@ -1,0 +1,266 @@
+﻿@page "/vtc"
+@using Microsoft.AspNetCore.Components.Web
+@namespace ChatASG.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.AspNetCore.Authentication
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محادثة صوتية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link href="~/css/vct.css" rel="stylesheet" />
+    <style>
+ 
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <header class="bg-blue-600 text-white p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">محادثة صوتية</h1>
+            <div class="flex items-center space-x-2">
+                <span id="connection-status" class="text-sm bg-blue-500 px-2 py-1 rounded-full">متصل</span>
+                <button id="help-btn" class="bg-blue-700 hover:bg-blue-800 p-2 rounded-full">
+                    <i class="fas fa-question"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 container mx-auto p-4 overflow-y-auto">
+        <div id="chat-container" class="flex flex-col space-y-3 h-full">
+            <div class="message-bubble bot-message">
+                مرحباً! أنا مساعدك الصوتي. اضغط على زر الميكروفون وابدأ بالتحدث وسأرد عليك بنفس صوتك.
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white p-4 shadow-lg border-t border-gray-200">
+        <div class="container mx-auto">
+            <div class="flex items-center justify-center space-x-4">
+                <button id="mic-btn" class="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-4 shadow-lg pulse">
+                    <i class="fas fa-microphone text-2xl"></i>
+                </button>
+                <button id="clear-btn" class="bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-full p-3">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
+
+            <div id="status-message" class="text-center mt-3 text-sm text-gray-600">
+                اضغط على زر الميكروفون للتحدث
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const micBtn = document.getElementById('mic-btn');
+            const clearBtn = document.getElementById('clear-btn');
+            const helpBtn = document.getElementById('help-btn');
+            const chatContainer = document.getElementById('chat-container');
+            const statusMessage = document.getElementById('status-message');
+            const connectionStatus = document.getElementById('connection-status');
+
+            let isListening = false;
+            let recognition;
+            let voices = [];
+            let selectedVoice = null;
+
+            // Check browser support
+            if (!('webkitSpeechRecognition' in window) || !('speechSynthesis' in window)) {
+                statusMessage.textContent = 'عذراً، متصفحك لا يدعم ميزة التعرف على الصوت أو التحدث. يرجى استخدام متصفح حديث مثل Chrome أو Edge.';
+                micBtn.disabled = true;
+                return;
+            }
+
+            // Initialize speech recognition
+            function initSpeechRecognition() {
+                recognition = new webkitSpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = 'ar-SA';
+
+                recognition.onstart = function() {
+                    isListening = true;
+                    micBtn.classList.add('bg-red-600', 'hover:bg-red-700');
+                    micBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                    micBtn.innerHTML = '<i class="fas fa-microphone-slash text-2xl"></i>';
+                    statusMessage.textContent = 'جاري الاستماع... تحدث الآن';
+
+                    // Add voice wave animation
+                    const voiceWave = document.createElement('div');
+                    voiceWave.className = 'voice-wave';
+                    voiceWave.innerHTML = `
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    `;
+                    statusMessage.appendChild(voiceWave);
+                };
+
+                recognition.onresult = function(event) {
+                    const transcript = event.results[0][0].transcript;
+                    addMessage(transcript, 'user');
+
+                    // Simulate processing
+                    setTimeout(() => {
+                        addTypingIndicator();
+
+                        // Respond with the same message after a short delay
+                        setTimeout(() => {
+                            removeTypingIndicator();
+                            respondToUser(transcript);
+                        }, 1500);
+                    }, 500);
+                };
+
+                recognition.onerror = function(event) {
+                    console.error('Recognition error:', event.error);
+                    statusMessage.textContent = 'حدث خطأ: ' + event.error;
+                    resetMicButton();
+                };
+
+                recognition.onend = function() {
+                    if (isListening) {
+                        recognition.start(); // Restart recognition if still listening
+                    } else {
+                        resetMicButton();
+                    }
+                };
+            }
+
+            // Initialize speech synthesis
+            function initSpeechSynthesis() {
+                speechSynthesis.onvoiceschanged = function() {
+                    voices = speechSynthesis.getVoices();
+                    // Try to find an Arabic voice
+                    selectedVoice = voices.find(voice => voice.lang.includes('ar')) || voices[0];
+                };
+
+                // Chrome needs this
+                if (speechSynthesis.getVoices().length > 0) {
+                    voices = speechSynthesis.getVoices();
+                    selectedVoice = voices.find(voice => voice.lang.includes('ar')) || voices[0];
+                }
+            }
+
+            // Add a message to the chat
+            function addMessage(text, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message-bubble ${sender}-message`;
+                messageDiv.textContent = text;
+                chatContainer.appendChild(messageDiv);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+
+            // Add typing indicator
+            function addTypingIndicator() {
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'typing-indicator';
+                typingDiv.id = 'typing-indicator';
+                typingDiv.innerHTML = `
+                    <span class="mr-2">يكتب...</span>
+                    <div class="flex space-x-1">
+                        <div class="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+                        <div class="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                        <div class="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style="animation-delay: 0.3s"></div>
+                    </div>
+                `;
+                chatContainer.appendChild(typingDiv);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+
+            // Remove typing indicator
+            function removeTypingIndicator() {
+                const typingIndicator = document.getElementById('typing-indicator');
+                if (typingIndicator) {
+                    typingIndicator.remove();
+                }
+            }
+
+            // Respond to user
+            function respondToUser(message) {
+                const response = `لقد قلت: "${message}"`;
+                addMessage(response, 'bot');
+                speak(response);
+            }
+
+            // Speak text
+            function speak(text) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                if (selectedVoice) {
+                    utterance.voice = selectedVoice;
+                }
+                utterance.lang = 'ar-SA';
+                utterance.rate = 1;
+                utterance.pitch = 1;
+                speechSynthesis.speak(utterance);
+            }
+
+            // Reset mic button to initial state
+            function resetMicButton() {
+                isListening = false;
+                micBtn.classList.remove('bg-red-600', 'hover:bg-red-700');
+                micBtn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                micBtn.innerHTML = '<i class="fas fa-microphone text-2xl"></i>';
+                statusMessage.textContent = 'اضغط على زر الميكروفون للتحدث';
+
+                // Remove voice wave animation if exists
+                const voiceWave = document.querySelector('.voice-wave');
+                if (voiceWave) {
+                    voiceWave.remove();
+                }
+            }
+
+            // Toggle microphone
+            micBtn.addEventListener('click', function() {
+                if (!isListening) {
+                    initSpeechRecognition();
+                    recognition.start();
+                } else {
+                    isListening = false;
+                    recognition.stop();
+                }
+            });
+
+            // Clear chat
+            clearBtn.addEventListener('click', function() {
+                chatContainer.innerHTML = `
+                    <div class="message-bubble bot-message">
+                        مرحباً! أنا مساعدك الصوتي. اضغط على زر الميكروفون وابدأ بالتحدث وسأرد عليك بنفس صوتك.
+                    </div>
+                `;
+            });
+
+            // Help button
+            helpBtn.addEventListener('click', function() {
+                addMessage('كيف يمكنني مساعدتك؟', 'bot');
+                speak('كيف يمكنني مساعدتك؟');
+            });
+
+            // Initialize speech synthesis
+            initSpeechSynthesis();
+
+            // Connection status simulation
+            setInterval(() => {
+                if (Math.random() > 0.9) {
+                    connectionStatus.textContent = 'غير متصل';
+                    connectionStatus.classList.remove('bg-blue-500');
+                    connectionStatus.classList.add('bg-red-500');
+
+                    setTimeout(() => {
+                        connectionStatus.textContent = 'متصل';
+                        connectionStatus.classList.remove('bg-red-500');
+                        connectionStatus.classList.add('bg-blue-500');
+                    }, 2000);
+                }
+            }, 10000);
+        });
+    </script>
+</body>
+</html>

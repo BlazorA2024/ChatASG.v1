@@ -1,0 +1,38 @@
+﻿@using global::Data.FAQ
+@inherits StylesCardAddFAQ
+@if (Prams != null)
+{
+    <section class="@ClassContainer">
+        <div class="@ClassItem">
+            <div class="text-center mb-16">
+            <h2 class="@ClassName">@Prams.DataBuild.Name</h2>
+            <p class="@ClassDescription">
+                @Prams.DataBuild.Description
+            </p>
+            </div>
+        
+
+        <div class="@ClassItems space-y-4">
+            @foreach (var faq in Prams.Items )
+            {
+                <CardFaq Prams="faq" />
+            }
+        </div>
+
+        <CardStilFAQ Prams="Prams.IstillFAQ" />
+        </div>
+    </section>
+}
+
+
+@code {
+
+   
+    [Parameter] public CardAddFAQ? Prams { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}

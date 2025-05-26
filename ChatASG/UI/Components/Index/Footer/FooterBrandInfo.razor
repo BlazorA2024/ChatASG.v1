@@ -1,0 +1,23 @@
+@using global::Data.FooterSection
+@inherits StylesCardFooterBrandInfo
+@if (Prams != null)
+{
+
+  <div>
+        <div class="@ClassContainer ">
+            <i class="@Prams.DataBuild.Icon    @ClassIcon"></i>
+            <span class="@ClassName ">@Prams.DataBuild.Name</span>
+        </div>
+        <p class="@ClassDescription ">@Prams.DataBuild.Description</p>
+    </div>
+
+
+}
+@code {
+    [Parameter] public CardFooterBrandInfo? Prams { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}

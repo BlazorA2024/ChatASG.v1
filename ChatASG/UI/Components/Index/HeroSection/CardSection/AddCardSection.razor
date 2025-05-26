@@ -1,0 +1,79 @@
+﻿@inherits StylesHeroIntro
+@using global::Data.Section
+@if(Prams !=null)
+{
+<section class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 cyber-gradient">
+    <div class="max-w-7xl mx-auto">
+
+<div class="@ClassContainer">
+    <div>
+        <h1 class="@ClassTitle">
+            @Prams.DataBuild.Name <span class="text-blue-400">@Prams.DataBuild.Title</span>  @Prams.DataBuild.Label
+        </h1>
+        <p class="@ClassDescription">
+            @Prams.DataBuild.Description
+        </p>
+        <div class="@ClassButtons">
+            @foreach (var item in Prams.Items)
+            {
+                <ButtonIcon Prams="item" />
+            }
+        </div>
+    </div>
+    <div class="relative">
+      <CardHeroImageStat Prams="@Prams.IStats" />
+    </div>
+</div>
+    </div>
+</section>
+}
+@code {
+    
+    [Parameter] public CardHeroIntro? Prams { set; get; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+
+        await base.OnInitializedAsync();
+    }
+}
+
+@* 
+    
+@code {
+ 
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+    <div>
+        <h1 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+            منصة <span class="text-blue-400">ASG</span> 
+            للذكاء الاصطناعي في الأمن السيبراني
+        </h1>
+        <p class="text-lg text-gray-300 mb-8">
+            نظام متكامل يستخدم الذكاء الاصطناعي لتحليل وتوليد سيناريوهات الهجمات الإلكترونية بشكل مبتكر وتفاعلي، مع تقديم حلول دفاعية متقدمة.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4">
+            @foreach (var itme in Prams.Items)
+        {
+                <ButtonIcon Prams="itme" />
+        }
+        </div>
+    </div>
+    <div class="relative">
+        <div class="cyber-border rounded-2xl overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop" alt="Cybersecurity" class="w-full h-auto rounded-2xl">
+        </div>
+        <div class="absolute -bottom-6 -left-6 bg-blue-600 p-4 rounded-xl shadow-xl">
+            <div class="text-white text-center">
+                <p class="text-sm">أكثر من</p>
+                <p class="text-2xl font-bold">500M+</p>
+                <p class="text-sm">سيناريو هجومي</p>
+            </div>
+        </div>
+    </div>
+</div>
+@code{
+CardHeroIntro
+  //  [Parameter] public AMudChipSetModel Model{set;get;}
+   // [Parameter] public Color MColor { set; get; } = Color.Primary;
+} *@

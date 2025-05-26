@@ -1,0 +1,29 @@
+﻿@using global::Data.CharacteStyle
+@using global::Data.CharacterModels
+
+@inherits StylesButtonIcon
+
+@if (Prams != null)
+{
+    <button id="toggleMic" class="@ClassButton">
+    <i class="@Prams.DataBuild.Icon @ClassIcon"></i>
+    <span>@Prams.DataBuild.Title</span>
+</button>
+}
+
+@code {
+    [Parameter] public CardButtonsModul? Prams { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+
+        await base.OnInitializedAsync();
+    }
+}
+
+
+@* 
+<button class="w-full mt-4 p-3 rounded-lg border-2 border-dashed border-dark-600 hover:border-purple-500 text-gray-400 hover:text-purple-400 transition flex items-center justify-center">
+    <i class="fas fa-plus mr-2"></i> Add Custom Character
+</button> *@

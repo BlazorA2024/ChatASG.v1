@@ -1,0 +1,125 @@
+﻿@using global::Data.FooterSectio
+@using global::Data.FooterSection
+
+<AddFooter Prams="Prams" />
+
+@code {
+    private List< DataFooterLinkSection> footerData = new()
+    {
+
+            new DataFooterLinkSection
+            {
+                Title = "روابط سريعة",
+                Links = new()
+                {
+                    new() { Text = "المميزات", Url = "#features" },
+                    new() { Text = "الخدمات", Url = "#services" },
+                    new() { Text = "التقنية", Url = "#technology" },
+                    new() { Text = "اتصل بنا", Url = "#contact" }
+                }
+            },
+            new DataFooterLinkSection
+            {
+                Title = "الخدمات",
+                Links = new()
+                {
+                    new() { Text = "Chat AI" },
+                    new() { Text = "الواقع المعزز" },
+                    new() { Text = "الروبوتات الدفاعية" },
+                    new() { Text = "الحلول الأمنية" }
+                }
+            }
+
+        // PolicyLinks = new()
+        // {
+        //     new() { Text = "شروط الخدمة" },
+        //     new() { Text = "سياسة الخصوصية" },
+        //     new() { Text = "الأسئلة الشائعة" }
+        // }
+    };
+    private DataFooterBrandInfo Inf = new()
+    {
+            Name = "ASG",
+            Icon = "fas fa-shield-alt ",
+            Description="منصة متكاملة للذكاء الاصطناعي في الأمن السيبراني تقدم حلولاً مبتكرة لتحليل وتوقع ومواجهة التهديدات السيبرانية."
+    };
+    private DataFooterNewsletter letter = new()
+        {
+            Name = "النشرة البريدية",
+            Title="                        اشترك في نشرتنا البريدية لتصلك آخر التحديثات والعروض الخاصة.",
+            Label = "بريدك الإلكتروني",
+
+            Icon = " fas fa-paper-plane ",
+        };
+    private DataFooterBottom Bottom = new()
+        {
+           
+            Title = "    &copy; 2023 منصة ASG. جميع الحقوق محفوظة.",
+            Links = new()
+            {
+                new() { Text = "شروط الخدمة" },
+                new() { Text = "سياسة الخصوصية" },
+                new() { Text = "الأسئلة الشائعة" }
+            }
+        };
+    [Parameter]
+    public FooterData? DataBuild { get; set; }
+
+    private CardAddFooter Prams = new();
+
+    protected override void OnInitialized()
+    {
+        if (DataBuild == null)
+        {
+            DataBuild = new FooterData
+                {
+                    LinkSections = footerData,
+                    Iinfo = Inf,
+                    INewsletter = letter,
+                    PolicyLinks = Bottom,
+                };
+        }
+
+        Prams = CardAddFooter.Create(DataBuild);
+        base.OnInitialized();
+    }
+}
+
+
+
+
+
+
+@* @using global::Data.FinalCTA
+<AddCardFinalCTA Prams="Prams" />
+
+@code {
+   
+    [Parameter]
+    public FinalCtaData? DataBuild { get; set; }
+
+    private CardFinalCta Prams = new();
+
+    protected override void OnInitialized()
+    {
+        if (DataBuild == null)
+        {
+            DataBuild = new FinalCtaData
+                {
+                    Title = "Ready to Transform How You Work?",
+                    Description = "Join thousands of professionals who have boosted their productivity with AI. Sign up today and experience the difference.",
+                    InputPlaceholder = "Enter your email",
+                    ButtonText = "Get Started",
+                    Features = new()
+                            {
+                                "Free 14-day trial",
+                                "No credit card required"
+                            }
+                };
+        }
+
+        Prams = CardFinalCta.Create(DataBuild);
+        base.OnInitialized();
+    }
+}
+ *@

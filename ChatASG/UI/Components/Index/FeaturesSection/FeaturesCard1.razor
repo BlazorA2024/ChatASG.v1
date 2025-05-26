@@ -1,0 +1,21 @@
+﻿@using global::Data.FeaturesSection
+@inherits StylesFeaturesCard
+
+<div class="@ClassCard">
+    <div class="@($"{Prams.DataBuild?.IconBackground} {Prams.DataBuild?.IconColor}")">
+        <i class="@Prams.DataBuild?.Icon @ClassIcon"></i>
+    </div>
+    <h3 class="@ClassTitle">@Prams.DataBuild?.Title</h3>
+    <p class="@ClassDescription">@Prams.DataBuild?.Description</p>
+</div>
+
+@code {
+    [Parameter]
+    public CardFeaturesModul Prams { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}

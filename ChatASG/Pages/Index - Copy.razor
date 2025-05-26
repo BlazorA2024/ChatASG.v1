@@ -1,0 +1,2018 @@
+﻿@* @page "/"
+
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: {
+            extend: {
+                colors: {
+                    primary: '#1A1F36',
+                    accent: '#0EF6CC',
+                    accent2: '#7B61FF',
+                    dark: '#0F111A',
+                    light: '#F8FAFC'
+                },
+                animation: {
+                    'float': 'float 6s ease-in-out infinite',
+                    'float2': 'float 8s ease-in-out infinite',
+                    'float3': 'float 10s ease-in-out infinite',
+                    'glow': 'glow 2s ease-in-out infinite alternate',
+                },
+                keyframes: {
+                    float: {
+                        '0%, 100%': { transform: 'translateY(0)' },
+                        '50%': { transform: 'translateY(-20px)' },
+                    },
+                    glow: {
+                        '0%': { 'box-shadow': '0 0 5px -5px #0EF6CC' },
+                        '100%': { 'box-shadow': '0 0 20px 5px #0EF6CC' },
+                    }
+                }
+            }
+        }
+    }
+</script>
+    <!-- Hero Section -->
+    <section class="relative py-20 px-4 sm:px-10 lg:px-20 xl:px-32 flex flex-col md:flex-row items-center justify-between min-h-screen">
+        <div class="md:w-1/2 mb-10 md:mb-0 z-10">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6">
+                Unleash <span class="bg-gradient-to-r from-accent to-accent2 bg-clip-text text-transparent">AI-Powered</span> Productivity
+            </h1>
+            <p class="text-lg sm:text-xl text-gray-300 mb-10">
+                Revolutionize your workflow with our AI assistant that automates, organizes, and optimizes your tasks in real-time.
+            </p>
+            <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                <button class="px-8 py-4 bg-gradient-to-r from-accent to-accent2 text-dark font-bold rounded-lg hover:opacity-90 transition transform hover:scale-105 shadow-lg">
+                   <a href="/vtc3">   Try for Free </a>
+                </button>
+                <button class="px-8 py-4 border border-accent text-accent font-bold rounded-lg hover:bg-accent hover:bg-opacity-10 transition transform hover:scale-105">
+                <a href="/Chat">  Watch Demo </a>
+                </button>
+            </div>
+            <div class="mt-10 flex items-center space-x-4">
+                <div class="flex -space-x-2">
+                    <img src="https://randomuser.me/api/portraits/women/1.jpg" class="w-10 h-10 rounded-full border-2 border-dark" alt="User">
+                    <img src="https://randomuser.me/api/portraits/men/2.jpg" class="w-10 h-10 rounded-full border-2 border-dark" alt="User">
+                    <img src="https://randomuser.me/api/portraits/women/3.jpg" class="w-10 h-10 rounded-full border-2 border-dark" alt="User">
+                </div>
+                <div>
+                    <div class="flex items-center">
+                        <i class="fas fa-star text-yellow-400 mr-1"></i>
+                        <span class="font-medium">4.9/5</span>
+                    </div>
+                    <p class="text-sm text-gray-400">Trusted by 10,000+ professionals</p>
+                </div>
+            </div>
+        </div>
+        <div class="md:w-1/2 flex justify-center z-10">
+            <div class="relative animation-float">
+                <div class="glass-card p-4 rounded-3xl w-full max-w-md">
+                    <div class="bg-primary p-2 rounded-2xl">
+                        <div class="bg-gradient-to-br from-dark to-primary rounded-xl overflow-hidden">
+                            <div class="p-4 flex items-center justify-between bg-primary rounded-t-xl">
+                                <div class="flex space-x-2">
+                                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                </div>
+                                <div class="text-xs text-gray-400">Smart Assistant</div>
+                            </div>
+                            <div class="p-6 h-64 bg-gradient-to-b from-primary to-dark">
+                                <div class="chat-message" style="animation-delay: 0.1s">
+                                    <div class="text-accent text-sm mb-2">ASG AI</div>
+                                    <div class="bg-dark rounded-lg p-3 text-sm mb-4">Hi there! I'm your AI productivity assistant. How can I help you today?</div>
+                                </div>
+                                <div class="chat-message" style="animation-delay: 0.4s">
+                                    <div class="text-accent text-sm mb-2">You</div>
+                                    <div class="bg-primary rounded-lg p-3 text-sm border border-gray-700">Schedule meeting with team for next week</div>
+                                </div>
+                                <div class="chat-message" style="animation-delay: 1s">
+                                    <div class="text-accent text-sm mb-2">ASG AI</div>
+                                    <div class="bg-dark rounded-lg p-3 text-sm">
+                                        I've scheduled a team meeting for next Wednesday at 2pm. Sent invites to all team members and created an agenda doc in your Drive.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-3 bg-primary border-t border-gray-700">
+                                <div class="relative">
+                                    <input type="text" placeholder="Type your request here..." class="w-full bg-dark rounded-full py-3 px-5 text-sm focus:outline-none focus:ring-2 focus:ring-accent">
+                                    <button class="absolute right-3 top-2 text-accent">
+                                        <i class="far fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute -inset-4 rounded-3xl bg-gradient-to-br from-accent to-accent2 opacity-20 blur-lg -z-10 animation-glow"></div>
+            </div>
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-b from-primary/0 to-primary/50 -z-10"></div>
+    </section>
+
+    <!-- Logo Cloud -->
+    <section class="py-12 px-4 sm:px-10 lg:px-20 xl:px-32 bg-gradient-to-r from-dark/50 to-primary/30">
+        <h3 class="text-center text-gray-400 mb-8">TRUSTED BY INNOVATIVE TEAMS WORLDWIDE</h3>
+        <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-80">
+            <div class="text-2xl font-bold">Google</div>
+            <div class="text-2xl font-bold">Microsoft</div>
+            <div class="text-2xl font-bold">Shopify</div>
+            <div class="text-2xl font-bold">Spotify</div>
+            <div class="text-2xl font-bold">Airbnb</div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="py-20 px-4 sm:px-10 lg:px-20 xl:px-32">
+        <div class="max-w-4xl mx-auto text-center mb-16">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-6">Work Smarter, Not Harder</h2>
+            <p class="text-lg text-gray-400">
+                Our AI learns your work patterns to deliver intelligent automation tailored just for you. Spend less time organizing and more time doing.
+            </p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-8 mb-20">
+            <div class="feature-card glass-card p-8 rounded-2xl transition hover:border-accent hover:border-opacity-30">
+                <div class="w-14 h-14 rounded-lg bg-gradient-to-br from-accent to-accent2 flex items-center justify-center text-2xl text-dark mb-6 feature-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">AI Task Automation</h3>
+                <p class="text-gray-400">
+                    Auto-schedule, prioritize, and manage your workflow with adaptive AI that learns your patterns and preferences.
+                </p>
+            </div>
+            
+            <div class="feature-card glass-card p-8 rounded-2xl transition hover:border-accent hover:border-opacity-30">
+                <div class="w-14 h-14 rounded-lg bg-gradient-to-br from-accent to-accent2 flex items-center justify-center text-2xl text-dark mb-6 feature-icon">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">Smart Reminders</h3>
+                <p class="text-gray-400">
+                    Context-aware notifications ensure you never miss important deadlines or follow-ups.
+                </p>
+            </div>
+            
+            <div class="feature-card glass-card p-8 rounded-2xl transition hover:border-accent hover:border-opacity-30">
+                <div class="w-14 h-14 rounded-lg bg-gradient-to-br from-accent to-accent2 flex items-center justify-center text-2xl text-dark mb-6 feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">Deep Insights & Analytics</h3>
+                <p class="text-gray-400">
+                    Track your performance, identify time sinks, and optimize your schedule with precision analytics.
+                </p>
+            </div>
+            
+            <div class="feature-card glass-card p-8 rounded-2xl transition hover:border-accent hover:border-opacity-30">
+                <div class="w-14 h-14 rounded-lg bg-gradient-to-br from-accent to-accent2 flex items-center justify-center text-2xl text-dark mb-6 feature-icon">
+                    <i class="fas fa-plug"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">Seamless Integrations</h3>
+                <p class="text-gray-400">
+                    Works seamlessly with Google, Slack, Notion, Zoom and 100+ other tools you already use.
+                </p>
+            </div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-8 md:p-12 grid md:grid-cols-2 gap-8 items-center">
+            <div>
+                <h3 class="text-2xl font-bold mb-4">Smart Scheduling That Adapts To You</h3>
+                <p class="text-gray-400 mb-6">
+                    Our AI analyzes your calendar patterns, preferred working hours, and meeting history to automatically schedule tasks at your most productive times.
+                </p>
+                <ul class="space-y-3">
+                    <li class="flex items-start">
+                        <div class="text-accent mr-3 mt-1">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <span>Auto-reschedules when priorities change</span>
+                    </li>
+                    <li class="flex items-start">
+                        <div class="text-accent mr-3 mt-1">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <span>Optimizes for deep work and focus time</span>
+                    </li>
+                    <li class="flex items-start">
+                        <div class="text-accent mr-3 mt-1">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <span>Learns to avoid scheduling conflicts</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="relative">
+                <div class="bg-gradient-to-br from-dark to-primary rounded-xl overflow-hidden border border-gray-700 p-4">
+                    <div class="bg-primary p-3 rounded-lg mb-4">
+                        <div class="flex items-center mb-3">
+                            <div class="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-dark mr-3">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div>
+                                <div class="font-medium">ASG AI</div>
+                                <div class="text-xs text-gray-400">Smart Scheduling</div>
+                            </div>
+                        </div>
+                        <div class="text-sm">
+                            I've noticed you're most productive in the mornings. I've scheduled your creative work from 8-11am and moved meetings to afternoons when possible.
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-5 gap-2 text-xs">
+                        <div class="bg-dark rounded p-1 text-center border border-gray-700">
+                            <div>Mon</div>
+                            <div class="text-accent">3 tasks</div>
+                        </div>
+                        <div class="bg-dark rounded p-1 text-center border border-gray-700">
+                            <div>Tue</div>
+                            <div class="text-accent">4 tasks</div>
+                        </div>
+                        <div class="bg-primary rounded p-1 text-center border border-accent">
+                            <div>Wed</div>
+                            <div class="text-accent">5 tasks</div>
+                        </div>
+                        <div class="bg-dark rounded p-1 text-center border border-gray-700">
+                            <div>Thu</div>
+                            <div class="text-accent">2 tasks</div>
+                        </div>
+                        <div class="bg-dark rounded p-1 text-center border border-gray-700">
+                            <div>Fri</div>
+                            <div class="text-accent">4 tasks</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute -inset-4 rounded-xl bg-gradient-to-br from-accent to-accent2 opacity-10 blur-lg -z-10"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-20 px-4 sm:px-10 lg:px-20 xl:px-32 bg-gradient-to-b from-primary/50 to-dark">
+        <div class="max-w-4xl mx-auto text-center mb-16">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-6">What Our Users Say</h2>
+            <p class="text-lg text-gray-400">
+                Professionals across industries are transforming how they work with ASG.
+            </p>
+        </div>
+        
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="testimonial-card rounded-2xl p-8">
+                <div class="flex items-center mb-4">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User" class="w-12 h-12 rounded-full mr-4">
+                    <div>
+                        <div class="font-bold">Sarah Johnson</div>
+                        <div class="text-sm text-gray-400">Product Manager </div>
+                    </div>
+                </div>
+                <div class="text-gray-300 mb-4">
+                    "ASG has saved me 10+ hours per week by automating my scheduling and email management. The AI actually understands context like a human assistant would."
+                </div>
+                <div class="flex">
+                    <i class="fas fa-star text-yellow-400 mr-1"></i>
+                    <i class="fas fa-star text-yellow-400 mr-1"></i>
+                    <i class="fas fa-star text-yellow-400 mr-1"></i>
+                    <i class="fas fa-star text-yellow-400 mr-1"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                </div>
+            </div>
+            
+            <div class="testimonial-card rounded-2xl p-8">
+                <div class="flex items-center mb-4">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" class="w-12 h-12 rounded-full mr-4">
+                    <div>
+                        <div class="font-bold">Michael Chen</div>
+                        <div class="text-sm text-gray-400">Founder </div>
+                    </div>
+                </div>
+                <div class="text-gray-300 mb-4">
+                    "As a solo founder, I was drowning in tasks. ASG's prioritization system helped me focus on what matters most, increasing my productivity by 3x."
+                </div>
+                <div class="flex">
+                    <i class="fas fa-star text-yellow-400 mr-1"></i>
+                    <i class="fas fa-star text-yellow-400 mr-1"></i>
+                    <i class="fas fa-star text-yellow-400 mr-1"></i>
+                    <i class="fas fa-star text-yellow-400 mr-1"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                </div>
+            </div>
+            
+            <div class="testimonial-card rounded-2xl p-8">
+                <div class="flex items-center mb-4">
+                    <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="User" class="w-12 h-12 rounded-full mr-4">
+                    <div>
+                        <div class="font-bold">Emma Rodriguez</div>
+                        <div class="text-sm text-gray-400">Consultant </div>
+                    </div>
+                </div>
+                <div class="text-gray-300 mb-4">
+                    "The analytics dashboard revealed inefficiencies in my workflow I never noticed. Now I work half as much but deliver twice the results. Game changer!"
+                </div>
+                <div class="flex">
+                    <i class="fas fa-star text-yellow-400 mr-1"></i>
+                    <i class="fas fa-star text-yellow-400 mr-1"></i>
+                    <i class="fas fa-star text-yellow-400 mr-1"></i>
+                    <i class="fas fa-star text-yellow-400 mr-1"></i>
+                    <i class="fas fa-star-half-alt text-yellow-400"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-16 text-center">
+            <div class="inline-flex items-center bg-dark px-6 py-3 rounded-full">
+                <div class="flex mr-4">
+                    <i class="fas fa-star text-yellow-400 mr-1"></i>
+                    <i class="fas fa-star text-yellow-400 mr-1"></i>
+                    <i class="fas fa-star text-yellow-400 mr-1"></i>
+                    <i class="fas fa-star text-yellow-400 mr-1"></i>
+                    <i class="fas fa-star text-yellow-400 mr-2"></i>
+                    <span>4.9/5</span>
+                </div>
+                <div class="border-l border-gray-700 h-8 mx-2"></div>
+                <div>
+                    <span>Trusted by 10,000+ professionals at</span>
+                    <span class="font-bold ml-2">Google, Microsoft, Shopify,</span>
+                    <span class="font-bold">and more</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section id="demo" class="py-20 px-4 sm:px-10 lg:px-20 xl:px-32">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl sm:text-4xl font-bold mb-6">See It In Action</h2>
+                    <p class="text-lg text-gray-400 mb-8">
+                        Experience how ASG can transform your daily workflow. Try our interactive demo to see the AI assistant in action.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="text-accent mr-4 mt-1">
+                                <i class="fas fa-play-circle"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold mb-1">1. Speak or Type Your Request</h4>
+                                <p class="text-gray-400">
+                                    Just tell the AI what you need help with in natural language.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="text-accent mr-4 mt-1">
+                                <i class="fas fa-cog"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold mb-1">2. AI Understands & Executes</h4>
+                                <p class="text-gray-400">
+                                    Our AI comprehends context and handles complex multi-step requests.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="text-accent mr-4 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold mb-1">3. Automatic Follow Through</h4>
+                                <p class="text-gray-400">
+                                    The system completes tasks and provides updates without you lifting a finger.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="glass-card rounded-2xl overflow-hidden p-6">
+                        <div class="bg-gradient-to-b from-dark to-primary rounded-xl overflow-hidden border border-gray-700">
+                            <div class="p-4 border-b border-gray-700 flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="w-3 h-3 rounded-full bg-accent mr-2"></div>
+                                    <span class="text-sm font-medium">ASG AI Demo</span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="w-6 h-6 rounded-full bg-dark border border-gray-700 flex items-center justify-center text-xs">
+                                        <i class="fas fa-microphone text-accent"></i>
+                                    </button>
+                                    <button class="w-6 h-6 rounded-full bg-dark border border-gray-700 flex items-center justify-center text-xs">
+                                        <i class="fas fa-ellipsis-h"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="p-4" style="height: 300px; overflow-y: auto;">
+                                <div class="chat-message" style="animation-delay: 0.2s">
+                                    <div class="flex items-start mb-3">
+                                        <div class="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-dark mr-3">
+                                            <i class="fas fa-robot"></i>
+                                        </div>
+                                        <div>
+                                            <div class="text-sm font-medium text-accent mb-1">ASG AI</div>
+                                            <div class="bg-dark rounded-lg p-3 text-sm">
+                                                Hi! I'm your AI productivity assistant. Try asking me to:
+                                                <div class="mt-2 space-y-1">
+                                                    <div class="text-xs p-2 bg-primary rounded hover:bg-gray-800 cursor-pointer">Schedule a meeting with John next week</div>
+                                                    <div class="text-xs p-2 bg-primary rounded hover:bg-gray-800 cursor-pointer">Draft an email to the team about the Q2 goals</div>
+                                                    <div class="text-xs p-2 bg-primary rounded hover:bg-gray-800 cursor-pointer">Set up a reminder to follow up on the client proposal</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="chat-message" style="animation-delay: 1s">
+                                    <div class="flex items-start mb-3">
+                                        <div class="w-8 h-8 rounded-full bg-primary border border-gray-700 flex items-center justify-center text-accent mr-3">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div>
+                                            <div class="text-sm font-medium text-accent mb-1">You</div>
+                                            <div class="bg-primary rounded-lg p-3 text-sm border border-gray-700">
+                                                Send email to the marketing team about the new campaign, attach the creative brief, and schedule a review meeting for next Monday
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="chat-message" style="animation-delay: 2s">
+                                    <div class="flex items-start">
+                                        <div class="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-dark mr-3">
+                                            <i class="fas fa-robot"></i>
+                                        </div>
+                                        <div>
+                                            <div class="text-sm font-medium text-accent mb-1">ASG AI</div>
+                                            <div class="bg-dark rounded-lg p-3 text-sm">
+                                                <div class="mb-2">Done! Here's what I've completed:</div>
+                                                <div class="text-xs space-y-2">
+                                                    <div class="flex items-center">
+                                                        <i class="fas fa-check-circle text-green-400 mr-2"></i>
+                                                        <span>Drafted email to marketing@company.com</span>
+                                                    </div>
+                                                    <div class="flex items-center">
+                                                        <i class="fas fa-check-circle text-green-400 mr-2"></i>
+                                                        <span>Attached "Campaign_Creative_Brief.pdf"</span>
+                                                    </div>
+                                                    <div class="flex items-center">
+                                                        <i class="fas fa-check-circle text-green-400 mr-2"></i>
+                                                        <span>Scheduled review meeting for Mon, 9:30am</span>
+                                                    </div>
+                                                    <div class="flex items-center">
+                                                        <i class="fas fa-check-circle text-green-400 mr-2"></i>
+                                                        <span>Sent calendar invites to 6 team members</span>
+                                                    </div>
+                                                </div>
+                                                <div class="mt-3 text-xs text-gray-400">
+                                                    <i class="fas fa-clock mr-1"></i> Completed in 12 seconds
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-4 border-t border-gray-700">
+                                <div class="relative">
+                                    <input type="text" placeholder="Type your request here..." class="w-full bg-dark rounded-full py-3 px-5 text-sm focus:outline-none focus:ring-2 focus:ring-accent">
+                                    <button class="absolute right-3 top-2 text-accent">
+                                        <i class="far fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                                <div class="text-xs text-center text-gray-500 mt-2">
+                                    <span class="hidden sm:inline">Try: "Schedule a 30-minute focus session every morning this week" or</span>
+                                    <button class="underline text-accent hover:no-underline">View more examples</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute -inset-4 rounded-2xl bg-gradient-to-br from-accent to-accent2 opacity-10 blur-lg -z-10"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="py-20 px-4 sm:px-10 lg:px-20 xl:px-32 bg-gradient-to-b from-dark/60 to-primary/30">
+        <div class="max-w-4xl mx-auto text-center mb-16">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-6">Simple, Transparent Pricing</h2>
+            <p class="text-lg text-gray-400">
+                Choose the plan that fits your needs. Try risk-free with our 14-day money back guarantee.
+            </p>
+        </div>
+        
+        <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <div class="pricing-card glass-card p-8 rounded-2xl border border-gray-700 transition duration-300 hover:shadow-xl">
+                <h3 class="text-xl font-bold mb-3">Starter</h3>
+                <p class="text-gray-400 mb-6">For individuals getting started with AI productivity</p>
+                <div class="text-4xl font-bold mb-6">
+                    $0<span class="text-xl text-gray-400">/month</span>
+                </div>
+                <ul class="space-y-4 mb-8">
+                    <li class="flex items-start">
+                        <div class="text-accent mr-3 mt-1">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <span>Basic task automation</span>
+                    </li>
+                    <li class="flex items-start">
+                        <div class="text-accent mr-3 mt-1">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <span>Simple scheduling</span>
+                    </li>
+                    <li class="flex items-start">
+                        <div class="text-gray-600 mr-3 mt-1">
+                            <i class="fas fa-times"></i>
+                        </div>
+                        <span class="text-gray-500">Advanced analytics</span>
+                    </li>
+                    <li class="flex items-start">
+                        <div class="text-gray-600 mr-3 mt-1">
+                            <i class="fas fa-times"></i>
+                        </div>
+                        <span class="text-gray-500">Team features</span>
+                    </li>
+                    <li class="flex items-start">
+                        <div class="text-gray-600 mr-3 mt-1">
+                            <i class="fas fa-times"></i>
+                        </div>
+                        <span class="text-gray-500">Priority support</span>
+                    </li>
+                </ul>
+                <button class="w-full py-3 rounded-lg border border-accent text-accent font-medium hover:bg-accent hover:bg-opacity-10 transition">
+                    Get Started
+                </button>
+            </div>
+            
+            <div class="pricing-card glass-card p-8 rounded-2xl border-2 border-accent transition duration-300 hover:shadow-xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 py-1 px-4 bg-accent text-dark font-bold text-xs rotate-45 translate-x-9 translate-y-3">
+                    POPULAR
+                </div>
+                <h3 class="text-xl font-bold mb-3">Professional</h3>
+                <p class="text-gray-400 mb-6">For professionals serious about productivity</p>
+                <div class="text-4xl font-bold mb-6">
+                    $19<span class="text-xl text-gray-400">/month</span>
+                </div>
+                <ul class="space-y-4 mb-8">
+                    <li class="flex items-start">
+                        <div class="text-accent mr-3 mt-1">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <span>All Starter features</span>
+                    </li>
+                    <li class="flex items-start">
+                        <div class="text-accent mr-3 mt-1">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <span>Advanced AI automation</span>
+                    </li>
+                    <li class="flex items-start">
+                        <div class="text-accent mr-3 mt-1">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <span>Deep insights & analytics</span>
+                    </li>
+                    <li class="flex items-start">
+                        <div class="text-accent mr-3 mt-1">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <span>Smart integrations</span>
+                    </li>
+                    <li class="flex items-start">
+                        <div class="text-gray-600 mr-3 mt-1">
+                            <i class="fas fa-times"></i>
+                        </div>
+                        <span class="text-gray-500">Team dashboard</span>
+                    </li>
+                </ul>
+                <button class="w-full py-3 rounded-lg bg-gradient-to-r from-accent to-accent2 text-dark font-medium hover:opacity-90 transition">
+                    Try Free for 14 Days
+                </button>
+            </div>
+            
+            <div class="pricing-card glass-card p-8 rounded-2xl border border-gray-700 transition duration-300 hover:shadow-xl">
+                <h3 class="text-xl font-bold mb-3">Enterprise</h3>
+                <p class="text-gray-400 mb-6">For teams and organizations</p>
+                <div class="text-4xl font-bold mb-6">
+                    Custom
+                </div>
+                <ul class="space-y-4 mb-8">
+                    <li class="flex items-start">
+                        <div class="text-accent mr-3 mt-1">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <span>All Professional features</span>
+                    </li>
+                    <li class="flex items-start">
+                        <div class="text-accent mr-3 mt-1">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <span>Team dashboard & analytics</span>
+                    </li>
+                    <li class="flex items-start">
+                        <div class="text-accent mr-3 mt-1">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <span>Custom AI training</span>
+                    </li>
+                    <li class="flex items-start">
+                        <div class="text-accent mr-3 mt-1">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <span>Dedicated support</span>
+                    </li>
+                    <li class="flex items-start">
+                        <div class="text-accent mr-3 mt-1">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <span>API access</span>
+                    </li>
+                </ul>
+                <button class="w-full py-3 rounded-lg border border-accent text-accent font-medium hover:bg-accent hover:bg-opacity-10 transition">
+                    Contact Sales
+                </button>
+            </div>
+        </div>
+        
+        <div class="max-w-2xl mx-auto mt-16 glass-card rounded-2xl p-6 text-center">
+            <h4 class="font-bold text-lg mb-3">Not sure which plan is right for you?</h4>
+            <p class="text-gray-400 mb-4">Take our 30-second quiz to find the perfect plan based on your needs.</p>
+            <button class="text-accent font-medium flex items-center justify-center mx-auto">
+                Take the quiz
+                <i class="fas fa-arrow-right ml-2"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="py-20 px-4 sm:px-10 lg:px-20 xl:px-32">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-6">Frequently Asked Questions</h2>
+                <p class="text-lg text-gray-400">
+                    Everything you need to know about the product and billing.
+                </p>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="accordion glass-card rounded-xl p-6">
+                    <button class="accordion-header w-full flex justify-between items-center text-left">
+                        <h4 class="font-bold text-lg">How does the AI learn my work patterns?</h4>
+                        <i class="fas fa-chevron-down text-accent transition-transform duration-300"></i>
+                    </button>
+                    <div class="accordion-content mt-4">
+                        <p class="text-gray-400">
+                            ASG uses machine learning to analyze your calendar events, task completion times, work hours, and productivity patterns. Over time, it builds a personalized model of when you're most focused, which tasks take you longest, and how to optimally arrange your schedule. The more you use it, the smarter it gets.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="accordion glass-card rounded-xl p-6">
+                    <button class="accordion-header w-full flex justify-between items-center text-left">
+                        <h4 class="font-bold text-lg">What platforms and apps does ASG integrate with?</h4>
+                        <i class="fas fa-chevron-down text-accent transition-transform duration-300"></i>
+                    </button>
+                    <div class="accordion-content mt-4">
+                        <p class="text-gray-400 mb-4">
+                            We integrate with all major productivity platforms including:
+                        </p>
+                        <ul class="grid sm:grid-cols-2 gap-2 text-gray-400">
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-accent mr-2"></i>
+                                <span>Google Workspace (Gmail, Calendar, Drive)</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-accent mr-2"></i>
+                                <span>Microsoft 365 (Outlook, Teams, OneDrive)</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-accent mr-2"></i>
+                                <span>Slack</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-accent mr-2"></i>
+                                <span>Notion</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-accent mr-2"></i>
+                                <span>Trello</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-accent mr-2"></i>
+                                <span>Asana</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-accent mr-2"></i>
+                                <span>Zoom</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-accent mr-2"></i>
+                                <span>100+ more through Zapier</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="accordion glass-card rounded-xl p-6">
+                    <button class="accordion-header w-full flex justify-between items-center text-left">
+                        <h4 class="font-bold text-lg">Is my data secure with ASG?</h4>
+                        <i class="fas fa-chevron-down text-accent transition-transform duration-300"></i>
+                    </button>
+                    <div class="accordion-content mt-4">
+                        <p class="text-gray-400 mb-4">
+                            Security is our top priority. We implement enterprise-grade security measures including:
+                        </p>
+                        <ul class="space-y-3 text-gray-400">
+                            <li class="flex items-start">
+                                <div class="text-accent mr-2 mt-1">
+                                    <i class="fas fa-lock"></i>
+                                </div>
+                                <span>End-to-end encryption of all your data</span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="text-accent mr-2 mt-1">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <span>SOC 2 Type II certified infrastructure</span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="text-accent mr-2 mt-1">
+                                    <i class="fas fa-user-secret"></i>
+                                </div>
+                                <span>Strict access controls and audit logging</span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="text-accent mr-2 mt-1">
+                                    <i class="fas fa-cloud"></i>
+                                </div>
+                                <span>Option for on-premises deployment for enterprise clients</span>
+                            </li>
+                        </ul>
+                        <p class="text-gray-400 mt-4">
+                            We never sell or share your data with third parties. Read our <a href="#" class="text-accent">Privacy Policy</a> for more details.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="accordion glass-card rounded-xl p-6">
+                    <button class="accordion-header w-full flex justify-between items-center text-left">
+                        <h4 class="font-bold text-lg">Can I cancel my subscription anytime?</h4>
+                        <i class="fas fa-chevron-down text-accent transition-transform duration-300"></i>
+                    </button>
+                    <div class="accordion-content mt-4">
+                        <p class="text-gray-400">
+                            Absolutely. You can cancel your ASG subscription at any time with just a few clicks. When you cancel, you'll continue to have access to all Pro features until the end of your current billing period. We don't believe in locking you in or making cancellation difficult.
+                        </p>
+                        <p class="text-gray-400 mt-2">
+                            If you're on a monthly or yearly plan, your subscription will automatically renew until you cancel. Our 14-day money-back guarantee applies to all new subscriptions.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-16">
+                <h4 class="text-xl font-bold mb-4">Still have questions?</h4>
+                <p class="text-gray-400 mb-6">We're happy to help! Our team typically responds within 1 business day.</p>
+                <button class="px-6 py-3 bg-gradient-to-r from-accent to-accent2 text-dark font-bold rounded-lg hover:opacity-90 transition">
+                    Contact Support
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="py-20 px-4 sm:px-10 lg:px-20 xl:px-32 bg-gradient-to-br from-primary to-dark text-center">
+        <div class="max-w-3xl mx-auto">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-6">Ready to Transform How You Work?</h2>
+            <p class="text-lg text-gray-300 mb-10">
+                Join thousands of professionals who have boosted their productivity with AI. Sign up today and experience the difference.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6 max-w-lg mx-auto">
+                <div class="relative flex-grow">
+                    <input type="email" placeholder="Enter your email" class="w-full px-5 py-4 rounded-full bg-dark border border-gray-700 focus:outline-none focus:ring-2 focus:ring-accent">
+                    <button class="absolute right-1 top-1 bg-gradient-to-r from-accent to-accent2 text-dark font-bold px-4 py-3 rounded-full hover:opacity-90 transition">
+                        Get Started
+                    </button>
+                </div>
+            </div>
+            
+            <div class="flex justify-center mt-8 space-x-4">
+                <div class="flex items-center text-sm text-gray-400">
+                    <i class="fas fa-check-circle text-green-400 mr-2"></i>
+                    <span>Free 14-day trial</span>
+                </div>
+                <div class="flex items-center text-sm text-gray-400">
+                    <i class="fas fa-check-circle text-green-400 mr-2"></i>
+                    <span>No credit card required</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-16 px-4 sm:px-10 lg:px-20 xl:px-32 bg-dark">
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-10 max-w-6xl mx-auto">
+            <div class="col-span-2">
+                <h3 class="text-2xl font-bold bg-gradient-to-r from-accent to-accent2 bg-clip-text text-transparent mb-4">ASG</h3>
+                <p class="text-gray-400 mb-6">
+                    AI-powered productivity assistant that helps you work smarter, not harder.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#" class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-accent hover:bg-gray-800 transition">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-accent hover:bg-gray-800 transition">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-accent hover:bg-gray-800 transition">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-accent hover:bg-gray-800 transition">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div>
+                <h4 class="font-bold text-lg mb-4">Product</h4>
+                <ul class="space-y-3">
+                    <li><a href="#" class="text-gray-400 hover:text-accent transition">Features</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-accent transition">Pricing</a></li>
+                   
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="font-bold text-lg mb-4">Resources</h4>
+                <ul class="space-y-3">
+                    <li><a href="#" class="text-gray-400 hover:text-accent transition">Blog</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-accent transition">Guides</a></li>
+                  
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="font-bold text-lg mb-4">Company</h4>
+                <ul class="space-y-3">
+                    <li><a href="#" class="text-gray-400 hover:text-accent transition">About Us</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-accent transition">Careers</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-accent transition">Privacy</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-accent transition">Terms</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-accent transition">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="border-t border-gray-800 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center">
+            <p class="text-gray-500 mb-4 md:mb-0">© 2023 ASG. All rights reserved.</p>
+            <div class="flex space-x-6">
+                <a href="#" class="text-gray-500 hover:text-accent transition">Privacy Policy</a>
+                <a href="#" class="text-gray-500 hover:text-accent transition">Terms of Service</a>
+                <a href="#" class="text-gray-500 hover:text-accent transition">Cookie Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Toggle dark mode
+        const toggleDarkMode = document.getElementById('toggleDarkMode');
+        const html = document.documentElement;
+        
+        toggleDarkMode.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            const icon = toggleDarkMode.querySelector('i');
+            if (html.classList.contains('dark')) {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                icon.classList.add('text-accent');
+            } else {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                icon.classList.remove('text-accent');
+                icon.classList.add('text-yellow-500');
+            }
+        });
+
+        // FAQ accordion
+        const accordions = document.querySelectorAll('.accordion');
+        accordions.forEach(accordion => {
+            const header = accordion.querySelector('.accordion-header');
+            const icon = header.querySelector('i');
+            
+            header.addEventListener('click', () => {
+                accordion.classList.toggle('active');
+                
+                if (accordion.classList.contains('active')) {
+                    icon.classList.remove('fa-chevron-down');
+                    icon.classList.add('fa-chevron-up');
+                } else {
+                    icon.classList.remove('fa-chevron-up');
+                    icon.classList.add('fa-chevron-down');
+                }
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+ *@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة ASG للأمن السيبراني</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+
+
+        :root {
+            --primary: #2563EB;
+            --secondary: #1D4ED8;
+            --accent: #3B82F6;
+            --dark: #0F172A;
+            --light: #F8FAFC;
+            --success: #10B981;
+            --danger: #EF4444;
+            --warning: #F59E0B;
+            --cyber-blue: #1E40AF;
+            --cyber-red: #DC2626;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #0F172A;
+            color: white;
+            margin: 0;
+        }
+
+        .cyber-gradient {
+            background: linear-gradient(135deg, var(--cyber-blue) 0%, var(--dark) 100%);
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent);
+        }
+
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            right: 0;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .cyber-pattern {
+            background-image: radial-gradient(circle, rgba(30, 64, 175, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .animated-dots::after {
+            content: '...';
+            animation: dotAnimation 1.5s infinite;
+        }
+
+
+        .cyber-border {
+            position: relative;
+        }
+
+        .cyber-border::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, var(--accent), var(--cyber-red));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+
+<body class="cyber-pattern">
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 cyber-gradient">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+                        منصة <span class="text-blue-400">ASG</span> للذكاء الاصطناعي في الأمن السيبراني
+                    </h1>
+                    <p class="text-lg text-gray-300 mb-8">
+                        نظام متكامل يستخدم الذكاء الاصطناعي لتحليل وتوليد سيناريوهات الهجمات الإلكترونية بشكل مبتكر وتفاعلي، مع تقديم حلول دفاعية متقدمة.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md text-lg font-medium transition duration-300 flex items-center justify-center">
+                            <a href="/Chat">  ابدأ الآن <i class="fas fa-arrow-left ml-2"></i> </a>
+                        </button>
+                        <button class="bg-gray-800 hover:bg-gray-700 text-white px-6 py-3 rounded-md text-lg font-medium transition duration-300 flex items-center justify-center">
+                            شاهد الفيديو <i class="fas fa-play-circle ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="cyber-border rounded-2xl overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop" alt="Cybersecurity" class="w-full h-auto rounded-2xl">
+                    </div>
+                    <div class="absolute -bottom-6 -left-6 bg-blue-600 p-4 rounded-xl shadow-xl">
+                        <div class="text-white text-center">
+                            <p class="text-sm">أكثر من</p>
+                            <p class="text-2xl font-bold">500M+</p>
+                            <p class="text-sm">سيناريو هجومي</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 px-4 sm:px-6 lg:px-8 bg-gray-900">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">مميزات منصة ASG</h2>
+                <p class="text-gray-400 max-w-3xl mx-auto">
+                    تقدم منصتنا مجموعة من المميزات الفريدة التي تجعلها الاختيار الأمثل لحماية أنظمتك من التهديدات السيبرانية
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="bg-gray-800/50 p-8 rounded-2xl card-hover">
+                    <div class="feature-icon bg-blue-900/30 text-blue-400">
+                        <i class="fas fa-brain text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">تحليل ذكي للهجمات</h3>
+                    <p class="text-gray-400">
+                        تحليل متقدم للحوادث السيبرانية باستخدام نماذج الذكاء الاصطناعي لفهم التهديدات بشكل أدق وأسرع.
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="bg-gray-800/50 p-8 rounded-2xl card-hover">
+                    <div class="feature-icon bg-red-900/30 text-red-400">
+                        <i class="fas fa-robot text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">روبوتات دفاعية</h3>
+                    <p class="text-gray-400">
+                        أنظمة روبوتية متخصصة تعمل كنظم خبراء لمراقبة البنية التحتية والاستجابة للحوادث الأمنية.
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="bg-gray-800/50 p-8 rounded-2xl card-hover">
+                    <div class="feature-icon bg-purple-900/30 text-purple-400">
+                        <i class="fas fa-chart-line text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">تنبؤ بالتهديدات</h3>
+                    <p class="text-gray-400">
+                        توقع الهجمات السيبرانية المحتملة قبل حدوثها باستخدام خوارزميات التعلم الآلي المتقدمة.
+                    </p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="bg-gray-800/50 p-8 rounded-2xl card-hover">
+                    <div class="feature-icon bg-green-900/30 text-green-400">
+                        <i class="fas fa-comments text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">مساعد ذكي</h3>
+                    <p class="text-gray-400">
+                        دردشة ذكية توفر إجابات مخصصة للأسئلة المعقدة في مجال الأمن السيبراني.
+                    </p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="bg-gray-800/50 p-8 rounded-2xl card-hover">
+                    <div class="feature-icon bg-yellow-900/30 text-yellow-400">
+                        <i class="fas fa-vr-cardboard text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">واقع معزز</h3>
+                    <p class="text-gray-400">
+                        تدريب تفاعلي باستخدام الواقع المعزز لمحاكاة سيناريوهات الهجمات في بيئة آمنة.
+                    </p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="bg-gray-800/50 p-8 rounded-2xl card-hover">
+                    <div class="feature-icon bg-indigo-900/30 text-indigo-400">
+                        <i class="fas fa-shield-alt text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">حلول دفاعية</h3>
+                    <p class="text-gray-400">
+                        استراتيجيات دفاع متقدمة يمكن تنفيذها لمواجهة التهديدات السيبرانية بفعالية.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <br />
+    <br />
+    <h2 class="text-3xl font-bold text-center mb-8">Explore of Studios</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-2" style="padding:3%">
+
+        <!-- Studio 1 -->
+        <a href="/vtc" class="block group">
+            <div class=" rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
+                <div class="p-4">
+                    <h3 class="text-xl font-semibold mb-2">
+                        <span class="text-blue-600">ASG-2B</span>
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-3">A slider component for selecting numeric values.</p>
+                </div>
+                <iframe src="/vtc" style="height:350px" class="w-full  border-none"></iframe>
+            </div>
+        </a>
+
+        <!-- Studio 2 -->
+        <a href="/vtc2" class="block group">
+            <div class=" rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
+                <div class="p-4">
+                    <h3 class="text-xl font-semibold mb-2">
+                        <span class="text-blue-600">ASG-8B</span>
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-3">A slider component for selecting numeric values.</p>
+                </div>
+                <iframe src="/vtc2" style="height:350px" class="w-full  border-none"></iframe>
+            </div>
+        </a>
+
+
+
+        <!-- Studio 3 -->
+        <a href="/vtc3" class="block group">
+            <div class=" rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
+                <div class="p-4">
+                    <h3 class="text-xl font-semibold mb-2">
+                        <span class="text-blue-600">ASG-16B</span>
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-3">A slider component for selecting numeric values.</p>
+                </div>
+                <iframe src="/vtc3" style="height:350px" class="w-full  border-none"></iframe>
+            </div>
+        </a>
+
+
+        <!-- Studio 4 -->
+        <a href="/Chat" class="block group">
+            <div class=" rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
+                <div class="p-4">
+                    <h3 class="text-xl font-semibold mb-2">
+                        <span class="text-blue-600">ASG-32B</span>
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-3">A slider component for selecting numeric values.</p>
+                </div>
+                <iframe src="/Chat" style="height:350px" class="w-full  border-none"></iframe>
+            </div>
+        </a>
+    </div>
+    <!-- Services Section -->
+    <section id="services" class="py-20 px-4 sm:px-6 lg:px-8 bg-gray-800">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">خدماتنا المتكاملة</h2>
+                <p class="text-gray-400 max-w-3xl mx-auto">
+                    نقدم مجموعة متكاملة من الخدمات المصممة لتلبية جميع احتياجاتك في مجال الأمن السيبراني
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Service 1 -->
+                <div class="bg-gray-900/50 p-8 rounded-2xl card-hover">
+                    <div class="flex items-start">
+                        <div class="bg-blue-900/20 text-blue-400 p-3 rounded-lg mr-4">
+                            <i class="fas fa-comment-dots text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-3">Chat AI للأمن السيبراني</h3>
+                            <p class="text-gray-400 mb-4">
+                                نظام دردشة ذكي يوفر وصولاً سهلاً لخبراء الأمن السيبراني، مع إمكانية الحصول على إجابات مخصصة للأسئلة المعقدة باستخدام الذكاء الاصطناعي.
+                            </p>
+                            <ul class="text-gray-400 space-y-2">
+                                <li class="flex items-center">
+                                    <i class="fas fa-check-circle text-blue-400 mr-2"></i>
+                                    تحليل فوري للتهديدات
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-check-circle text-blue-400 mr-2"></i>
+                                    إجابات مخصصة بناءً على حالة النظام
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-check-circle text-blue-400 mr-2"></i>
+                                    دعم متعدد اللغات
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="bg-gray-900/50 p-8 rounded-2xl card-hover">
+                    <div class="flex items-start">
+                        <div class="bg-purple-900/20 text-purple-400 p-3 rounded-lg mr-4">
+                            <i class="fas fa-vr-cardboard text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-3">الواقع المعزز للتدريب</h3>
+                            <p class="text-gray-400 mb-4">
+                                بيئة تدريب تفاعلية باستخدام الواقع المعزز لمحاكاة سيناريوهات الهجمات السيبرانية الواقعية، مما يمكن المستخدمين من التعلم من خلال الممارسة.
+                            </p>
+                            <ul class="text-gray-400 space-y-2">
+                                <li class="flex items-center">
+                                    <i class="fas fa-check-circle text-purple-400 mr-2"></i>
+                                    سيناريوهات هجومية واقعية
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-check-circle text-purple-400 mr-2"></i>
+                                    بيئة آمنة للتعلم والتجربة
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-check-circle text-purple-400 mr-2"></i>
+                                    تقييم أداء فوري
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="bg-gray-900/50 p-8 rounded-2xl card-hover">
+                    <div class="flex items-start">
+                        <div class="bg-red-900/20 text-red-400 p-3 rounded-lg mr-4">
+                            <i class="fas fa-robot text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-3">أنظمة روبوتية ذكية</h3>
+                            <p class="text-gray-400 mb-4">
+                                روبوتات متخصصة تعمل كنظم خبراء في الأمن السيبراني، قادرة على أداء مهام معقدة مثل المراقبة والفحص والاستجابة للحوادث.
+                            </p>
+                            <ul class="text-gray-400 space-y-2">
+                                <li class="flex items-center">
+                                    <i class="fas fa-check-circle text-red-400 mr-2"></i>
+                                    مراقبة البنية التحتية الحساسة
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-check-circle text-red-400 mr-2"></i>
+                                    فحص وتفتيش الأجهزة والنظم
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-check-circle text-red-400 mr-2"></i>
+                                    استجابة آلية للحوادث الأمنية
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="bg-gray-900/50 p-8 rounded-2xl card-hover">
+                    <div class="flex items-start">
+                        <div class="bg-green-900/20 text-green-400 p-3 rounded-lg mr-4">
+                            <i class="fas fa-shield-virus text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-3">حلول دفاعية متقدمة</h3>
+                            <p class="text-gray-400 mb-4">
+                                استراتيجيات دفاعية مصممة خصيصًا لحماية أنظمتك من أحدث التهديدات السيبرانية، مع تحديثات مستمرة لمواكبة التطورات.
+                            </p>
+                            <ul class="text-gray-400 space-y-2">
+                                <li class="flex items-center">
+                                    <i class="fas fa-check-circle text-green-400 mr-2"></i>
+                                    حماية متعددة الطبقات
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-check-circle text-green-400 mr-2"></i>
+                                    تحديثات تلقائية للتهديدات الجديدة
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-check-circle text-green-400 mr-2"></i>
+                                    تقارير أمنية مفصلة
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Section -->
+    <section id="technology" class="py-20 px-4 sm:px-6 lg:px-8 bg-gray-900">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">التقنية المتقدمة</h2>
+                <p class="text-gray-400 max-w-3xl mx-auto">
+                    تعتمد منصة ASG على أحدث التقنيات في مجال الذكاء الاصطناعي والأمن السيبراني
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h3 class="text-2xl font-bold mb-6">بنية المنصة التقنية</h3>
+                    <p class="text-gray-400 mb-6">
+                        تم تصميم بنية ASG لتكون قابلة للتوسع والمواكبة للتطورات السريعة في مجال الأمن السيبراني، مع التركيز على الأداء العالي والأمان.
+                    </p>
+
+                    <div class="space-y-6">
+                        <!-- Tech 1 -->
+                        <div class="flex items-start">
+                            <div class="bg-blue-900/20 text-blue-400 p-3 rounded-lg mr-4">
+                                <i class="fas fa-server text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-bold mb-2">خوادم تحليلية عالية الأداء</h4>
+                                <p class="text-gray-400">
+                                    خوادم مخصصة لتحليل البيانات الضخمة من الحوادث السيبرانية باستخدام خوارزميات الذكاء الاصطناعي المتقدمة.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Tech 2 -->
+                        <div class="flex items-start">
+                            <div class="bg-purple-900/20 text-purple-400 p-3 rounded-lg mr-4">
+                                <i class="fas fa-vr-cardboard text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-bold mb-2">نظم الواقع المعزز</h4>
+                                <p class="text-gray-400">
+                                    بيئات تدريب تفاعلية باستخدام تقنيات AR/VR لمحاكاة سيناريوهات الهجمات بدرجة عالية من الواقعية.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Tech 3 -->
+                        <div class="flex items-start">
+                            <div class="bg-red-900/20 text-red-400 p-3 rounded-lg mr-4">
+                                <i class="fas fa-robot text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-bold mb-2">أنظمة الروبوتات</h4>
+                                <p class="text-gray-400">
+                                    روبوتات ذكية متصلة بالنظام الأساسي لتقديم حلول مراقبة واستجابة آلية للحوادث الأمنية.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <div class="cyber-border rounded-2xl overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=2065&auto=format&fit=crop" alt="Technology" class="w-full h-auto rounded-2xl">
+                    </div>
+                    <div class="absolute -bottom-6 -right-6 bg-blue-600 p-4 rounded-xl shadow-xl">
+                        <div class="text-white text-center">
+                            <p class="text-sm">أكثر من</p>
+                            <p class="text-2xl font-bold">50+</p>
+                            <p class="text-sm">خوارزمية ذكاء اصطناعي</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Market Section -->
+            <div class="mt-20 bg-gray-800/50 p-8 rounded-2xl">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4">السوق المستهدف</h3>
+                        <p class="text-gray-400 mb-6">
+                            تستهدف منصة ASG مجموعة واسعة من المستخدمين في القطاعات المختلفة الذين يحتاجون إلى حلول أمنية متقدمة.
+                        </p>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-gray-700/50 p-4 rounded-lg">
+                                <i class="fas fa-building text-blue-400 text-2xl mb-2"></i>
+                                <h4 class="font-bold">الشركات</h4>
+                                <p class="text-gray-400 text-sm">حماية البنية التحتية الرقمية</p>
+                            </div>
+                            <div class="bg-gray-700/50 p-4 rounded-lg">
+                                <i class="fas fa-user-tie text-purple-400 text-2xl mb-2"></i>
+                                <h4 class="font-bold">الأفراد</h4>
+                                <p class="text-gray-400 text-sm">حماية الأجهزة والبيانات الشخصية</p>
+                            </div>
+                            <div class="bg-gray-700/50 p-4 rounded-lg">
+                                <i class="fas fa-landmark text-red-400 text-2xl mb-2"></i>
+                                <h4 class="font-bold">الحكومة</h4>
+                                <p class="text-gray-400 text-sm">حماية البنية التحتية الوطنية</p>
+                            </div>
+                            <div class="bg-gray-700/50 p-4 rounded-lg">
+                                <i class="fas fa-graduation-cap text-green-400 text-2xl mb-2"></i>
+                                <h4 class="font-bold">الجامعات</h4>
+                                <p class="text-gray-400 text-sm">برامج التدريب والتأهيل</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4">التكلفة والعائدات</h3>
+                        <p class="text-gray-400 mb-6">
+                            مع نمو سوق الأمن السيبراني المتوقع إلى 183 مليار دولار بحلول 2024، تقدم ASG حلولاً مبتكرة في سوق واعد.
+                        </p>
+
+                        <div class="bg-gray-700/50 p-6 rounded-lg">
+                            <div class="flex items-center justify-between mb-4">
+                                <div>
+                                    <h4 class="font-bold">سوق الأمن السيبراني</h4>
+                                    <p class="text-gray-400 text-sm">النمو السنوي المتوقع 10.56%</p>
+                                </div>
+                                <div class="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-bold">
+                                    2024-2028
+                                </div>
+                            </div>
+
+                            <div class="h-4 bg-gray-600 rounded-full mb-2">
+                                <div class="h-4 bg-gradient-to-r from-blue-500 to-blue-700 rounded-full" style="width: 85%"></div>
+                            </div>
+
+                            <div class="flex justify-between text-sm text-gray-400">
+                                <span>183.10 مليار دولار</span>
+                                <span>2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Pricing -->
+    <section id="pricing" class="py-20 px-4 sm:px-10 lg:px-20 xl:px-32 bg-gradient-to-b from-dark/60 to-primary/30">
+        <div class="max-w-4xl mx-auto text-center mb-16">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-6">Simple, Transparent Pricing</h2>
+            <p class="text-lg text-gray-400">
+                Choose the plan that fits your needs. Try risk-free with our 14-day money back guarantee.
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <div class="pricing-card glass-card p-8 rounded-2xl border border-gray-700 transition duration-300 hover:shadow-xl">
+                <h3 class="text-xl font-bold mb-3">Starter</h3>
+                <p class="text-gray-400 mb-6">For individuals getting started with AI productivity</p>
+                <div class="text-4xl font-bold mb-6">
+                    $0<span class="text-xl text-gray-400">/month</span>
+                </div>
+                <ul class="space-y-4 mb-8">
+                    <li class="flex items-start">
+                        <div class="text-accent mr-3 mt-1">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <span>Basic task automation</span>
+                    </li>
+                    <li class="flex items-start">
+                        <div class="text-accent mr-3 mt-1">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <span>Simple scheduling</span>
+                    </li>
+                    <li class="flex items-start">
+                        <div class="text-gray-600 mr-3 mt-1">
+                            <i class="fas fa-times"></i>
+                        </div>
+                        <span class="text-gray-500">Advanced analytics</span>
+                    </li>
+                    <li class="flex items-start">
+                        <div class="text-gray-600 mr-3 mt-1">
+                            <i class="fas fa-times"></i>
+                        </div>
+                        <span class="text-gray-500">Team features</span>
+                    </li>
+                    <li class="flex items-start">
+                        <div class="text-gray-600 mr-3 mt-1">
+                            <i class="fas fa-times"></i>
+                        </div>
+                        <span class="text-gray-500">Priority support</span>
+                    </li>
+                </ul>
+                <button class="w-full py-3 rounded-lg border border-accent text-accent font-medium hover:bg-accent hover:bg-opacity-10 transition">
+                    Get Started
+                </button>
+            </div>
+
+            <div class="pricing-card glass-card p-8 rounded-2xl border-2 border-accent transition duration-300 hover:shadow-xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 py-1 px-4 bg-accent text-dark font-bold text-xs rotate-45 translate-x-9 translate-y-3">
+                    POPULAR
+                </div>
+                <h3 class="text-xl font-bold mb-3">Professional</h3>
+                <p class="text-gray-400 mb-6">For professionals serious about productivity</p>
+                <div class="text-4xl font-bold mb-6">
+                    $19<span class="text-xl text-gray-400">/month</span>
+                </div>
+                <ul class="space-y-4 mb-8">
+                    <li class="flex items-start">
+                        <div class="text-accent mr-3 mt-1">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <span>All Starter features</span>
+                    </li>
+                    <li class="flex items-start">
+                        <div class="text-accent mr-3 mt-1">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <span>Advanced AI automation</span>
+                    </li>
+                    <li class="flex items-start">
+                        <div class="text-accent mr-3 mt-1">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <span>Deep insights & analytics</span>
+                    </li>
+                    <li class="flex items-start">
+                        <div class="text-accent mr-3 mt-1">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <span>Smart integrations</span>
+                    </li>
+                    <li class="flex items-start">
+                        <div class="text-gray-600 mr-3 mt-1">
+                            <i class="fas fa-times"></i>
+                        </div>
+                        <span class="text-gray-500">Team dashboard</span>
+                    </li>
+                </ul>
+                <button class="w-full py-3 rounded-lg bg-gradient-to-r from-accent to-accent2 text-dark font-medium hover:opacity-90 transition">
+                    Try Free for 14 Days
+                </button>
+            </div>
+
+            <div class="pricing-card glass-card p-8 rounded-2xl border border-gray-700 transition duration-300 hover:shadow-xl">
+                <h3 class="text-xl font-bold mb-3">Enterprise</h3>
+                <p class="text-gray-400 mb-6">For teams and organizations</p>
+                <div class="text-4xl font-bold mb-6">
+                    Custom
+                </div>
+                <ul class="space-y-4 mb-8">
+                    <li class="flex items-start">
+                        <div class="text-accent mr-3 mt-1">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <span>All Professional features</span>
+                    </li>
+                    <li class="flex items-start">
+                        <div class="text-accent mr-3 mt-1">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <span>Team dashboard & analytics</span>
+                    </li>
+                    <li class="flex items-start">
+                        <div class="text-accent mr-3 mt-1">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <span>Custom AI training</span>
+                    </li>
+                    <li class="flex items-start">
+                        <div class="text-accent mr-3 mt-1">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <span>Dedicated support</span>
+                    </li>
+                    <li class="flex items-start">
+                        <div class="text-accent mr-3 mt-1">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <span>API access</span>
+                    </li>
+                </ul>
+                <button class="w-full py-3 rounded-lg border border-accent text-accent font-medium hover:bg-accent hover:bg-opacity-10 transition">
+                    Contact Sales
+                </button>
+            </div>
+        </div>
+
+        <div class="max-w-2xl mx-auto mt-16 glass-card rounded-2xl p-6 text-center">
+            <h4 class="font-bold text-lg mb-3">Not sure which plan is right for you?</h4>
+            <p class="text-gray-400 mb-4">Take our 30-second quiz to find the perfect plan based on your needs.</p>
+            <button class="text-accent font-medium flex items-center justify-center mx-auto">
+                Take the quiz
+                <i class="fas fa-arrow-right ml-2"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="py-20 px-4 sm:px-10 lg:px-20 xl:px-32">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-6">Frequently Asked Questions</h2>
+                <p class="text-lg text-gray-400">
+                    Everything you need to know about the product and billing.
+                </p>
+            </div>
+
+            <div class="space-y-4">
+                <div class="accordion glass-card rounded-xl p-6">
+                    <button class="accordion-header w-full flex justify-between items-center text-left">
+                        <h4 class="font-bold text-lg">How does the AI learn my work patterns?</h4>
+                        <i class="fas fa-chevron-down text-accent transition-transform duration-300"></i>
+                    </button>
+                    <div class="accordion-content mt-4">
+                        <p class="text-gray-400">
+                            ASG uses machine learning to analyze your calendar events, task completion times, work hours, and productivity patterns. Over time, it builds a personalized model of when you're most focused, which tasks take you longest, and how to optimally arrange your schedule. The more you use it, the smarter it gets.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="accordion glass-card rounded-xl p-6">
+                    <button class="accordion-header w-full flex justify-between items-center text-left">
+                        <h4 class="font-bold text-lg">What platforms and apps does ASG integrate with?</h4>
+                        <i class="fas fa-chevron-down text-accent transition-transform duration-300"></i>
+                    </button>
+                    <div class="accordion-content mt-4">
+                        <p class="text-gray-400 mb-4">
+                            We integrate with all major productivity platforms including:
+                        </p>
+                        <ul class="grid sm:grid-cols-2 gap-2 text-gray-400">
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-accent mr-2"></i>
+                                <span>Google Workspace (Gmail, Calendar, Drive)</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-accent mr-2"></i>
+                                <span>Microsoft 365 (Outlook, Teams, OneDrive)</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-accent mr-2"></i>
+                                <span>Slack</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-accent mr-2"></i>
+                                <span>Notion</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-accent mr-2"></i>
+                                <span>Trello</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-accent mr-2"></i>
+                                <span>Asana</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-accent mr-2"></i>
+                                <span>Zoom</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-accent mr-2"></i>
+                                <span>100+ more through Zapier</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="accordion glass-card rounded-xl p-6">
+                    <button class="accordion-header w-full flex justify-between items-center text-left">
+                        <h4 class="font-bold text-lg">Is my data secure with ASG?</h4>
+                        <i class="fas fa-chevron-down text-accent transition-transform duration-300"></i>
+                    </button>
+                    <div class="accordion-content mt-4">
+                        <p class="text-gray-400 mb-4">
+                            Security is our top priority. We implement enterprise-grade security measures including:
+                        </p>
+                        <ul class="space-y-3 text-gray-400">
+                            <li class="flex items-start">
+                                <div class="text-accent mr-2 mt-1">
+                                    <i class="fas fa-lock"></i>
+                                </div>
+                                <span>End-to-end encryption of all your data</span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="text-accent mr-2 mt-1">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <span>SOC 2 Type II certified infrastructure</span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="text-accent mr-2 mt-1">
+                                    <i class="fas fa-user-secret"></i>
+                                </div>
+                                <span>Strict access controls and audit logging</span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="text-accent mr-2 mt-1">
+                                    <i class="fas fa-cloud"></i>
+                                </div>
+                                <span>Option for on-premises deployment for enterprise clients</span>
+                            </li>
+                        </ul>
+                        <p class="text-gray-400 mt-4">
+                            We never sell or share your data with third parties. Read our <a href="#" class="text-accent">Privacy Policy</a> for more details.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="accordion glass-card rounded-xl p-6">
+                    <button class="accordion-header w-full flex justify-between items-center text-left">
+                        <h4 class="font-bold text-lg">Can I cancel my subscription anytime?</h4>
+                        <i class="fas fa-chevron-down text-accent transition-transform duration-300"></i>
+                    </button>
+                    <div class="accordion-content mt-4">
+                        <p class="text-gray-400">
+                            Absolutely. You can cancel your ASG subscription at any time with just a few clicks. When you cancel, you'll continue to have access to all Pro features until the end of your current billing period. We don't believe in locking you in or making cancellation difficult.
+                        </p>
+                        <p class="text-gray-400 mt-2">
+                            If you're on a monthly or yearly plan, your subscription will automatically renew until you cancel. Our 14-day money-back guarantee applies to all new subscriptions.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-16">
+                <h4 class="text-xl font-bold mb-4">Still have questions?</h4>
+                <p class="text-gray-400 mb-6">We're happy to help! Our team typically responds within 1 business day.</p>
+                <button class="px-6 py-3 bg-gradient-to-r from-accent to-accent2 text-dark font-bold rounded-lg hover:opacity-90 transition">
+                    Contact Support
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="py-20 px-4 sm:px-10 lg:px-20 xl:px-32 bg-gradient-to-br from-primary to-dark text-center">
+        <div class="max-w-3xl mx-auto">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-6">Ready to Transform How You Work?</h2>
+            <p class="text-lg text-gray-300 mb-10">
+                Join thousands of professionals who have boosted their productivity with AI. Sign up today and experience the difference.
+            </p>
+
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6 max-w-lg mx-auto">
+                <div class="relative flex-grow">
+                    <input type="email" placeholder="Enter your email" class="w-full px-5 py-4 rounded-full bg-dark border border-gray-700 focus:outline-none focus:ring-2 focus:ring-accent">
+                    <button class="absolute right-1 top-1 bg-gradient-to-r from-accent to-accent2 text-dark font-bold px-4 py-3 rounded-full hover:opacity-90 transition">
+                        Get Started
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex justify-center mt-8 space-x-4">
+                <div class="flex items-center text-sm text-gray-400">
+                    <i class="fas fa-check-circle text-green-400 mr-2"></i>
+                    <span>Free 14-day trial</span>
+                </div>
+                <div class="flex items-center text-sm text-gray-400">
+                    <i class="fas fa-check-circle text-green-400 mr-2"></i>
+                    <span>No credit card required</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 px-4 sm:px-6 lg:px-8 bg-gray-800">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">تواصل معنا</h2>
+                <p class="text-gray-400 max-w-3xl mx-auto">
+                    لديك استفسار أو ترغب في معرفة المزيد عن منصة ASG؟ فريقنا جاهز لمساعدتك
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div>
+                    <form class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-gray-300 mb-2">الاسم</label>
+                                <input type="text" id="name" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-300 mb-2">البريد الإلكتروني</label>
+                                <input type="email" id="email" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="subject" class="block text-sm font-medium text-gray-300 mb-2">الموضوع</label>
+                            <input type="text" id="subject" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white">
+                        </div>
+
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-300 mb-2">الرسالة</label>
+                            <textarea id="message" rows="5" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg text-lg font-medium transition duration-300">
+                            إرسال الرسالة <i class="fas fa-paper-plane mr-2"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <div>
+                    <div class="bg-gray-900/50 p-8 rounded-2xl h-full">
+                        <h3 class="text-xl font-bold mb-6">معلومات التواصل</h3>
+
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="bg-blue-900/20 text-blue-400 p-3 rounded-lg mr-4">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold mb-1">العنوان</h4>
+                                    <p class="text-gray-400">الرياض، المملكة العربية السعودية</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="bg-purple-900/20 text-purple-400 p-3 rounded-lg mr-4">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold mb-1">البريد الإلكتروني</h4>
+                                    <p class="text-gray-400">info@asg-platform.com</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="bg-red-900/20 text-red-400 p-3 rounded-lg mr-4">
+                                    <i class="fas fa-phone-alt"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold mb-1">الهاتف</h4>
+                                    <p class="text-gray-400">+966 12 345 6789</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="bg-green-900/20 text-green-400 p-3 rounded-lg mr-4">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold mb-1">ساعات العمل</h4>
+                                    <p class="text-gray-400">الأحد - الخميس: 8 صباحًا - 5 مساءً</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8">
+                            <h4 class="font-bold mb-4">تابعنا على</h4>
+                            <div class="flex space-x-4 space-x-reverse">
+                                <a href="#" class="bg-gray-700 hover:bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center transition duration-300">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="#" class="bg-gray-700 hover:bg-blue-800 text-white w-10 h-10 rounded-full flex items-center justify-center transition duration-300">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                                <a href="#" class="bg-gray-700 hover:bg-red-600 text-white w-10 h-10 rounded-full flex items-center justify-center transition duration-300">
+                                    <i class="fab fa-youtube"></i>
+                                </a>
+                                <a href="#" class="bg-gray-700 hover:bg-purple-600 text-white w-10 h-10 rounded-full flex items-center justify-center transition duration-300">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900/80 border-t border-gray-800 py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-shield-alt text-2xl text-blue-500 mr-2"></i>
+                        <span class="text-xl font-bold text-white">ASG</span>
+                    </div>
+                    <p class="text-gray-400">
+                        منصة متكاملة للذكاء الاصطناعي في الأمن السيبراني تقدم حلولاً مبتكرة لتحليل وتوقع ومواجهة التهديدات السيبرانية.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-bold text-white mb-4">روابط سريعة</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#features" class="text-gray-400 hover:text-white transition duration-300">المميزات</a></li>
+                        <li><a href="#services" class="text-gray-400 hover:text-white transition duration-300">الخدمات</a></li>
+                        <li><a href="#technology" class="text-gray-400 hover:text-white transition duration-300">التقنية</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white transition duration-300">اتصل بنا</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-bold text-white mb-4">الخدمات</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Chat AI</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">الواقع المعزز</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">الروبوتات الدفاعية</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">الحلول الأمنية</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-bold text-white mb-4">النشرة البريدية</h4>
+                    <p class="text-gray-400 mb-4">
+                        اشترك في نشرتنا البريدية لتصلك آخر التحديثات والعروض الخاصة.
+                    </p>
+                    <form class="flex">
+                        <input type="email" placeholder="بريدك الإلكتروني" class="bg-gray-700 text-white px-4 py-2 rounded-r-lg focus:outline-none w-full">
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-l-lg transition duration-300">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">
+                    &copy; 2023 منصة ASG. جميع الحقوق محفوظة.
+                </p>
+                <div class="flex space-x-6 space-x-reverse">
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition duration-300">شروط الخدمة</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition duration-300">سياسة الخصوصية</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition duration-300">الأسئلة الشائعة</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="fixed bottom-8 right-8 bg-blue-600 hover:bg-blue-700 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition duration-300 opacity-0 invisible">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Back to top button
+        const backToTopButton = document.getElementById('back-to-top');
+
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.remove('opacity-0', 'invisible');
+                backToTopButton.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopButton.classList.remove('opacity-100', 'visible');
+                backToTopButton.classList.add('opacity-0', 'invisible');
+            }
+        });
+
+        backToTopButton.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+
+                    // Close mobile menu if open
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

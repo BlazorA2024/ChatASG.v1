@@ -1,0 +1,45 @@
+﻿@using global::Data.Section
+
+@inherits StylesHeroImageStats
+
+@if (Prams != null)
+{
+    
+        <div class="@ClassImage">
+            <img src="@Prams.DataBuild.Image" alt="Cybersecurity" class="w-full h-auto rounded-2xl">
+        </div>
+        <div class="@ClassStats">
+            <p class="text-sm">@Prams.DataBuild.Name</p>
+            <p class="text-2xl font-bold">@Prams.DataBuild.Title</p>
+            <p class="text-sm">@Prams.DataBuild.Description</p>
+        </div>
+ 
+
+}
+
+@code {
+  
+    [Parameter] public CardHeroImageStats? Prams { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+
+        await base.OnInitializedAsync();
+    }
+}
+
+@* 
+<div class="relative">
+        <div class="cyber-border rounded-2xl overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop" alt="Cybersecurity" class="w-full h-auto rounded-2xl">
+        </div>
+        <div class="absolute -bottom-6 -left-6 bg-blue-600 p-4 rounded-xl shadow-xl">
+            <div class="text-white text-center">
+                <p class="text-sm">أكثر من</p>
+                <p class="text-2xl font-bold">500M+</p>
+                <p class="text-sm">سيناريو هجومي</p>
+            </div>
+        </div>
+    </div> *@

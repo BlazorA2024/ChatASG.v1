@@ -1,0 +1,67 @@
+@using global::Data.ContactSection
+@inherits StylesContactCard2
+
+@if (Prams != null)
+{
+    <div>
+        <div class="@ClassContactBox">
+            <h3 class="@ClassTitle ">@Prams.DataBuild.Title</h3>
+
+            <div class="space-y-6">
+                @foreach (var item in Prams.Info)
+                {
+                    <ContactInfoItem Prams="item" />
+                }
+            </div>
+
+            <div class="mt-8">
+                <h4 class="@ClassLabel "> @Prams.DataBuild.Label</h4>
+                <div class="flex space-x-4 space-x-reverse">
+                    @foreach (var social in Prams.DataBuild.Socials)
+                    {
+                        <a href="@social.Url" class="@social.BgColor text-white w-10 h-10 rounded-full flex items-center justify-center transition duration-300">
+                            <i class="@social.Icon"></i>
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+
+    @code {
+        [Parameter] public CardContact2? Prams { get; set; }
+        protected override async Task OnInitializedAsync()
+        {
+            await UpdateStyleAsync(CLASSES);
+            await base.OnInitializedAsync();
+        }
+    }
+
+}
+ @* <div>
+                <div class="@ClassContactBox">
+                    <h3 class="text-xl font-bold mb-6">„⁄·Ê„«  «· Ê«’·</h3>
+
+                    <div class="space-y-6">
+                        @foreach (var item in Prams.Info)
+                         {
+                                <ContactInfoItem Prams="item" />
+                             }
+                    </div>
+
+                    <div class="mt-8">
+                        <h4 class="font-bold mb-4"> «»⁄‰« ⁄·Ï</h4>
+                        <div class="flex space-x-4 space-x-reverse">
+                            @foreach (var social in Prams.DataBuild.Socials)
+                            {
+                                <a href="@social.Url" class="@social.BgColor text-white w-10 h-10 rounded-full flex items-center justify-center transition duration-300">
+                                    <i class="@social.Icon"></i>
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div> *@

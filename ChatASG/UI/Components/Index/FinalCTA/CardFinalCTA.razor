@@ -1,0 +1,24 @@
+﻿
+@using global::Data.FinalCTA
+@inherits StylesCardFinalCT
+@if(Prams != null)
+{
+     <div class="@ClassInputGroup">
+        <div class="@ClassFeatureItem ">
+            <input type="email" placeholder="@Prams.DataBuild.InputPlaceholder" style="text-align: left;" class="@ClassInput" />
+                <button class="@ClassButton">
+                    @Prams.DataBuild.Button
+                </button>
+            </div>
+        </div>
+}
+
+@code {
+
+    [Parameter] public CardFinalCT Prams { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}

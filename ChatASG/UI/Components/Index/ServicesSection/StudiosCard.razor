@@ -1,0 +1,23 @@
+﻿@using global::Data.ServicesSection
+@inherits StylesStudiosCard
+
+<a href="@Prams.DataBuild.Link" class="block group">
+    <div class="@ClassContainer">
+        <div class="p-4">
+            <h3 class="@ClassTitle">@Prams.DataBuild.Name</h3>
+            <p class="@ClassDescription">@Prams.DataBuild.Description</p>
+        </div>
+        <iframe src="@Prams.DataBuild.FrameSrc" style="height:350px" class="@ClassIframe"></iframe>
+    </div>
+</a>
+
+@code {
+    [Parameter]
+    public CardStudios Prams { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}

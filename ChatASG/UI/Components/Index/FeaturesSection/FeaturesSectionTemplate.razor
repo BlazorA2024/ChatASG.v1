@@ -1,0 +1,131 @@
+﻿@using ChatASG.UI.Components.Index.HeroSection.CardSection
+@using global::Data.FeaturesSection
+
+<AddCardFeaturesSection Prams="Prams" />
+
+@code {
+    private DataAddFeatures FeatureItems = new()
+        {
+            Name = "مميزات منصة ASG",
+            Description = "تقدم منصتنا مجموعة من المميزات الفريدة التي تجعلها الاختيار الأمثل لحماية أنظمتك من التهديدات السيبرانية",
+            Items = new List<DataFeatures>
+        {
+            new DataFeatures
+            {
+                Title = "تحليل ذكي للهجمات",
+                Description = "تحليل متقدم للحوادث السيبرانية باستخدام نماذج الذكاء الاصطناعي لفهم التهديدات بشكل أدق وأسرع.",
+                Icon = "fas fa-brain",
+                IconColor = "text-blue-400",
+                IconBackground = "feature-icon bg-blue-900/30"
+            },
+            new DataFeatures
+            {
+                Title = "روبوتات دفاعية",
+                Description = "أنظمة روبوتية متخصصة تعمل كنظم خبراء لمراقبة البنية التحتية والاستجابة للحوادث الأمنية.",
+                Icon = "fas fa-robot",
+                IconColor = "text-red-400",
+                IconBackground = "feature-icon bg-red-900/30"
+            },
+            new DataFeatures
+            {
+                Title = "تنبؤ بالتهديدات",
+                Description = "توقع الهجمات السيبرانية المحتملة قبل حدوثها باستخدام خوارزميات التعلم الآلي المتقدمة.",
+                Icon = "fas fa-chart-line",
+                IconColor = "text-purple-400",
+                IconBackground = "feature-icon bg-purple-900/30"
+            },
+            new DataFeatures
+            {
+                Title = "مساعد ذكي",
+                Description = "دردشة ذكية توفر إجابات مخصصة للأسئلة المعقدة في مجال الأمن السيبراني.",
+                Icon = "fas fa-comments",
+                IconColor = "text-green-400",
+                IconBackground = "feature-icon bg-green-900/30"
+            },
+            new DataFeatures
+            {
+                Title = "واقع معزز",
+                Description = "تدريب تفاعلي باستخدام الواقع المعزز لمحاكاة سيناريوهات الهجمات في بيئة آمنة.",
+                Icon = "fas fa-vr-cardboard",
+                IconColor = "text-yellow-400",
+                IconBackground = "feature-icon bg-yellow-900/30"
+            },
+            new DataFeatures
+            {
+                Title = "حلول دفاعية",
+                Description = "استراتيجيات دفاع متقدمة يمكن تنفيذها لمواجهة التهديدات السيبرانية بفعالية.",
+                Icon = "fas fa-shield-alt",
+                IconColor = "text-indigo-400",
+                IconBackground = "feature-icon bg-indigo-900/30"
+            }
+        }
+        };
+
+    [Parameter]
+    public DataAddFeatures? DataBuild { get; set; }
+
+    private CardAddFeatures Prams;
+
+    protected override void OnInitialized()
+    {
+        if (DataBuild == null)
+        {
+            DataBuild = FeatureItems;
+        }
+
+        Prams = CardAddFeatures.Create(DataBuild);
+        base.OnInitialized();
+    }
+}
+
+@* 
+@code {
+    private DataHeroIntro introData = new()
+        {
+            Name = "منصة",
+            Title = "ASG",
+            Label="للذكاء الاصطناعي في الأمن السيبراني",
+            Description = "نظام متكامل يستخدم الذكاء الاصطناعي لتحليل وتوليد سيناريوهات الهجمات الإلكترونية بشكل مبتكر وتفاعلي، مع تقديم حلول دفاعية متقدمة.",
+          IStats= new DataHeroImageStats
+         {
+            Image = "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop",
+            Name = "أكثر من",
+            Title = "500M+",
+            Description = "سيناريو هجومي",
+         },
+            // ✅ هذه قائمة من الأزرار (List<DataButtons>)
+            Items = new List<DataButtons>
+        {
+            new DataButtons
+            {
+                Button = "ابدأ الآن",
+                Icon = "fas fa-arrow-left",
+                Link = "/Chat"
+            },
+            new DataButtons
+            {
+                Button = "شاهد الفيديو",
+                Icon = "fas fa-play-circle",
+                ClassButton="bg-gray-800 hover:bg-gray-700 text-white px-6 py-3 rounded-md text-lg font-medium transition duration-300 flex items-center justify-center",
+                Link = "#"
+            }
+        }
+        };
+
+    [Parameter]
+    public DataHeroIntro? DataBuild { get; set; }
+
+    private CardHeroIntro Prams;
+
+    protected override void OnInitialized()
+    {
+        if (DataBuild == null)
+        {
+            DataBuild = introData;
+        }
+
+        Prams = CardHeroIntro.Create(DataBuild);
+        base.OnInitialized();
+    }
+}
+ *@

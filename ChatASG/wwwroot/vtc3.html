@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المساعد الصوتي الذكي</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap');
+
+        :root {
+            --primary: #7C3AED;
+            --secondary: #8B5CF6;
+            --accent: #A78BFA;
+            --dark: #0F172A;
+            --light: #F8FAFC;
+            --success: #10B981;
+            --danger: #EF4444;
+            --warning: #F59E0B;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #0B1120 0%, #1E293B 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.7);
+            }
+
+            70% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 12px rgba(124, 58, 237, 0);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(124, 58, 237, 0);
+            }
+        }
+
+        .voice-container {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            margin: 30px 0;
+            border-radius: 20px;
+            overflow: hidden;
+            background: rgba(15, 23, 42, 0.7);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .voice-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .voice-circle {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 30px rgba(124, 58, 237, 0.5);
+            z-index: 2;
+        }
+
+            .voice-circle i {
+                font-size: 2.5rem;
+                color: white;
+            }
+
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(124, 58, 237, 0.3);
+            transform: scale(0);
+            animation: ripple 2s infinite;
+            z-index: 1;
+        }
+
+            .ripple:nth-child(2) {
+                animation-delay: 0.5s;
+            }
+
+            .ripple:nth-child(3) {
+                animation-delay: 1s;
+            }
+
+        @keyframes ripple {
+            to {
+                transform: scale(3);
+                opacity: 0;
+            }
+        }
+
+        .voice-bars {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 5px;
+            padding: 0 20px;
+        }
+
+        .voice-bar {
+            width: 8px;
+            background: linear-gradient(to top, var(--primary), var(--accent));
+            border-radius: 5px 5px 0 0;
+            animation: voiceBar 1.5s infinite ease-in-out;
+        }
+
+        @keyframes voiceBar {
+            0%, 100% {
+                height: 10px;
+            }
+
+            50% {
+                height: 40px;
+            }
+        }
+
+        .voice-bar:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .voice-bar:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .voice-bar:nth-child(3) {
+            animation-delay: 0.5s;
+        }
+
+        .voice-bar:nth-child(4) {
+            animation-delay: 0.7s;
+        }
+
+        .voice-bar:nth-child(5) {
+            animation-delay: 0.9s;
+        }
+
+        .voice-bar:nth-child(6) {
+            animation-delay: 1.1s;
+        }
+
+        .voice-bar:nth-child(7) {
+            animation-delay: 1.3s;
+        }
+
+        .status-message {
+            background: rgba(15, 23, 42, 0.7);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 1.1rem;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .floating-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .glow-text {
+            text-shadow: 0 0 10px rgba(124, 58, 237, 0.7);
+        }
+
+        .btn-glow {
+            box-shadow: 0 0 15px rgba(124, 58, 237, 0.7);
+            transition: all 0.3s ease;
+        }
+
+            .btn-glow:hover {
+                box-shadow: 0 0 25px rgba(124, 58, 237, 0.9);
+                transform: translateY(-2px);
+            }
+
+        .processing {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.9);
+            z-index: 10;
+            border-radius: 20px;
+        }
+
+        .processing-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .response-container {
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 15px;
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 12px;
+            margin: 10px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .response-text {
+            line-height: 1.6;
+        }
+
+        .typing-indicator {
+            display: inline-block;
+        }
+
+        .typing-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            margin-right: 4px;
+            animation: typingAnimation 1.4s infinite ease-in-out;
+        }
+
+            .typing-dot:nth-child(1) {
+                animation-delay: 0s;
+            }
+
+            .typing-dot:nth-child(2) {
+                animation-delay: 0.2s;
+            }
+
+            .typing-dot:nth-child(3) {
+                animation-delay: 0.4s;
+            }
+
+        @keyframes typingAnimation {
+            0%, 60%, 100% {
+                transform: translateY(0);
+            }
+
+            30% {
+                transform: translateY(-5px);
+            }
+        }
+
+        /* Custom scrollbar */
+        .response-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .response-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .response-container::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 10px;
+        }
+
+        /* Command list styling */
+        .command-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+            justify-content: center;
+        }
+
+        .command-chip {
+            background: rgba(124, 58, 237, 0.2);
+            border: 1px solid var(--accent);
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+            .command-chip:hover {
+                background: rgba(124, 58, 237, 0.4);
+                transform: translateY(-2px);
+            }
+
+        /* Settings panel */
+        .settings-panel {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+        }
+
+        .settings-btn {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+            .settings-btn:hover {
+                background: rgba(124, 58, 237, 0.8);
+                transform: rotate(90deg);
+            }
+
+        .settings-content {
+            position: absolute;
+            top: 60px;
+            left: 0;
+            background: rgba(30, 41, 59, 0.95);
+            border-radius: 12px;
+            padding: 15px;
+            width: 250px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transform: scale(0);
+            transform-origin: top left;
+            transition: transform 0.3s ease;
+        }
+
+            .settings-content.open {
+                transform: scale(1);
+            }
+
+        .settings-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--accent);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 8px;
+        }
+
+        .setting-item {
+            margin-bottom: 15px;
+        }
+
+        .setting-label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .setting-control {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            padding: 8px;
+            color: white;
+        }
+
+        /* History panel */
+        .history-panel {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+
+        .history-btn {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+            .history-btn:hover {
+                background: rgba(124, 58, 237, 0.8);
+                transform: scale(1.1);
+            }
+
+        .history-content {
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background: rgba(30, 41, 59, 0.95);
+            border-radius: 12px;
+            padding: 15px;
+            width: 300px;
+            max-height: 500px;
+            overflow-y: auto;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transform: scale(0);
+            transform-origin: top right;
+            transition: transform 0.3s ease;
+        }
+
+            .history-content.open {
+                transform: scale(1);
+            }
+
+        .history-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--accent);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 8px;
+        }
+
+        .history-item {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+            .history-item:hover {
+                background: rgba(124, 58, 237, 0.3);
+            }
+
+        .history-query {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .history-response {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Wave animation for listening state */
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="rgba(124,58,237,0.1)" opacity=".25"/><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" fill="rgba(124,58,237,0.1)" opacity=".5"/><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="rgba(124,58,237,0.1)"/></svg>');
+            background-size: cover;
+            background-repeat: no-repeat;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+            .wave.active {
+                opacity: 1;
+                animation: wave 15s linear infinite;
+            }
+
+        @keyframes wave {
+            0% {
+                background-position-x: 0;
+            }
+
+            100% {
+                background-position-x: 1200px;
+            }
+        }
+
+        /* Constellation effect */
+        .constellation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 5s infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.2;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .voice-container {
+                height: 180px;
+            }
+
+            .voice-circle {
+                width: 100px;
+                height: 100px;
+            }
+
+            .mic-btn {
+                padding: 5px;
+                width: 70px;
+                height: 70px;
+            }
+
+            .settings-panel, .history-panel {
+                top: 10px;
+            }
+
+            .settings-content, .history-content {
+                width: 280px;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+    <!-- Constellation Background -->
+    <div class="constellation" id="constellation"></div>
+
+    <!-- Settings Panel -->
+    <div class="settings-panel">
+        <div class="settings-btn" id="settings-btn">
+            <i class="fas fa-cog text-xl"></i>
+        </div>
+        <div class="settings-content" id="settings-content">
+            <div class="settings-title">الإعدادات</div>
+            <div class="setting-item">
+                <label class="setting-label">سرعة الصوت</label>
+                <input type="range" min="0.5" max="2" step="0.1" value="1" class="setting-control" id="voice-rate">
+            </div>
+            <div class="setting-item">
+                <label class="setting-label">نبرة الصوت</label>
+                <input type="range" min="0.5" max="2" step="0.1" value="1" class="setting-control" id="voice-pitch">
+            </div>
+            <div class="setting-item">
+                <label class="setting-label">لغة التعرف</label>
+                <select class="setting-control" id="recognition-lang">
+                    <option value="ar-SA">العربية (السعودية)</option>
+                    <option value="en-US">الإنجليزية (الولايات المتحدة)</option>
+                    <option value="fr-FR">الفرنسية (فرنسا)</option>
+                    <option value="es-ES">الإسبانية (إسبانيا)</option>
+                </select>
+            </div>
+            <button class="gradient-bg text-white rounded-lg px-4 py-2 mt-3 w-full btn-glow" id="save-settings">
+                حفظ الإعدادات
+            </button>
+        </div>
+    </div>
+
+    <!-- History Panel -->
+    <div class="history-panel">
+        <div class="history-btn" id="history-btn">
+            <i class="fas fa-history text-xl"></i>
+        </div>
+        <div class="history-content" id="history-content">
+            <div class="history-title">سجل المحادثات</div>
+            <div id="history-items"></div>
+        </div>
+    </div>
+
+    <div class="w-full max-w-md z-10">
+        <div class="text-center mb-8">
+            <div class="gradient-bg text-white p-5 rounded-full inline-block shadow-lg btn-glow">
+                <i class="fas fa-robot text-4xl"></i>
+            </div>
+            <h1 class="text-3xl font-bold mt-4 glow-text">المساعد الصوتي الذكي</h1>
+            <p class="text-gray-300 mt-2">تفاعل صوتي احترافي مع أنيميشن متقدم</p>
+        </div>
+
+        <div class="voice-container" id="voice-container">
+            <div class="wave" id="wave"></div>
+            <div class="voice-animation">
+                <div class="ripple"></div>
+                <div class="ripple"></div>
+                <div class="ripple"></div>
+                <div class="voice-circle">
+                    <i class="fas fa-microphone"></i>
+                </div>
+            </div>
+
+            <div class="voice-bars">
+                <div class="voice-bar"></div>
+                <div class="voice-bar"></div>
+                <div class="voice-bar"></div>
+                <div class="voice-bar"></div>
+                <div class="voice-bar"></div>
+                <div class="voice-bar"></div>
+                <div class="voice-bar"></div>
+            </div>
+
+            <div id="processing" class="processing hidden">
+                <div class="processing-spinner"></div>
+                <p class="text-white font-medium">جاري معالجة طلبك...</p>
+            </div>
+        </div>
+
+        <div id="status-message" class="status-message">
+            اضغط على زر الميكروفون لبدء التحدث مع المساعد
+        </div>
+
+        <div id="response-container" class="response-container hidden">
+            <div id="response-text" class="response-text"></div>
+        </div>
+
+        <div class="command-list" id="command-list">
+            <div class="command-chip" onclick="speakCommand('ما هو الطقس اليوم؟')">الطقس</div>
+            <div class="command-chip" onclick="speakCommand('ما هو الوقت الآن؟')">الوقت</div>
+            <div class="command-chip" onclick="speakCommand('ما هو تاريخ اليوم؟')">التاريخ</div>
+            <div class="command-chip" onclick="speakCommand('احكي لي نكتة')">نكتة</div>
+            <div class="command-chip" onclick="speakCommand('كيف حالك اليوم؟')">تحية</div>
+        </div>
+
+        <div class="flex justify-center mt-6">
+            <button id="mic-btn" class="gradient-bg text-white rounded-full p-6 btn-glow pulse">
+                <i class="fas fa-microphone text-4xl"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Create constellation stars
+            const constellation = document.getElementById('constellation');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+
+                // Random size between 1px and 3px
+                const size = Math.random() * 2 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+
+                // Random position
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+
+                // Random animation delay
+                star.style.animationDelay = `${Math.random() * 5}s`;
+
+                constellation.appendChild(star);
+            }
+
+            // DOM Elements
+            const micBtn = document.getElementById('mic-btn');
+            const voiceContainer = document.getElementById('voice-container');
+            const statusMessage = document.getElementById('status-message');
+            const processingElement = document.getElementById('processing');
+            const responseContainer = document.getElementById('response-container');
+            const responseText = document.getElementById('response-text');
+            const waveElement = document.getElementById('wave');
+            const settingsBtn = document.getElementById('settings-btn');
+            const settingsContent = document.getElementById('settings-content');
+            const historyBtn = document.getElementById('history-btn');
+            const historyContent = document.getElementById('history-content');
+            const historyItems = document.getElementById('history-items');
+            const commandList = document.getElementById('command-list');
+            const voiceRateInput = document.getElementById('voice-rate');
+            const voicePitchInput = document.getElementById('voice-pitch');
+            const recognitionLangInput = document.getElementById('recognition-lang');
+            const saveSettingsBtn = document.getElementById('save-settings');
+
+            // App State
+            let isListening = false;
+            let recognition;
+            let conversationHistory = [];
+
+            // Initialize the app
+            function initApp() {
+                loadSettings();
+                initSpeechRecognition();
+                setupEventListeners();
+                updateHistoryPanel();
+            }
+
+            // Initialize speech recognition
+            function initSpeechRecognition() {
+                if (!('webkitSpeechRecognition' in window)) {
+                    showStatus('عذراً، متصفحك لا يدعم ميزة التعرف على الصوت. يرجى استخدام متصفح Chrome أو Edge.');
+                    micBtn.disabled = true;
+                    return;
+                }
+
+                recognition = new webkitSpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = recognitionLangInput.value;
+
+                recognition.onstart = onListeningStart;
+                recognition.onresult = onSpeechResult;
+                recognition.onerror = onRecognitionError;
+                recognition.onend = onListeningEnd;
+            }
+
+            // Setup event listeners
+            function setupEventListeners() {
+                micBtn.addEventListener('click', toggleListening);
+
+                // Settings panel toggle
+                settingsBtn.addEventListener('click', function () {
+                    settingsContent.classList.toggle('open');
+                    if (historyContent.classList.contains('open')) {
+                        historyContent.classList.remove('open');
+                    }
+                });
+
+                // History panel toggle
+                historyBtn.addEventListener('click', function () {
+                    historyContent.classList.toggle('open');
+                    if (settingsContent.classList.contains('open')) {
+                        settingsContent.classList.remove('open');
+                    }
+                });
+
+                // Save settings
+                saveSettingsBtn.addEventListener('click', saveSettings);
+
+                // Close panels when clicking outside
+                document.addEventListener('click', function (e) {
+                    if (!settingsBtn.contains(e.target) && !settingsContent.contains(e.target)) {
+                        settingsContent.classList.remove('open');
+                    }
+
+                    if (!historyBtn.contains(e.target) && !historyContent.contains(e.target)) {
+                        historyContent.classList.remove('open');
+                    }
+                });
+            }
+
+            // Load settings from localStorage
+            function loadSettings() {
+                const savedSettings = localStorage.getItem('voiceAssistantSettings');
+                if (savedSettings) {
+                    const settings = JSON.parse(savedSettings);
+                    voiceRateInput.value = settings.voiceRate || 1;
+                    voicePitchInput.value = settings.voicePitch || 1;
+                    recognitionLangInput.value = settings.recognitionLang || 'ar-SA';
+                }
+
+                // Load history
+                const savedHistory = localStorage.getItem('conversationHistory');
+                if (savedHistory) {
+                    conversationHistory = JSON.parse(savedHistory);
+                }
+            }
+
+            // Save settings to localStorage
+            function saveSettings() {
+                const settings = {
+                    voiceRate: parseFloat(voiceRateInput.value),
+                    voicePitch: parseFloat(voicePitchInput.value),
+                    recognitionLang: recognitionLangInput.value
+                };
+
+                localStorage.setItem('voiceAssistantSettings', JSON.stringify(settings));
+
+                // Reinitialize recognition with new language
+                initSpeechRecognition();
+
+                // Close settings panel
+                settingsContent.classList.remove('open');
+
+                showStatus('تم حفظ الإعدادات بنجاح');
+            }
+
+            // Update history panel
+            function updateHistoryPanel() {
+                historyItems.innerHTML = '';
+
+                if (conversationHistory.length === 0) {
+                    historyItems.innerHTML = '<p class="text-gray-400 text-center">لا يوجد محادثات سابقة</p>';
+                    return;
+                }
+
+                conversationHistory.slice().reverse().forEach(item => {
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'history-item';
+                    historyItem.innerHTML = `
+                            <div class="history-query">${item.query}</div>
+                            <div class="history-response">${item.response.substring(0, 50)}${item.response.length > 50 ? '...' : ''}</div>
+                        `;
+
+                    historyItem.addEventListener('click', function () {
+                        responseContainer.classList.remove('hidden');
+                        responseText.textContent = item.response;
+                    });
+
+                    historyItems.appendChild(historyItem);
+                });
+            }
+
+            // Save to conversation history
+            function saveToHistory(query, response) {
+                conversationHistory.push({
+                    query,
+                    response,
+                    timestamp: new Date().toISOString()
+                });
+
+                // Keep only last 20 items
+                if (conversationHistory.length > 20) {
+                    conversationHistory.shift();
+                }
+
+                localStorage.setItem('conversationHistory', JSON.stringify(conversationHistory));
+                updateHistoryPanel();
+            }
+
+            // Toggle listening state
+            function toggleListening() {
+                if (!isListening) {
+                    startListening();
+                } else {
+                    stopListening();
+                }
+            }
+
+            // Start listening
+            function startListening() {
+                try {
+                    // Show voice container with animation
+                    voiceContainer.classList.remove('hidden');
+                    responseContainer.classList.add('hidden');
+                    showStatus('جاري الاستماع... تحدث الآن');
+
+                    // Activate wave animation
+                    waveElement.classList.add('active');
+
+                    recognition.start();
+                } catch (e) {
+                    showStatus('حدث خطأ في بدء الاستماع. يرجى المحاولة مرة أخرى.');
+                    resetMicButton();
+                }
+            }
+
+            // Stop listening
+            function stopListening() {
+                isListening = false;
+                recognition.stop();
+
+                // Hide voice container
+                voiceContainer.classList.add('hidden');
+
+                // Deactivate wave animation
+                waveElement.classList.remove('active');
+            }
+
+            // On listening start
+            function onListeningStart() {
+                isListening = true;
+                updateMicButton(true);
+
+                // Enhance animation when listening
+                const voiceCircle = document.querySelector('.voice-circle');
+                voiceCircle.style.transform = 'scale(1.1)';
+                voiceCircle.style.boxShadow = '0 0 40px rgba(124, 58, 237, 0.8)';
+            }
+
+            // On speech result
+            async function onSpeechResult(event) {
+                const transcript = event.results[0][0].transcript;
+
+                // Show processing animation
+                processingElement.classList.remove('hidden');
+                showStatus('جاري معالجة طلبك...');
+
+                // Show typing indicator
+                responseContainer.classList.remove('hidden');
+                responseText.innerHTML = `
+                        <div class="typing-indicator">
+                            <span class="typing-dot"></span>
+                            <span class="typing-dot"></span>
+                            <span class="typing-dot"></span>
+                        </div>
+                    `;
+
+                try {
+                    // Generate response
+                    const response = generateResponse(transcript);
+
+                    // Display response
+                    displayResponse(response);
+
+                    // Save to history
+                    saveToHistory(transcript, response);
+
+                } catch (error) {
+                    console.error('Error processing request:', error);
+                    const fallbackResponse = generateResponse(transcript);
+                    displayResponse(fallbackResponse);
+                    saveToHistory(transcript, fallbackResponse);
+                }
+
+                // Hide processing after response
+                setTimeout(() => {
+                    processingElement.classList.add('hidden');
+                    voiceContainer.classList.add('hidden');
+                    showStatus('اضغط على زر الميكروفون لبدء التحدث مع المساعد');
+
+                    // Reset voice circle animation
+                    const voiceCircle = document.querySelector('.voice-circle');
+                    voiceCircle.style.transform = 'scale(1)';
+                    voiceCircle.style.boxShadow = '0 0 30px rgba(124, 58, 237, 0.5)';
+
+                    // Deactivate wave animation
+                    waveElement.classList.remove('active');
+                }, 1000);
+            }
+
+            // Display response with typing animation
+            function displayResponse(text) {
+                responseText.innerHTML = '';
+                let i = 0;
+                const typingSpeed = 20; // milliseconds per character
+
+                function typeWriter() {
+                    if (i < text.length) {
+                        responseText.innerHTML += text.charAt(i);
+                        i++;
+                        setTimeout(typeWriter, typingSpeed);
+                    }
+                }
+
+                typeWriter();
+            }
+
+            // Generate intelligent response
+            function generateResponse(input) {
+                const lowerInput = input.toLowerCase();
+
+                // Greetings
+                if (/(مرحبا|اهلا|سلام|السلام عليكم)/.test(lowerInput)) {
+                    return "مرحباً بك! أنا المساعد الصوتي الذكي، كيف يمكنني مساعدتك اليوم؟";
+                }
+
+                // Farewells
+                if (/(مع السلامة|الى اللقاء|اراك لاحقا|باي)/.test(lowerInput)) {
+                    return "مع السلامة! أتمنى لك يوماً رائعاً. لا تتردد في التواصل معي في أي وقت";
+                }
+
+                // Questions
+                if (lowerInput.includes("اسمك")) {
+                    return "أنا المساعد الصوتي الذكي، يمكنك تسميتي كما تريد!";
+                }
+
+                if (lowerInput.includes("الوقت")) {
+                    return `الساعة الآن هي ${new Date().toLocaleTimeString('ar-SA')}`;
+                }
+
+                if (lowerInput.includes("تاريخ")) {
+                    return `نحن الآن في يوم ${new Date().toLocaleDateString('ar-SA')}`;
+                }
+
+                if (lowerInput.includes("حالك")) {
+                    return "أنا بأفضل حال، شكراً لسؤالك! كيف يمكنني مساعدتك اليوم؟";
+                }
+
+                if (lowerInput.includes("نكتة")) {
+                    const jokes = [
+                        "لماذا كان الكمبيوتر متعباً؟ لأنه كان لديه الكثير من البايتات!",
+                        "ما هو الحيوان الذي لا يصعد السلم؟ السمكة!",
+                        "لماذا لا يلعب الحاسوب في المطر؟ لأنه يخاف من الفيروسات!"
+                    ];
+                    return jokes[Math.floor(Math.random() * jokes.length)];
+                }
+
+                if (lowerInput.includes("شكرا") || lowerInput.includes("متشكر")) {
+                    return "العفو! دائماً في خدمتك. هل هناك شيء آخر تحتاج مساعدتي فيه؟";
+                }
+
+                if (lowerInput.includes("طقس")) {
+                    return "للأسف لا يمكنني توفير معلومات الطقس حالياً. يمكنك التحقق من تطبيق الطقس على هاتفك.";
+                }
+
+                // Default response
+                return "شكراً لك على سؤالك. هل هناك شيء آخر يمكنني مساعدتك به؟";
+            }
+
+            // Speak command (for command chips)
+            function speakCommand(command) {
+                // Simulate speech recognition result
+                const event = {
+                    results: [
+                        [
+                            {
+                                transcript: command
+                            }
+                        ]
+                    ]
+                };
+
+                onSpeechResult(event);
+            }
+
+            // Update mic button state
+            function updateMicButton(listening) {
+                if (listening) {
+                    micBtn.classList.remove('gradient-bg');
+                    micBtn.classList.add('bg-red-600');
+                    micBtn.innerHTML = '<i class="fas fa-microphone-slash text-4xl"></i>';
+                } else {
+                    micBtn.classList.remove('bg-red-600');
+                    micBtn.classList.add('gradient-bg');
+                    micBtn.innerHTML = '<i class="fas fa-microphone text-4xl"></i>';
+                }
+            }
+
+            // Reset mic button to initial state
+            function resetMicButton() {
+                isListening = false;
+                updateMicButton(false);
+                showStatus('اضغط على زر الميكروفون لبدء التحدث مع المساعد');
+            }
+
+            // On recognition error
+            function onRecognitionError(event) {
+                console.error('Recognition error:', event.error);
+                showStatus('حدث خطأ في التعرف على الصوت. يرجى المحاولة مرة أخرى.');
+                resetMicButton();
+
+                // Deactivate wave animation
+                waveElement.classList.remove('active');
+            }
+
+            // On listening end
+            function onListeningEnd() {
+                if (isListening) {
+                    recognition.start();
+                } else {
+                    resetMicButton();
+                }
+            }
+
+            // Show status message
+            function showStatus(message) {
+                statusMessage.textContent = message;
+            }
+
+            // Initialize the app
+            initApp();
+
+            // Expose speakCommand for command chips
+            window.speakCommand = speakCommand;
+        });
+    </script>
+</body>
+</html>

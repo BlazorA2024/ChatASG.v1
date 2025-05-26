@@ -1,0 +1,34 @@
+﻿
+@inherits StylesFooter
+@using global::Data.FooterSection
+
+@if (Prams != null)
+{
+    <footer class="@ClassFooter">
+        <div class="@ClassContainer">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            
+                <FooterBrandInfo Prams="Prams.Iinfo" />
+                @foreach (var section in Prams.LinkSections)
+                {
+                    <FooterLinksSection Prams="section" />
+                  
+                }
+                <FooterNewsletter Prams="Prams.INewsletter" />
+
+            </div>
+            <FooterBottom Prams="Prams.PolicyLinks" />
+          
+        </div>
+    </footer>
+}
+
+
+@code {
+    [Parameter] public CardAddFooter Prams { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}

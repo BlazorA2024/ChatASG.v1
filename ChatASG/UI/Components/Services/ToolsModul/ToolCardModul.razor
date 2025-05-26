@@ -1,0 +1,34 @@
+﻿
+@using ChatASG.UI.Components.Services
+@using global::Data.Tools
+
+@inherits StylesToolsModul
+ 
+  @if(Prams !=null){
+    <div class="@ClassContainer ">
+
+             @foreach (var item in Prams.Items)
+            {
+
+
+                         <ToolCard  Prams="item" />
+          
+
+            }
+    </div>
+
+    <div class="@ClassText ">
+        <ButtonIconCard ClassButton="@ClassButton" Buttons="@Prams.DataBuild.Button" ClassIcon="@ClassIcon" Icon="@Prams.DataBuild.Icon" />
+     
+    </div>
+  }
+@code {
+    [Parameter]
+
+    public CardListUnifiedToolsModul? Prams { set; get; }
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}

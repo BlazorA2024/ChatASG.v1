@@ -1,0 +1,135 @@
+﻿<MudDialog DefaultFocus="DefaultFocus.LastChild">
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIconButton OnClick="Cancel" Icon="@Icons.Material.Filled.ArrowBack" aria-label="delete"></MudIconButton>
+
+            Show Senario Info 
+        </MudText>
+    </TitleContent>
+    <DialogActions>
+        
+        
+    </DialogActions>
+    <DialogContent>
+        <div class="d-flex gsc" >
+    
+    <div class="wgs50">
+
+           <div class="  RCardP hdp" style="padding:2%">
+
+                    <fieldset>
+                       <h5>Header </h5>
+                        <label for="fname">State :</label>
+
+                        <MudChip Text="blue" Style="text-wrap:wrap" Size="Size.Small" Variant="Variant.Text" Color="@(getColorByState(TSenario.State))">@TSenario.State </MudChip>
+
+
+                        <br>
+                        <label for="lname">Number of Technique :</label>
+                        <MudChip Text="blue" Style="text-wrap:wrap" Size="Size.Small" Variant="Variant.Text" Color="Color.Info">@TSenario.SeqTechniques.Count </MudChip>
+                        
+                        <br>
+                        <label for="email">Score</label>
+                        <MudChip Text="blue" Style="text-wrap:wrap" Size="Size.Small" Variant="Variant.Text" Color="Color.Info">@TSenario.Score % </MudChip>
+
+
+                        <br>
+                        <label for="birthday">Similar senarios :</label>
+
+                        <MudChip Text="blue" Style="text-wrap:wrap" Size="Size.Small" Variant="Variant.Text" Color="Color.Info">@TSenario.Software </MudChip>
+
+                        <br>
+                       
+                    </fieldset>
+                  
+
+
+
+                </div>
+                <h5 style="padding:2%">Table of seqenc </h5>
+                <MudTable Style="padding:1%" Items="@Senarios">
+                    <HeaderContent>
+                        <MudTh>Tactic</MudTh>
+                        <MudTh>Technique</MudTh>
+                       
+
+                    </HeaderContent>
+                    <RowTemplate>
+
+                        <MudTd>@context.Tactic</MudTd>
+                        <MudTd>@context.FristTechnique</MudTd>
+                        
+                    </RowTemplate>
+           
+                </MudTable>
+ 
+
+
+    </div>
+            <div class=" wgs50 RCardP hdp">
+        <BarGroupAndIncidents Height=350 OrdersGroups="@OrdersGroups"  OrdersIncidents="@OrdersIncidents" />
+
+     </div>
+</div>
+    </DialogContent>
+    
+</MudDialog>
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Parameter]
+    public List<Senario> Senarios { get; set; } = new List<Senario>();
+    [Parameter] public SeqSenario TSenario { get; set; }
+    public List<Order> OrdersGroups { get; set; }
+    MudBlazor.Color getColorByState(string state)
+    {
+        if (state.ToLower() == SampleData.ArrayDataAnlayses[0].ToLower())
+
+            return MudBlazor.Color.Error;
+        if (state.ToLower() == SampleData.ArrayDataAnlayses[1].ToLower())
+
+            return MudBlazor.Color.Warning;
+        if (state.ToLower() == SampleData.ArrayDataAnlayses[2].ToLower())
+
+            return MudBlazor.Color.Success;
+
+        return MudBlazor.Color.Info;
+    }
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        var lstints = new List<int>();
+        var lstnms = new List<string>();
+        var lstints2 = new List<int>();
+        var lstnms2 = new List<string>();
+        for(int i = 0; i < TSenario.SeqTechniques.Count; i++)
+        {
+            Senarios.Add(new Senario()
+                {
+                    Tactic = TSenario.SeqTactics[i],
+                    FristTechnique = TSenario.SeqTechniques[i]
+                });
+        }
+        for (int i = 0; i < 20; i++)
+        {
+          
+
+            if (i < SampleData.ArrayDataSoftwares.Length)
+                lstints.Add(i * 5);
+
+            if (i < SampleData.ArrayDataGroups.Length)
+            {
+                lstints2.Add(i * 5);
+
+            }
+        }
+        OrdersIncidents = SampleData.GetOrders(lstints.ToArray(), SampleData.ArrayDataSoftwares);
+
+        OrdersGroups = SampleData.GetOrders(lstints2.ToArray(), SampleData.ArrayDataGroups);
+
+
+    }
+
+    public List<Order> OrdersIncidents { get; set; }
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    void Cancel() => MudDialog.Cancel();
+}

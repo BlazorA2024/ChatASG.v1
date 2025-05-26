@@ -1,0 +1,161 @@
+﻿@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+<div class="tecmattk" >
+    <MudSelect T="Tactic" Label="select  Tactic" @bind-Value="currentTactic">
+
+        @foreach (var item in ATTK.Tactics)
+        {
+
+            <MudSelectItem T="Tactic" Value="item">
+
+
+                <MudTooltip Arrow="true" Placement="Placement.Right" Color="Color.Primary">
+                    <ChildContent>
+                        <MudIconButton Size="Size.Small" Icon="@Icons.Outlined.Info" />
+
+                    </ChildContent>
+                    <TooltipContent>
+                        <MudText Typo="Typo.h6"> @item.Name</MudText>
+
+                    </TooltipContent>
+                </MudTooltip>
+                @item.Name
+            </MudSelectItem>
+
+        }
+
+    </MudSelect>
+
+
+
+    @if (currentTactic!=null){
+        <div class="subselectttk">
+            <MudSelect T="Technique" Label="select Technique" @bind-Value="currentTechnique">
+
+        @foreach (var item in currentTactic.Techniques)
+        {
+            @if (!foundTec(item))
+            {
+                <MudSelectItem T="Technique" Value="item">
+
+
+                <MudTooltip Arrow="true" Placement="Placement.Right" Color="Color.Primary">
+                    <ChildContent>
+                        <MudIconButton Size="Size.Small" Icon="@Icons.Outlined.Info" />
+
+                    </ChildContent>
+                    <TooltipContent>
+                        <MudText Typo="Typo.h6"> @item.Name</MudText>
+
+                    </TooltipContent>
+                </MudTooltip>
+                @item.Name
+            </MudSelectItem>
+            }
+        }
+
+    </MudSelect>
+  
+    <div class="btnstate">
+        <MudButton Disabled="@_processing" OnClick="ProcessSomething" Variant="Variant.Filled" Color="Color.Primary">
+            @if (_processing)
+            {
+                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                <MudText Class="ms-2">Processing</MudText>
+            }
+            else
+            {
+                <MudText>Add</MudText>
+            }
+        </MudButton>
+    </div>
+        </div>
+    }
+
+
+</div>
+<div  class="  RCardP hdp" style="padding:2%" >
+    <MudChipSet MultiSelection="true" Style="padding:2%" Filter="true" >
+
+        @foreach (var item in Model.TechniqueATks)
+        {
+            <MudChip Text="blue" Style="text-wrap:wrap" Size="Size.Small" OnClick="@(() => OnClickTEC(item))" Variant="Variant.Text" Color="Color.Info">@item.Name </MudChip>
+        }
+
+    </MudChipSet>
+</div>
+@code{
+    Tactic _currentTactic;
+    Tactic currentTactic{ set { _currentTactic = value; currentTechnique=null;} get =>_currentTactic; }
+
+    Technique currentTechnique;
+
+    [Parameter] public FormStateBased Model { set; get; }
+    void cheackType(Tactic val)
+    {
+        currentTactic = val;
+        currentTechnique = null;
+        StateHasChanged();
+
+    }
+    void cheackTypeTechnique(Technique val)
+    {
+        currentTechnique = val;
+        StateHasChanged();
+
+    }
+    private bool _processing = false;
+
+    async Task ProcessSomething()
+    {
+        if (currentTechnique != null)
+        {
+            _processing = true;
+            await Task.Delay(2000);
+            _processing = false;
+            addTeck(currentTechnique);
+            currentTechnique = null;
+            StateHasChanged();
+
+            Snackbar.Add("Success", Severity.Success);
+
+
+        }
+        else
+        {
+            Snackbar.Add("Please select the system status", Severity.Error);
+
+        }
+    }
+
+    void addTeck(Technique technique)
+    {
+        Model.TechniqueATks.Add(new()
+            {
+                Name = technique.Name,
+
+            });
+    }
+    bool foundTec(Technique technique){
+
+        foreach(var item in Model.TechniqueATks)
+        {
+            if(item.Name==technique.Name)
+                return true;
+        }
+        return false;
+    }
+
+    async void OnClickTEC(TechniqueATk tk)
+    {
+      
+            var options = new DialogOptions { CloseOnEscapeKey = true };
+            var parameters = new DialogParameters<TemplateDialogTechniqueATk> { { x => x.Model, tk } };
+
+            var dialog = await DialogService.ShowAsync<TemplateDialogTechniqueATk>("show", parameters);
+
+
+
+        
+    }
+}

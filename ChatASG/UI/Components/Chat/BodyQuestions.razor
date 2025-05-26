@@ -1,0 +1,25 @@
+﻿
+@foreach (var ob in Questions)
+{
+
+    <MudAlert class="d-flex flex-row " Severity="Severity.Info" Style=@("padding:2%;width:99%;color:black !important ;direction:"+(ob.IsRtl?"ltr":"rtl")) NoIcon="true">
+        <div class="d-flex ">
+            <MudAvatar Color="Color.Secondary" Style="height:40px; width:40px;font-size:11px">M</MudAvatar>
+
+        </div>
+        <div>
+
+            <MudText Typo="Typo.caption" Style="font-size: xx-small!important;">@ob.CreatedDate</MudText>
+            <MudText Typo="Typo.body2" Style=" padding: 15px;border-radius: 5px;margin-top:5px">@ob.Body</MudText>
+        </div>
+
+         <ChatASG.Components.Answers.AnswerSuggtion Answer="@ob.Awnser" />
+
+    </MudAlert>
+}
+
+@code{
+
+    [Parameter] public List<Question> Questions { set; get; }
+
+}

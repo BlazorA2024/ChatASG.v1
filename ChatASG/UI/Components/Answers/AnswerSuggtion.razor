@@ -1,0 +1,70 @@
+﻿@if (Answer != null)
+{
+    @if (Answer.AnswerAI.TypeAnswerAI == TypeAnswerAI.Text)
+    {
+        <MudAlert Style="width:100%" >
+
+            <TextAnswer TAnswer="new AnswerText(){
+            Body=(string)Answer.AnswerAI.Answer,
+            TitelBody=Answer.Body,
+            IsRtl=IsRtl,
+            TypeChat=TypeChat
+            }"
+            isDelay=isDelay 
+            ReUpdatePage=OnEndDelay />
+        </MudAlert>
+    }
+    else if (Answer.AnswerAI.TypeAnswerAI == TypeAnswerAI.Genreate)
+    {
+        <AnswerGenerate Answer="Answer" ReUpdatePage=OnEndDelay isDelay=isDelay />
+    }
+    else if (Answer.AnswerAI.TypeAnswerAI == TypeAnswerAI.Form)
+    {
+        <FormAnswer Answer="Answer" ReUpdatePage=OnEndDelay isDelay=isDelay />
+    }
+
+    @if (isShow)
+    {
+        <MudChipSet MultiSelection="true" Style="padding:2%">
+
+            @foreach (var sug in Answer.SuggtionAnswers)
+            {
+                <MudChip Text="blue" Style="text-wrap:wrap" Size="Size.Small" OnClick="@(() => OnClickSuggation(sug))" Variant="Variant.Text" Color="Color.Info">@sug.Body </MudChip>
+            }
+
+        </MudChipSet>
+    }
+}
+@code{
+    [Parameter] public Answer Answer{ set; get; }
+    [Parameter] public Action<SuggtionAnswer> ClickSuggation { set; get; }
+    [Parameter] public bool isDelay { set; get; } = false;
+    [Parameter] public Action ReUpdatePage { set; get; } = null;
+    [Parameter] public bool IsRtl { set; get; } = false;
+    [Parameter] public TypeChat TypeChat { set; get; } = TypeChat.General;
+
+    private AnswerText answerText;
+    protected override void OnInitialized()
+    {
+
+        base.OnInitialized();
+    }
+    private bool isShow = false;
+    private void OnEndDelay()
+    {
+        isShow = true;
+        isDelay = false;
+        StateHasChanged();
+    }
+
+    private void OnClickSuggation(SuggtionAnswer  sug){
+
+        isDelay=true;
+        isShow = false;
+        Answer = null;
+        StateHasChanged();
+        ClickSuggation(sug);
+        StateHasChanged();
+        
+    }
+}

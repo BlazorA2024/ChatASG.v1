@@ -1,0 +1,401 @@
+﻿@page "/generatingai"
+@page "/generatingai/{GNId}"
+@using ApexCharts
+@inject IDialogService DialogService
+
+@if (GNId==null){
+    <TemplateGenerator Senarios="new List<Senario>()" />
+}
+else{
+<div class="d-flex gsc " style="padding:2%">
+    
+    <div class="wgs70">
+       
+    <MudTabs  Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
+            <MudTabPanel Text="Scenarios table">
+                <div class="  RCardP hdp">
+                        @if (isbusy)
+                        {
+                            <BarTemplate Color="#33cb61" isHorizontal=true Orders="@Orders2"
+                                 Title="Time $ Number" Height=120 />
+                    }
+                </div>
+                <MudTable Style="padding:1%" Items="@Senarios" Hover="true" Filter="new Func<SeqSenario,bool>(FilterFunc1)" @bind-SelectedItem="selectedItem1">
+                    <ToolBarContent>
+                        <MudText Typo="Typo.button">Periodic Senarios</MudText>
+                        <MudSpacer />
+                        <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                    </ToolBarContent>
+                    <HeaderContent>
+                        <MudTh>Id</MudTh>
+                        <MudTh>Tactic</MudTh>
+                        <MudTh>FristTechnique</MudTh>
+                        <MudTh>Software</MudTh>
+                        <MudTh>Group</MudTh>
+                        <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<SeqSenario, object>(x=>x.Score)">Score</MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<SeqSenario, object>(x=>x.State)">State</MudTableSortLabel></MudTh>
+                         <MudTh> ...</MudTh>
+
+                    </HeaderContent>
+
+                    <RowTemplate   >
+
+                        <MudTd  >@context.Id</MudTd>
+                        <MudTd>@context.Tactic</MudTd>
+                        <MudTd>@context.FristTechnique</MudTd>
+                        <MudTd>@context.Software</MudTd>
+                        <MudTd>@context.Group</MudTd>
+                        <MudTd>@context.Score </MudTd>
+                            <MudTd><MudText Typo="Typo.caption" Color="@(getColorByState(context.State))">@context.State</MudText></MudTd>
+                        <MudTd Class="Statecolor">
+                        <MudChip OnClick="@(()=>OpenDialog(context))"  Size="Size.Small">...</MudChip>
+                        
+                        </MudTd>
+                    </RowTemplate>
+                    <PagerContent>
+                        <MudTablePager />
+                    </PagerContent>
+                </MudTable>
+        </MudTabPanel>
+            <MudTabPanel Text="Statistical analysis">
+                <div class="  RCardP hdp">
+
+                    @if(isbusy){
+                    <BarTemplate Color="#004ba3" isHorizontal=true Orders="@Orders2" 
+                                 Title="Time $ Number" Height=150 />
+                    <CircleTemplate Height=300 Orders="Orders" 
+                                     Title="Percentage of generating scenarios " />
+
+                    <BarTemplate Color="#004ba3"  Orders="@Orders"
+                                 Title="@NameT" Height=300 />
+                    }
+                </div>
+        </MudTabPanel>
+      
+       
+    </MudTabs>
+
+
+    </div>
+    <div class=" wgs30 RCardP hdp">
+            @if (isbusy)
+            {
+                <CircleTemplate Height=300 Orders="Orders"
+                        Title="Percentage of generating scenarios " />
+
+
+        <BarGroupAndIncidents OrdersGroups="@OrdersGroups" OrdersIncidents="@OrdersIncidents" />
+        }
+  </div>
+</div>
+}
+@code{
+    [Parameter] public string? GNId { get; set; }
+    bool isbusy = false;
+    public List<Order> Orders { get; set; }
+    public List<Order> Orders2 { get; set; }
+    public List<Order> OrdersIncidents { get; set; }
+    public List<Order> OrdersGroups { get; set; }
+    public string NameT { set; get; } = "Order Net Value";
+    private ApexChartOptions<Order> options;
+    private ApexChartOptions<Order> options2;
+    private ApexChartOptions<Order> options3;
+    private HashSet<Senario> selectedItems = new HashSet<Senario>();
+    private string searchString1 = "";
+    private SeqSenario selectedItem1 = null;
+    private List<SeqSenario> Senarios = new List<SeqSenario>();
+    private bool FilterFunc1(SeqSenario Senario) => FilterFunc(Senario, searchString1);
+    private List<TSenario> TSenarios = new List<TSenario>();
+
+    private bool FilterFunc(SeqSenario Senario, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (Senario.Tactic.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (Senario.Software.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (Senario.FristTechnique.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (Senario.State.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (Senario.Id.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (Senario.Group.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if ($"{Senario.Tactic} {Senario.Software} {Senario.FristTechnique}".Contains(searchString))
+            return true;
+        return false;
+    }
+    private string GetColor(Order order)
+    {
+        if (order.Country == "Time")
+        {
+            return "rgba(89,74,226,1)";
+        }
+        return null;
+    }
+    protected async override Task OnInitializedAsync()
+    {
+
+    }
+    protected  override async void OnInitialized()
+    {
+
+        if (GNId != null)
+        {
+
+
+            options = new ApexChartOptions<Order>
+                {
+                    PlotOptions = new PlotOptions
+                    {
+                        Bar = new PlotOptionsBar
+                        {
+                            Horizontal = true
+                        }
+                    }
+                };
+
+
+
+
+
+            var lstints = new List<int>();
+            var lstints2 = new List<int>();
+
+            for (int i = 0; i < 25; i++)
+            {
+
+                if (i < SampleData.ArrayDataSoftwares.Length)
+                    lstints.Add(0);
+
+                if (i < SampleData.ArrayDataGroups.Length)
+                {
+                    lstints2.Add(0);
+
+                }
+            }
+
+
+            var items = await GetSenariosAsync();
+            int sp = (items.Count > 10) ? 1 : 100;
+            int k = 0;
+            var cs = new int[] { 0, 0, 0, 0 };
+
+
+            foreach (var senario in items)
+            {
+                var tcs = senario.seqtactic.Split("$@");
+                var tes = senario.seqtec.Split("$@");
+                var dats = senario.score.Split("@");
+                var seq = new SeqSenario()
+                    {
+                        Tactic = tcs[0],
+                        FristTechnique = tes[0],
+                        Software = dats[1],
+                        Group = dats[0],
+                        State = dats[2],
+                        Score = Double.Parse(dats[3].Trim())
+                    };
+                for (int i = 0; i < tes.Length - 1; i++)
+                {
+                    seq.SeqTactics.Add(tcs[i]);
+                    seq.SeqTechniques.Add(tes[i]);
+
+                }
+                Senarios.Add(seq);
+
+                k = searchIndex(seq.State, SampleData.ArrayDataAnlayses);
+                if (k != -1)
+                    cs[k] += 1;
+
+                k = searchIndex(seq.Software,SampleData.ArrayDataSoftwares);
+                if (k != -1)
+                    lstints[k] += 1;
+
+                k = searchIndex(seq.Group, SampleData.ArrayDataGroups);
+                if (k != -1)
+                    lstints2[k] += 1;
+
+
+                await Task.Delay(100);
+
+                StateHasChanged();
+
+            }
+            OrdersIncidents = SampleData.GetOrders(lstints.ToArray(), SampleData.ArrayDataSoftwares);
+
+            OrdersGroups = SampleData.GetOrders(lstints2.ToArray(), SampleData.ArrayDataGroups);
+
+            Orders = SampleData.GetOrders(cs, SampleData.ArrayDataAnlayses);
+            Orders2 = SampleData.GetOrders(new int[] {1,Senarios.Count }, new string[] { "Time", "Number" });
+            isbusy = true;
+            StateHasChanged();
+        }
+    }
+
+    private async void OpenDialog(SeqSenario ob)
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        var parameters = new DialogParameters<ShowSenarioInfo> { { x => x.TSenario, ob } };
+
+        var dialog = await DialogService.ShowAsync<ShowSenarioInfo>("Show Senario Info", parameters);
+
+
+    }
+
+    private async Task AddSenariosAsync()
+    {
+
+        var lstints = new List<int>();
+        var lstints2 = new List<int>();
+
+        for (int i = 0; i < 25; i++)
+        {
+
+            if (i < SampleData.ArrayDataSoftwares.Length)
+                lstints.Add(0);
+
+            if (i < SampleData.ArrayDataGroups.Length)
+            {
+                lstints2.Add(0);
+
+            }
+        }
+
+
+        var items = await GetSenariosAsync();
+        int sp = (items.Count > 10) ? 1 : 100;
+        int k=0;
+        var cs = new int[] { 0, 0, 0, 0 };
+        OrdersIncidents = SampleData.GetOrders(lstints.ToArray(), SampleData.ArrayDataSoftwares);
+        StateHasChanged();
+        OrdersGroups = SampleData.GetOrders(lstints2.ToArray(), SampleData.ArrayDataGroups);
+        StateHasChanged();
+        Orders = SampleData.GetOrders(cs, SampleData.ArrayDataAnlayses);
+        StateHasChanged();
+        Orders2 = SampleData.GetOrders(new int[] { 11, 22 }, new string[] { "Time", "Number" });
+
+        foreach (var senario in items)
+        {
+            var tcs = senario.seqtactic.Split("$@");
+            var tes = senario.seqtec.Split("$@");
+            var dats = senario.score.Split("@");
+            var seq = new SeqSenario()
+                {
+                    Tactic = tcs[0],
+                    FristTechnique = tes[0],
+                    Software = dats[1],
+                    Group = dats[0],
+                    State = dats[2].Trim(),
+                    Score = Double.Parse(dats[3].Trim())
+            };
+            for (int i = 0; i < tes.Length-1; i++)
+            {
+                seq.SeqTactics.Add(tcs[i]);
+                seq.SeqTechniques.Add(tes[i]);
+
+            }
+            Senarios.Add(seq);
+
+            k = searchIndex(seq.State,SampleData.ArrayDataAnlayses);
+            if (k != -1)
+                cs[k] += 1;
+
+            k = searchIndex(seq.Software, SampleData.ArrayDataSoftwares);
+            if (k != -1)
+                lstints[k]+=1;
+
+            k = searchIndex(seq.Group, SampleData.ArrayDataGroups);
+            if (k != -1)
+                lstints2[k] += 1;
+
+
+            await Task.Delay(100);
+
+            StateHasChanged();
+
+        }
+
+
+    }
+    int searchIndex (string val,string[]items)
+    {
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (val.ToUpper()==items[i].ToUpper().Trim())
+                return i;
+
+
+        }
+        return -1;
+    }
+    MudBlazor.Color getColorByState(string state)
+    {
+        if(state.ToLower()==SampleData.ArrayDataAnlayses[0].ToLower())
+
+            return MudBlazor.Color.Error;
+        if (state.ToLower() == SampleData.ArrayDataAnlayses[1].ToLower())
+
+            return MudBlazor.Color.Warning;
+        if (state.ToLower() == SampleData.ArrayDataAnlayses[2].ToLower())
+
+            return MudBlazor.Color.Success;
+
+        return MudBlazor.Color.Info;
+    }
+    private async Task<List<TSenario>> GetSenariosAsync()
+    {
+        try
+        {
+            // var client = new HttpClient();
+            // var request = new HttpRequestMessage
+            //     {
+            //         Method = HttpMethod.Get,
+            //         RequestUri = new Uri("https:asgmodel.pythonanywhere.com/api/search2/" + GNId),
+
+
+            //     };
+
+
+            // using (var response = await client.SendAsync(request))
+            // {
+            //     response.EnsureSuccessStatusCode();
+
+            //     var Outputs = (await response.Content.ReadFromJsonAsync<List<TSenario>>());
+
+            //     return Outputs;
+
+            // }
+
+            var client = new S2sApiClient();
+            var scenarios = await client.GetScenariosAsync(GNId);
+
+            var items = new List<TSenario>();
+            foreach (var s in scenarios)
+            {
+                
+                items.Add(new TSenario
+                {
+                    
+                    seqtec = s.Seqtec,
+                    seqtactic = s.Seqtactic,
+                    score = s.Score,
+                    iduser = s.IdUser,
+                  
+                });
+            }
+            return items;
+        }
+        catch
+        {
+            return null;
+        }
+        return null;
+    }
+    private  void update()
+    {
+        
+    }
+}                              

@@ -1,0 +1,43 @@
+﻿@using global::Data.CharacteStyle
+@using global::Data.CharacterModels
+
+@inherits StylesCardListProjectModul
+<!-- AI Chat Section -->
+    @if (Prams != null )
+                    {
+  
+    <div class="flex flex-col lg:flex-row gap-8">
+        <!-- Character Selection -->
+            <div class="@ClassContainer">
+                <div class="@ClassItem">
+                    <h3 class="@ClassTitle ">@Prams.DataBuild.Title</h3>
+                    <div class="@ClassSpace ">
+                    
+                        @foreach (var item in Prams.Items)
+                        {
+                            <CardCharacterModels Prams="item" />
+                        }
+                    
+
+                    <!-- Add Character Button -->
+                    <ButtonIcon Prams="Prams.IButtons" />
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+                    }
+
+
+@code {
+
+
+    [Parameter]
+    public CardListProjectModul? Prams { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+
+}

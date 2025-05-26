@@ -1,0 +1,48 @@
+﻿
+@using global::Data.FiltersModul
+@using global::Data.StyleModul
+
+@inherits StyleListUnifiedButtonModel
+
+@if (Prams != null)
+{
+    <div class="@ClassContainer">
+        @if (!string.IsNullOrEmpty(Prams.DataBuild.Title))
+        {
+            <h3 class="@ClassTitle">@Prams.DataBuild.Title</h3>
+        }
+
+        <div class="@ClassItemsContainer">
+            @foreach (var item in Prams.Items)
+            {
+                <ButtonCard1 Prams="item" />
+            }
+        </div>
+    </div>
+}
+else
+{
+    <p>Loading...</p>
+}
+
+@code {
+    [Parameter] public ListUnifiedButtonModel? Prams { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+

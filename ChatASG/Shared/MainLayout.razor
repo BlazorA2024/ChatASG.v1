@@ -1,0 +1,215 @@
+﻿@inherits LayoutComponentBase
+
+<PageTitle>ChatASG</PageTitle>
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+<MudLayout>
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute w-3 h-3 rounded-full bg-accent opacity-20 animation-float" style="top:20%; left:10%"></div>
+        <div class="absolute w-4 h-4 rounded-full bg-accent2 opacity-20 animation-float2" style="top:40%; left:20%"></div>
+        <div class="absolute w-2 h-2 rounded-full bg-accent opacity-20 animation-float3" style="top:60%; left:50%"></div>
+        <div class="absolute w-3 h-3 rounded-full bg-accent2 opacity-20 animation-float" style="top:80%; left:30%"></div>
+        <div class="absolute w-4 h-4 rounded-full bg-accent opacity-20 animation-float2" style="top:30%; left:80%"></div>
+        <div class="absolute w-2 h-2 rounded-full bg-accent2 opacity-20 animation-float3" style="top:70%; left:70%"></div>
+    </div>
+   
+
+    <!-- Navigation -->
+ @*    <nav class="bg-gray-900/80 backdrop-blur-md border-b border-gray-800 fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-shield-alt text-2xl text-blue-500 mr-2"></i>
+                        <span class="text-xl font-bold text-white">ASG</span>
+                    </div>
+                    <div class="hidden md:block">
+                        <div class="ml-10 flex items-baseline space-x-8 space-x-reverse">
+                            <a href="#features" class="nav-link text-gray-300 hover:text-white px-4 py-2 text-sm font-medium">المميزات</a>
+                            <a href="/Services" class="nav-link text-gray-300 hover:text-white px-3 py-2 text-sm font-medium">الخدمات</a>
+                            <a href="/Chat" class="nav-link text-gray-300 hover:text-white px-4 py-2 text-sm font-medium">ChatASG</a>
+                            <a href="/generatingai" class="nav-link text-gray-300 hover:text-white px-4 py-2 text-sm font-medium">GeneratingAi</a>
+                            <a href="#contact" class="nav-link text-gray-300 hover:text-white px-3 py-2 text-sm font-medium">اتصل بنا</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-4 flex items-center md:ml-6">
+                    
+                       
+                            <a href="/auth.html"> <button class="px-4 py-2 bg-gradient-to-r from-accent to-accent2 text-dark font-medium rounded-full hover:opacity-90 transition">Sign In</button> </a>
+
+                       
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div class="hidden md:hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#features" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white">المميزات</a>
+                <a href="/Services" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white">الخدمات</a>
+                <a href="#technology" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white">التقنية</a>
+                <a href="#contact" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white">اتصل بنا</a>
+                <button class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium mt-2 transition duration-300">
+                    تجربة المنصة  <a href="/auth.html"> <button class="px-4 py-2 bg-gradient-to-r from-accent to-accent2 text-dark font-medium rounded-full hover:opacity-90 transition">Sign In</button> </a>
+
+                </button>
+            </div>
+            
+        </div>
+    </nav> *@
+    <nav class="bg-gray-900/80 backdrop-blur-md border-b border-gray-800 fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <i class="fas fa-shield-alt text-2xl text-blue-500 mr-2"></i>
+                    <span class="text-xl font-bold text-white">ASG</span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-4 space-x-reverse">
+                    <a href="#features" class="text-gray-300 hover:text-white px-4 py-2 text-sm font-medium">المميزات</a>
+                    <a href="/Services" class="text-gray-300 hover:text-white px-4 py-2 text-sm font-medium">الخدمات</a>
+                    <a href="/Chat" class="text-gray-300 hover:text-white px-4 py-2 text-sm font-medium">ChatASG</a>
+                    <a href="/generatingai" class="text-gray-300 hover:text-white px-4 py-2 text-sm font-medium">GeneratingAi</a>
+                    <a href="#contact" class="text-gray-300 hover:text-white px-4 py-2 text-sm font-medium">اتصل بنا</a>
+                </div>
+
+                <!-- Sign In Button (Desktop) -->
+                <div class="hidden md:flex">
+                    <a href="/auth.html">
+                        <button class="px-4 py-2 bg-gradient-to-r from-accent to-accent2 text-dark font-medium rounded-full hover:opacity-90 transition">Sign In</button>
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button @onclick="ToggleMobileMenu" class="p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu (Visible on toggle) -->
+        @if (isMobileMenuVisible)
+        {
+                <div class="md:hidden bg-gray-900 border-t border-gray-800 px-4 py-4 space-y-2" style="text-align: -webkit-center;"  >
+                <a href="#features" class="block text-gray-300 hover:text-white text-base">المميزات</a>
+                <a href="/Services" class="block text-gray-300 hover:text-white text-base">الخدمات</a>
+                <a href="/Chat" class="block text-gray-300 hover:text-white text-base">ChatASG</a>
+                <a href="/generatingai" class="block text-gray-300 hover:text-white text-base">GeneratingAi</a>
+                <a href="#contact" class="block text-gray-300 hover:text-white text-base">اتصل بنا</a>
+                <a href="/auth.html">
+                    <button class="w-full bg-gradient-to-r from-accent to-accent2 text-dark px-4 py-2 rounded-md text-sm font-medium hover:opacity-90 transition">Sign In</button>
+                </a>
+            </div>
+        }
+    </nav>
+
+   
+
+@*     <!-- Navigation -->
+    <nav class="relative z-50 py-6 px-4 sm:px-10 lg:px-20 xl:px-32 flex justify-between items-center glass-card">
+        <div class="flex items-center">
+            <a href="/"> <span class="text-2xl font-bold bg-gradient-to-r from-accent to-accent2 bg-clip-text text-transparent">CHATASG</span></a>
+        </div>
+        <div class="hidden md:flex space-x-10">
+            <a href="#features" class="custom-underline hover:text-accent transition">Features</a>
+            <a href="/Services" class="custom-underline hover:text-accent transition">Services</a>
+            <a href="/Chat" class="custom-underline hover:text-accent transition">Chat</a>
+            <a href="/generatingai" class="custom-underline hover:text-accent transition">generatingai</a>
+        </div>
+        <div class="flex items-center space-x-4">
+            <button id="toggleDarkMode" class="p-2 rounded-full hover:bg-primary transition">
+                <i class="fas fa-moon text-accent"></i>
+            </button>
+           <a href="/auth.html"> <button class="px-4 py-2 bg-gradient-to-r from-accent to-accent2 text-dark font-medium rounded-full hover:opacity-90 transition">Sign In</button> </a>
+            <button class="md:hidden">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+    </nav> *@
+   @*  <MudAppBar Elevation="1">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudText Typo="Typo.h5" Class="ml-3">ASG</MudText>
+        <MudSpacer />
+        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
+    </MudAppBar> *@
+    
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+</MudLayout>
+@code {
+    bool _drawerOpen = true;
+    private bool isMobileMenuVisible = false;
+
+    private void ToggleMobileMenu()
+    {
+        isMobileMenuVisible = !isMobileMenuVisible;
+    }
+
+
+    // void DrawerToggle()
+
+    // {
+
+    //     _drawerOpen = !_drawerOpen;
+
+    // }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* @inherits LayoutComponentBase
+
+<PageTitle>ChatASG</PageTitle>
+<MudThemeProvider />
+<MudDialogProvider/>
+<MudSnackbarProvider />
+<MudLayout>
+    <MudAppBar Elevation="1">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudText Typo="Typo.h5" Class="ml-3">ASG</MudText>
+        <MudSpacer />
+        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
+    </MudAppBar>
+    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+        <NavMenu />
+    </MudDrawer>
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+</MudLayout>
+@code {
+    bool _drawerOpen = true;
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+}
+ *@
+

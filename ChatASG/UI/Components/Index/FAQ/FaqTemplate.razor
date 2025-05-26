@@ -1,0 +1,77 @@
+﻿@using global::Data.FAQ
+<AddCardFaq Prams="Prams" />
+
+@code {
+    private List<DataFaq> studios = new()
+    {
+        new DataFaq
+        {
+            Question = "How does the AI learn my work patterns?",
+            Answer = "ASG uses machine learning to analyze your calendar events, task completion times, work hours, and productivity patterns. Over time, it builds a personalized model of when you're most focused, which tasks take you longest, and how to optimally arrange your schedule. The more you use it, the smarter it gets."
+        },
+        new DataFaq
+        {
+            Question = "What platforms and apps does ASG integrate with?",
+            Answer = "We integrate with all major productivity platforms including:",
+            BulletPoints = new List<string>
+            {
+                "Google Workspace (Gmail, Calendar, Drive)",
+                "Microsoft 365 (Outlook, Teams, OneDrive)",
+                "Slack",
+                "Notion",
+                "Trello",
+                "Asana",
+                "Zoom",
+                "100+ more through Zapier"
+            },
+            HasIconList = true,
+            
+        },
+        new DataFaq
+        {
+            Question = "Is my data secure with ASG?",
+            Answer = "Security is our top priority. We implement enterprise-grade security measures including:",
+            BulletPoints = new List<string>
+            {
+                "End-to-end encryption of all your data",
+                "SOC 2 Type II certified infrastructure",
+                "Strict access controls and audit logging",
+                "Option for on-premises deployment for enterprise clients"
+            },
+            HasIconList = true
+        },
+        new DataFaq
+        {
+            Question = "Can I cancel my subscription anytime?",
+            Answer = "Absolutely. You can cancel your ASG subscription at any time with just a few clicks. When you cancel, you'll continue to have access to all Pro features until the end of your current billing period. We don't believe in locking you in or making cancellation difficult.\n\nIf you're on a monthly or yearly plan, your subscription will automatically renew until you cancel. Our 14-day money-back guarantee applies to all new subscriptions."
+        }
+    };
+    private DataStillFAQ FAQ = new()
+        {
+            Title = "Still have questions?",
+            Description = " We're happy to help! Our team typically responds within 1 business day.",
+            Button = "  Contact Support",
+        };
+
+    [Parameter]
+    public DataAddFAQ? DataBuild { get; set; }
+
+    private CardAddFAQ Prams = new();
+
+    protected override void OnInitialized()
+    {
+        if (DataBuild == null)
+        {
+            DataBuild = new DataAddFAQ
+                {
+                    Name = "Frequently Asked",
+                    Description = " Everything you need to know about the product and billing.",
+                    Items = studios,
+                    IstillFAQ = FAQ,
+                };
+        }
+
+        Prams = CardAddFAQ.Create(DataBuild);
+        base.OnInitialized();
+    }
+}

@@ -1,0 +1,134 @@
+﻿<MudAlert Style="width:100%">
+
+    <TextAnswer TAnswer="@(new AnswerText(){
+            Body="yes ,you can  generate scenarios  Creating an attack sequence  proposed scenarios are compared with actual ICS incidents (^-^)",
+            TitelBody=Answer.Body,
+            IsRtl=IsRtl,
+            TypeChat=TypeChat
+            })"
+                isDelay=isDelay
+                ReUpdatePage=OnEndDelay />
+</MudAlert>
+@if (isShowAfterText)
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="@(!isShow)" />
+    <MudTable Items="@Senarios">
+        <HeaderContent>
+            <MudTh>Tactic</MudTh>
+            <MudTh>Technique</MudTh>
+            <MudTh>Software</MudTh>
+
+        </HeaderContent>
+        <RowTemplate>
+
+            <MudTd>@context.Tactic</MudTd>
+            <MudTd>@context.FristTechnique</MudTd>
+            <MudTd>@context.Software</MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager />
+        </PagerContent>
+    </MudTable>
+}
+@if (isShow)
+{
+    <div style="background:#fff;padding:6%">
+        <CircleTemplate Orders="Orders"
+                    Title=" Percentage of generating scenarios"
+                    Height="250" />
+
+    </div>
+
+
+    <MudText class="d-flex" Style=@("direction:"+((IsRtl)?"rtl":"ltr"))>
+        
+        <MudLink Href="/generatingai"
+             Color="Color.Primary">
+            Generating AI
+        </MudLink>
+    </MudText>
+}
+
+
+@code {
+
+    [Parameter] public Answer Answer { set; get; }
+    [Parameter] public bool isDelay { set; get; } = false;
+    [Parameter] public Action ReUpdatePage { set; get; } = null;
+    [Parameter] public bool IsRtl { set; get; } = false;
+    [Parameter] public TypeChat TypeChat { set; get; } = TypeChat.General;
+    bool isShow = false,isShowAfterText=false;
+    private List<Senario> Senarios = new List<Senario>();
+    public List<Order> Orders { get; set; }
+    private async void OnEndDelay()
+    {
+        isShowAfterText = true;
+        isDelay = false;
+        StateHasChanged();
+        await OnShow();
+        StateHasChanged();
+
+    }
+
+    protected override async void OnInitialized()
+    {
+
+
+        base.OnInitialized();
+    }
+    private async Task OnShow()
+    {
+        Senarios.Clear();
+        var Outputs = (List<TSenario>)Answer.AnswerAI.Answer;
+
+        var cs = new int[] { 0, 0, 0, 0 };
+        int sp = (Outputs.Count > 10) ? 1 : 100;
+        int k = 0;
+        foreach (var senario in Outputs)
+        {
+            var tcs = senario.seqtactic.Split("$@");
+            var tes = senario.seqtec.Split("$@");
+
+            for (int i = 0; i < tes.Length; i++)
+            {
+
+                Senarios.Add(new Senario()
+                    {
+                        Tactic = tcs[i],
+                        FristTechnique = tes[i],
+                        Software = " "
+                    });
+                await Task.Delay(sp);
+                StateHasChanged();
+            }
+            Senarios.Add(new Senario()
+                {
+                    Tactic = "  ",
+                    FristTechnique = " ",
+                    Software = senario.score
+                });
+
+            k = searchIndex(senario.score);
+            if (k != -1)
+                cs[k] += 1;
+            await Task.Delay(100);
+            StateHasChanged();
+
+        }
+        isShow = true;
+        Orders = SampleData.GetOrders(cs, SampleData.ArrayDataAnlayses);
+        StateHasChanged();
+        ReUpdatePage();
+    }
+    int searchIndex (string val)
+    {
+        for(int i=0;i<SampleData.ArrayDataAnlayses.Length;i++)
+        {
+            if (val.ToUpper().Contains(SampleData.ArrayDataAnlayses[i].ToUpper()))
+                return i;
+
+
+        }
+        return -1;
+    }
+}

@@ -1,0 +1,34 @@
+﻿@using global::Data.Hero
+@inherits StylesCardSocialIcon
+
+@if (Prams != null)
+{
+
+    <div class="@ClassContainer ">
+    <h1 class="@ClassTitle">
+        <span class="gradient-text">@Prams.DataBuild.Title</span>
+    </h1>
+    <h2 class="@ClassSubtitle">@Prams.DataBuild.Subtitle</h2>
+    <p class="@ClassDescription">@Prams.DataBuild.Description</p>
+    <div class="flex space-x-6 mb-8">
+        @foreach (var item in Prams.Items)
+        {
+            <IconsCard1 Prams="item" />
+        }
+    </div>
+    <a href="@Prams.DataBuild.CallToActionLink" class="@ClassCtaButton">
+        @Prams.DataBuild.CallToActionText <i class="fas fa-arrow-right ml-2"></i>
+    </a>
+</div>
+}
+@code {
+
+
+        [Parameter] public CardSocialIconModul? Prams { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}

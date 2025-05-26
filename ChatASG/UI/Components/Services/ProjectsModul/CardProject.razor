@@ -1,0 +1,79 @@
+﻿@using global::Data.Projects
+@inherits StyleCardProject
+
+@if (Prams != null)
+{
+    <div class="@ClassContainer">
+        <div class="text-center">
+            <i class="@Prams.DataBuild.Icon text-6xl mb-4 @Prams.DataBuild.IconColor"></i>
+            <h3 class="text-xl font-bold">@Prams.DataBuild.Title</h3>
+
+            <div class="flex justify-center space-x-2 mt-4">
+                @foreach (var tag in Prams.DataBuild.Tags)
+                {
+                    <span class="@ClassTag">@tag</span>
+                }
+            </div>
+
+            <a href="@Prams.DataBuild.Link" target="_blank" class="@ClassLink">
+                View Project <i class="fas fa-external-link-alt ml-1"></i>
+            </a>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public CardProjectModule? Prams { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}
+
+
+
+
+
+
+
+
+
+
+@* 
+ @using Data.ProjectModels
+ 
+    
+
+
+    @if (Prams != null)
+    {
+    <div class="md:w-1/3 bg-slate-800 p-6 flex items-center justify-center">
+        <div class="text-center">
+            <i class="@Prams.DataBuild.Icon text-6xl mb-4 @Prams.DataBuild.IconColor"></i>
+            <h3 class="text-xl font-bold">@Prams.DataBuild.Title</h3>
+
+            <div class="flex justify-center space-x-2 mt-4">
+                @foreach (var tag in Prams.DataBuild.Tags)
+                {
+                    <span class="bg-slate-700 px-2 py-1 rounded-full text-xs">@tag</span>
+                }
+            </div>
+
+            <a href="@Prams.DataBuild.Link" target="_blank" class="inline-block mt-4 text-blue-400 hover:text-blue-300">
+                View Project <i class="fas fa-external-link-alt ml-1"></i>
+            </a>
+        </div>
+    </div>
+
+    }
+        
+    
+        
+  
+@code {
+
+    [Parameter] public ListUnifiedProjectModul? Prams { get; set; }
+}
+ *@

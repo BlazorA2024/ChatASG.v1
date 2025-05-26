@@ -1,0 +1,35 @@
+﻿@using ApexCharts
+<ApexChart TItem="Order"
+           Title="@Title"
+           Height="@Height"
+           >
+
+    <ApexPointSeries TItem="Order"
+                     Items="Orders"
+                     SeriesType=@SeriesType
+                     Name="Gross Value"
+                     XValue="@(e => e.Country)"
+                     YAggregate="@(e => decimal.Round(e.Sum(e => e.GrossValue)))"
+                     OrderByDescending="e=>e.Y"
+              
+                       />
+ </ApexChart>
+
+
+@code{
+
+    [Parameter] public string Title { get; set; }
+    [Parameter] public int Height { get; set; }
+    [Parameter] public List<Order> Orders { get; set; }
+    [Parameter] public SeriesType SeriesType { get; set; } = SeriesType.Donut;
+   
+
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+       
+
+    }
+  
+}

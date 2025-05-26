@@ -1,0 +1,68 @@
+@inherits StylesSOurservicesCard
+@using global::Data.Ourservices
+@if(Prams !=null)
+{
+<div class="@ClassContainer">
+        <div class="@ClassItem " style="gap: 12px;">
+        <div class="@($"{Prams.DataBuild.IconBackground} {Prams.DataBuild.IconColor} p-3 rounded-lg mr-4")">
+            <i class="@($"{Prams.DataBuild.Icon} text-2xl")"></i>
+        </div>
+        <Ourservicess Prams="Prams.dataOurservice" />
+      @*   <div>
+            <h3 class="@ClassTitle">@Prams.DataBuild.Title</h3>
+            <p class="@ClassDescription">@Prams.DataBuild.Description</p>
+            <ul class="text-gray-400 space-y-2">
+                @foreach (var feature in Prams.DataBuild.Features)
+                {
+                    <li class="flex items-center" style="gap: 12px;">
+                        <i class="@($"fas fa-check-circle {Prams.DataBuild.IconColor} mr-2")"></i>
+                        @feature
+                    </li>
+                }
+            </ul> 
+        </div>*@
+    </div>
+</div>
+}
+@code {
+    [Parameter]
+    public CardOurservices Prams { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}
+
+
+
+@* @using global::Data.Ourservices
+@inherits StylesServicesCard
+
+<div class="bg-gray-900/50 p-8 rounded-2xl card-hover">
+    <div class="flex items-start">
+        <div class="@Prams.DataBuild.IconBackground @Prams.DataBuild.IconColor p-3 rounded-lg mr-4">
+            <i class="@Prams.DataBuild.Icon text-2xl"></i>
+        </div>
+        <div>
+            <h3 class="text-xl font-bold mb-3">@Prams.DataBuild.Title</h3>
+            <p class="text-gray-400 mb-4">@Prams.DataBuild.Description</p>
+            <ul class="text-gray-400 space-y-2">
+                @foreach (var feature in Prams.DataBuild.Features)
+                {
+                    <li class="flex items-center">
+                        <i class="fas fa-check-circle @Prams.DataBuild.IconColor mr-2"></i>
+                        @feature
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public CardService Prams { get; set; } = new();
+}
+ *@

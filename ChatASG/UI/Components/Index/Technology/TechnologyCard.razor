@@ -1,0 +1,25 @@
+@inherits StylesTechnologyCard
+@using global::Data.Technology
+
+<div class="@ClassContainer">
+    <div class="@ClassItem " style="gap: 12px;">
+        <div class="@($"{Prams.DataBuild.BgIcon} {Prams.DataBuild.ColorIcon} p-3 rounded-lg mr-4")">
+            <i class="@($"{Prams.DataBuild.Icon} text-xl")"></i>
+        </div>
+        <div>
+            <h4 class="@ClassTitle">@Prams.DataBuild.Title</h4>
+            <p class="@ClassDescription">@Prams.DataBuild.Description</p>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public CardTechnology Prams { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}

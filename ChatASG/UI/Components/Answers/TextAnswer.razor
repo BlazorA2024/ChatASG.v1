@@ -1,0 +1,37 @@
+﻿
+<MudText Typo="Typo.caption">@body</MudText>
+
+@code{
+    [Parameter] public AnswerText TAnswer { set; get; }
+    [Parameter] public bool isDelay { set; get; } = false;
+    [Parameter] public Action ReUpdatePage { set; get; } = null;
+
+    private string body = "";
+
+    protected override async void OnInitialized()
+    {
+        base.OnInitialized();
+        if (isDelay)
+            await   OnShow();
+        else
+            body = TAnswer.ToString();
+        StateHasChanged();
+    }
+
+    private async Task OnShow()
+    {
+        var text = TAnswer.ToString();
+        foreach(var subtxt in text.Split(" "))
+        {
+            body += subtxt + " ";
+            await Task.Delay(100);
+            StateHasChanged();
+
+
+
+        }
+        ReUpdatePage();
+    }
+
+
+}

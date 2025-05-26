@@ -1,0 +1,54 @@
+﻿@using ApexCharts
+<ApexChart TItem="Order"
+           Title="@Title"
+           Height="@Height"
+           Options=options>
+
+    <ApexPointSeries TItem="Order"
+                       Items="Orders"
+                        Name="Gross Value"
+                        XValue="@(e => e.Country)"
+                        YAggregate="@(e => e.Sum(e => e.GrossValue))"
+                        OrderByDescending="e=>e.Y"
+                        SeriesType="SeriesType.Bar"
+                        Color="@Color"
+                        PointColor="e=> GetColor(e)" />
+
+
+ </ApexChart>
+
+
+@code{
+
+
+    [Parameter] public string Title { get; set; }
+    [Parameter] public int Height { get; set; }
+    [Parameter] public List<Order> Orders { get; set; }
+    [Parameter] public bool isHorizontal { get; set; } = false;
+    [Parameter] public string Color { get; set; } = "rgba(89,74,226,1)";
+    private ApexChartOptions<Order> options;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        options = new ApexChartOptions<Order>
+            {
+                PlotOptions = new PlotOptions
+                {
+                    Bar = new PlotOptionsBar
+                    {
+                        Horizontal = isHorizontal
+                    }
+                }
+            };
+
+    }
+    private string GetColor(Order order)
+    {
+        if (order.Country == "Time")
+        {
+            return "rgba(89,74,226,1)";
+        }
+        return null;
+    }
+}

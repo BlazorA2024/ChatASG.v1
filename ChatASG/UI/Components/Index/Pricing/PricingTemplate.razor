@@ -1,0 +1,255 @@
+﻿@using global::Data.Pricing
+<AddCardPricing Prams="Prams" />
+
+@code {
+
+
+    private List<DataPricingCard> studios = new()
+    {
+
+            new DataPricingCard
+            {
+                Title = "Starter",
+                Description = "For individuals getting started with AI productivity",
+                ClassCard="pricing-card glass-card p-8 rounded-2xl border border-gray-700 transition duration-300 hover:shadow-xl",
+                Price = "$0",
+                Period = "/month",
+                Features = new() { "Basic task automation", "Simple scheduling" },
+                DisabledFeatures = new() { "Advanced analytics", "Team features", "Priority support" },
+                Button = "Get Started",
+                IsPopular = false
+            },
+            new DataPricingCard
+            {
+                Title = "Professional",
+                Description = "For professionals serious about productivity",
+                ClassCard="pricing-card glass-card p-8 rounded-2xl border-2 border-accent transition duration-300 hover:shadow-xl relative overflow-hidden",
+                Price = "$19",
+                Period = "/month",
+                Features = new() { "All Starter features", "Advanced AI automation", "Deep insights & analytics", "Smart integrations" },
+                DisabledFeatures = new() { "Team dashboard" },
+                ClassButton="w-full py-3 rounded-lg bg-gradient-to-r from-accent to-accent2 text-dark font-medium hover:opacity-90 transition",
+                Button = "Try Free for 14 Days",
+                BadgeText = "POPULAR",
+                IsPopular = true
+            },
+            new DataPricingCard
+            {
+                Title = "Enterprise",
+                Description = "For teams and organizations",
+                ClassCard="pricing-card glass-card p-8 rounded-2xl border border-gray-700 transition duration-300 hover:shadow-xl",
+                Price = "Custom",
+                Period = "",
+                Features = new() { "All Professional features", "Team dashboard & analytics", "Custom AI training", "Dedicated support", "API access" },
+                DisabledFeatures = new(),
+                Button = "Contact Sales",
+                IsPopular = false
+            }
+
+
+    };
+    private DataPricingQuiz Quiz = new()
+    {
+            Title= "Not sure which plan is right for you?",
+            Description = "Take our 30-second quiz to find the perfect plan based on your needs.",
+            Button = "Take the quiz",
+            ButtonIconClass = "fas fa-arrow-right ml-2"
+    };
+    [Parameter]
+    public DataAddPricing? DataBuild { get; set; }
+    private CardAddPricing Prams = new();
+        protected override void OnInitialized()
+        {
+            if (DataBuild == null)
+            {
+            DataBuild = new DataAddPricing
+                    {
+                    Name = "Simple, Transparent Pricing",
+                    Description = "Choose the plan that fits your needs. Try risk-free with our 14-day money back guarantee.",
+                    Items = studios,
+                    Iquiz = Quiz,
+                    };
+            }
+
+        Prams = CardAddPricing.Create(DataBuild);
+            base.OnInitialized();
+        }
+
+//     private List<DataTechnology> studios = new()
+// {
+//     new()
+//     {
+//         Icon = "fas fa-server",
+//         Title = "خوادم تحليلية عالية الأداء",
+//         Description = "خوادم مخصصة لتحليل البيانات الضخمة من الحوادث السيبرانية باستخدام خوارزميات الذكاء الاصطناعي المتقدمة.",
+//         ColorIcon = "text-blue-400",
+//         BgIcon = "bg-blue-900/20"
+//     },
+//     new()
+//     {
+//         Icon = "fas fa-vr-cardboard",
+//         Title = "نظم الواقع المعزز",
+//         Description = "بيئات تدريب تفاعلية باستخدام تقنيات AR/VR لمحاكاة سيناريوهات الهجمات بدرجة عالية من الواقعية.",
+//         ColorIcon = "text-purple-400",
+//         BgIcon = "bg-purple-900/20"
+//     },
+//     new()
+//     {
+//         Icon = "fas fa-robot",
+//         Title = "أنظمة الروبوتات",
+//         Description = "روبوتات ذكية متصلة بالنظام الأساسي لتقديم حلول مراقبة واستجابة آلية للحوادث الأمنية.",
+//         ColorIcon = "text-red-400",
+//         BgIcon = "bg-red-900/20"
+//     },
+//     new()
+//     {
+//         Icon = "fas fa-shield-alt",
+//         Title = "نظام حماية متكامل",
+//         Description = "نظام يجمع بين تقنيات الكشف عن التهديدات والاستجابة الفورية لحماية البنية التحتية.",
+//         ColorIcon = "text-green-400",
+//         BgIcon = "bg-green-900/20"
+//     }
+// };
+//     private DataTechnologyImage techImage = new()
+//         {
+//             ImageUrl = "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=2065&auto=format&fit=crop",
+//             AltText = "Technology",
+//             LabelTop = "أكثر من",
+//             LabelNumber = "50+",
+//             LabelBottom = "خوارزمية ذكاء اصطناعي"
+//         };
+//     private DataTargetMarket marketData = new()
+//         {
+//             Title = "السوق المستهدف",
+//             Description = "تستهدف منصة ASG مجموعة واسعة من المستخدمين في القطاعات المختلفة الذين يحتاجون إلى حلول أمنية متقدمة.",
+//             Items = new()
+//         {
+//             new() { IconClass = "fas fa-building text-blue-400 text-2xl", Title = "الشركات", Description = "حماية البنية التحتية الرقمية" },
+//             new() { IconClass = "fas fa-user-tie text-purple-400 text-2xl", Title = "الأفراد", Description = "حماية الأجهزة والبيانات الشخصية" },
+//             new() { IconClass = "fas fa-landmark text-red-400 text-2xl", Title = "الحكومة", Description = "حماية البنية التحتية الوطنية" },
+//             new() { IconClass = "fas fa-graduation-cap text-green-400 text-2xl", Title = "الجامعات", Description = "برامج التدريب والتأهيل" }
+//         },
+//             TitleGrowth = "التكلفة والعائدات",
+//             DescriptionGrowth = "مع نمو سوق الأمن السيبراني المتوقع إلى 183 مليار دولار بحلول 2024، تقدم ASG حلولاً مبتكرة في سوق واعد.",
+//             IGrowth = new DataGrowthAnalytics
+//             {
+//                 Title = "سوق الأمن السيبراني",
+//                 Description = "النمو السنوي المتوقع 10.56%",
+//                 GrowthRange = "2024-2028",
+//                 GrowthAmount = "183.10 مليار دولار",
+//                 Progress = 85
+//             }
+//         };
+//      [Parameter]
+//     public DataAddTechnology? DataBuild { get; set; }
+//     private CardAddTechnology Prams = new();
+//     protected override void OnInitialized()
+//     {
+//         if (DataBuild == null)
+//         {
+//             DataBuild = new DataAddTechnology
+//                 {
+//                     Title = "التقنية المتقدمة",
+//                     Description = "تعتمد منصة ASG على أحدث التقنيات في مجال الذكاء الاصطناعي والأمن السيبراني",
+//                     Name = "بنية المنصة التقنية",
+//                     Label = "تم تصميم بنية ASG لتكون قابلة للتوسع والمواكبة للتطورات السريعة في مجال الأمن السيبراني، مع التركيز على الأداء العالي والأمان.",
+//                     Items = studios,
+//                     ITechnol = techImage,
+//                     IMarket = marketData,
+//                 };
+//         }
+
+//         Prams = CardAddTechnology.Create(DataBuild);
+//         base.OnInitialized();
+//     }
+}
+
+
+
+
+@* @using global::Data.Ourservices
+
+<AddCardOurservices Prams="Prams"   />
+
+@code {
+   
+    private List<DataOurservices> studios = new()
+        {
+            new()
+            {
+                Title = "Chat AI للأمن السيبراني",
+                Description = "نظام دردشة ذكي يوفر وصولاً سهلاً لخبراء الأمن السيبراني، مع إمكانية الحصول على إجابات مخصصة للأسئلة المعقدة باستخدام الذكاء الاصطناعي.",
+                Icon = "fas fa-comment-dots",
+                IconColor = "text-blue-400",
+                IconBackground = "bg-blue-900/20",
+                Features = new() {
+                    "تحليل فوري للتهديدات",
+                    "إجابات مخصصة بناءً على حالة النظام",
+                    "دعم متعدد اللغات"
+                }
+            },
+            new()
+            {
+                Title = "الواقع المعزز للتدريب",
+                Description ="بيئة تدريب تفاعلية باستخدام الواقع المعزز لمحاكاة سيناريوهات الهجمات السيبرانية الواقعية، مما يمكن المستخدمين من التعلم من خلال الممارسة.",
+                Icon = "fas fa-vr-cardboard",
+                IconColor = "text-purple-400",
+                IconBackground = "bg-purple-900/20",
+                Features = new() {
+                    "سيناريوهات هجومية واقعية",
+                    "بيئة آمنة للتعلم والتجربة",
+                    "تقييم أداء فوري"
+                }
+            },
+            new()
+            {
+                Title = "أنظمة روبوتية ذكية",
+                Description = "روبوتات متخصصة تعمل كنظم خبراء في الأمن السيبراني، قادرة على أداء مهام معقدة مثل المراقبة والفحص والاستجابة للحوادث.",
+                Icon = "fas fa-robot",
+                IconColor = "text-red-400",
+                IconBackground = "bg-red-900/20",
+                Features = new() {
+                    "مراقبة البنية التحتية الحساسة",
+                    "فحص وتفتيش الأجهزة والنظم",
+                    "استجابة آلية للحوادث الأمنية"
+                }
+            },
+            new()
+            {
+                Title = "حلول دفاعية متقدمة",
+                Description = "استراتيجيات دفاعية مصممة خصيصًا لحماية أنظمتك من أحدث التهديدات السيبرانية، مع تحديثات مستمرة لمواكبة التطورات.",
+                Icon = "fas fa-shield-virus",
+                IconColor = "text-green-400",
+                IconBackground = "bg-green-900/20",
+                Features = new() {
+                    "حماية متعددة الطبقات",
+                    "تحديثات تلقائية للتهديدات الجديدة",
+                    "تقارير أمنية مفصلة"
+                }
+            }
+        
+        };
+    [Parameter]
+    public DataAddStudios? DataBuild { get; set; }
+    private CardAddOurservices Prams = new();
+    protected override void OnInitialized()
+    {
+        if (DataBuild == null)
+        {
+            DataBuild = new DataAddStudios
+                {
+                    Name = " خدماتنا المتكاملة",
+                    Description="نقدم مجموعة متكاملة من الخدمات المصممة لتلبية جميع احتياجاتك في مجال الأمن السيبراني",
+                    Items = studios
+                };
+        }
+
+        Prams = CardAddOurservices.Create(DataBuild);
+        base.OnInitialized();
+    }
+}
+
+
+
+
+ *@

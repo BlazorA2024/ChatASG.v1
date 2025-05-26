@@ -1,0 +1,208 @@
+﻿ @if (Model.Items.Count>0){
+ <div class="RCardP hdp">
+<div style="width:100%;display:flex;padding-top:1%">
+         
+    <MudTooltip Arrow="true" Placement="Placement.Right" Color="Color.Primary" >
+                <ChildContent>
+                        <MudIconButton Size="Size.Small" Icon="@Icons.Outlined.Info" />
+                      
+                </ChildContent>
+                <TooltipContent >
+            <MudText Typo="Typo.h6"> @Model.StateBasedValueModel.ToString()</MudText>
+                    <div style="padding:2%;display:flex;flex-direction:column">
+
+
+                @foreach (var txt in ((Model != null) ? Model.Description : "select").Split("\n"))
+                {
+                                <MudText Typo="Typo.caption" Style="width:250px;" >@txt </MudText>
+                            }
+                 </div>
+                </TooltipContent>
+            </MudTooltip>
+           <MudText Typo="Typo.subtitle1">
+    @Model.StateBasedValueModel.ToString()
+        </MudText>
+        @*
+    @foreach (var item in Model.Items)
+        {
+        <MudSelect T="string" Label="@item.TypeValueSB.ToString()">
+
+            @foreach (var val in item.Values){
+        <MudSelectItem T="string" Value="val">
+              
+             @val
+             
+       
+                </MudSelectItem>
+            }
+
+        </MudSelect>
+      }
+       *@
+        
+   
+
+</div>
+
+<MudDynamicTabs @ref="@DynamicTabs" @bind-ActivePanelIndex="@UserIndex"
+                AddTab="@AddTabCallback" CloseTab="@CloseTabCallback"
+                    Class="mdtabp"
+                AddIconToolTip="Click to add a new tab" CloseIconToolTip="Close tab. All data will be lost"
+                PanelClass="px-4 py-6" Elevation="4" Rounded ApplyEffectsToContainer>
+    @foreach (var item in Model.Items)
+    {
+
+        <MudTabPanel ID="@item.Id" Text="@item.TypeValueSB.ToString()"  ShowCloseIcon="@(TypeValueSB.Condition!=item.TypeValueSB)">
+
+            @if(item.TypeValueSB==TypeValueSB.Text){
+                        <MudAutocomplete T="string" Label="@item.TypeValueSB.ToString()" CoerceText="true" CoerceValue="true" @bind-Value="item.CV" SearchFunc="@((e)=>Search(e,item.Values))" />
+                    }
+                    else
+                    {
+                        <MudSelect T="string" Label="@item.TypeValueSB.ToString()" @bind-Value="@item.CV" >
+
+                            @foreach (var val in item.Values)
+                            {
+                                <MudSelectItem T="string" Value="val">
+
+                                    @val
+
+
+                                </MudSelectItem>
+                            }
+
+                        </MudSelect>
+                    }
+                </MudTabPanel>
+    }
+
+   
+
+</MudDynamicTabs>
+</div>
+}
+@code{
+    [Parameter] public StateBasedValue Model{set;get;}
+    [Parameter] public Color MColor { set; get; } = Color.Primary;
+    ValueSB basedValue { set; get; } = null;
+    string value2;
+
+    public class Pizza
+    {
+        public Pizza(string name)
+        {
+            Name = name;
+        }
+
+        public readonly string Name;
+
+        // Note: this is important so the MudSelect can compare pizzas
+        public override bool Equals(object o)
+        {
+            var other = o as Pizza;
+            return other?.Name == Name;
+        }
+
+        // Note: this is important too!
+        public override int GetHashCode() => Name?.GetHashCode() ?? 0;
+
+        // Implement this for the Pizza to display correctly in MudSelect
+        public override string ToString() => Name;
+    }
+    public class TabView
+    {
+        public string Label { get; set; }
+        public string Content { get; set; }
+        public Guid Id { get; set; }
+        public bool ShowCloseIcon { get; set; } = true;
+    }
+       private async Task<IEnumerable<string>> Search(string value,List<string> states)
+    {
+        // In real life use an asynchronous function for fetching data from an api.
+        await Task.Delay(5);
+
+        // if text is null or empty, show complete list
+        if (string.IsNullOrEmpty(value))
+            return states;
+        return states.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+    public MudDynamicTabs DynamicTabs;
+    public List<ValueSB> UserTabs;
+    public int UserIndex;
+    bool _stateHasChanged;
+    bool _showCloseIcon = false;
+    string _closeToggableTab = "Tab B";
+
+    void RestoreUserTabs()
+    {
+
+        UserIndex = 0; // Start on 2nd tab: "Tab B"
+        _stateHasChanged = true;
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        RestoreUserTabs();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (_stateHasChanged)
+        {
+            _stateHasChanged = false;
+            StateHasChanged();
+        }
+    }
+
+    private void ToggleShowCloseIcon(bool show)
+    {
+        //var tab = UserTabs?.SingleOrDefault(t => t.Label.Equals(_closeToggableTab));
+        //if (tab is not null) tab.ShowCloseIcon = show;
+        //_showCloseIcon = show;
+    }
+
+    public void AddTab(Guid id)
+    {
+        Model.Items.Add(
+            new ValueSB(){
+                TypeValueSB=TypeValueSB.Condition,
+                    Values = SampleData.TypeConditions.ToList()
+           
+         });
+        Model.Items.Add(new ValueSB());
+        UserIndex = Model.Items.Count - 1; // Automatically switch to the new tab.
+        _stateHasChanged = true;
+    }
+
+    public void RemoveTab(Guid id)
+    {
+        int index=-1;
+        for (int i=0;i<Model.Items.Count;i++)
+        {
+            if (Model.Items[i].Id.Equals(id))
+            {
+                index = i;break;
+            }
+        }
+
+
+
+        if (index>0)
+        {
+            index--;
+            Model.Items.RemoveAt(index);
+            Model.Items.RemoveAt(index);
+          
+        }else if (index == 0)
+        {
+            Model.Items.RemoveAt(index);
+        }
+        _stateHasChanged = true;
+    }
+
+    void AddTabCallback() => AddTab(Guid.NewGuid());
+    void CloseTabCallback(MudTabPanel panel) => RemoveTab((Guid)panel.ID);
+}

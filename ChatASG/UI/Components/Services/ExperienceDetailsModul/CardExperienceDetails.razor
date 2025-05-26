@@ -1,0 +1,80 @@
+﻿@inherits StylesExperienceListModel
+@using global::Data.Experience
+
+
+    <!-- Experience Section -->
+<section id="experience" class="@ClassSection">
+    @if (Prams != null)
+    {
+        <div class="@ClassContainer">
+            <h2 class="@ClassTitle">
+                <span class="@ClassTitleText">@Prams.DataBuild.Name</span>
+            </h2>
+
+            <div class="@ClassItemsContainer">
+                @foreach (var item in Prams.Items)
+                {
+                    <DiscordModerator Prams="item" />
+                }
+            </div>
+        </div>
+    }
+</section>
+
+
+   @*  <div class="@ClassItem">
+        <h3 class="@ClassTitle">@Prams.DataBuild.Title</h3>
+        <p class="@ClassMeta">@Prams.DataBuild.Company • @Prams.DataBuild.Period</p>
+        <p class="@ClassDescription">@Prams.DataBuild.Description</p>
+
+        <div class="flex flex-wrap gap-2 mt-2">
+            @foreach (var tag in Prams.DataBuild.Tags)
+            {
+                <span class="@ClassTag">@tag</span>
+            }
+        </div>
+    </div> *@
+
+
+@code {
+   // [Parameter] public CardExperienceDetailsModul? Prams { get; set; }
+    [Parameter] public CardListUnifiedExperienceDetailsModel? Prams { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}
+
+
+
+@* @using Data.ExperienceDetails
+<!-- Experience Section -->
+<section id="experience" class="py-16 px-6">
+    @if (Prams != null)
+    {
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-bold mb-12 text-center section-title">
+                <span class="gradient-text">@Prams.DataBuild.Name</span>
+            </h2>
+
+            <div class="max-w-3xl mx-auto">
+
+                @foreach (var item in Prams.Items)
+                {
+
+                    <DiscordModerator Prams="item" />
+                }
+
+            </div>
+        </div>
+    }
+</section>
+
+@code {
+    [Parameter] public CardListUnifiedExperienceDetailsModel? Prams { get; set; }
+
+
+}
+ *@

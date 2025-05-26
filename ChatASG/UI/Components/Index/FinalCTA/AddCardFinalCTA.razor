@@ -1,0 +1,38 @@
+﻿@using Microsoft.AspNetCore.Components
+@using global::Data.FinalCTA
+@inherits StylesFinalCtaCard
+
+<section class="@ClassSection">
+    <div class="@ClassContainer">
+        <h2 class="@ClassTitle">@Prams.DataBuild.Title</h2>
+        <p class="@ClassDescription">@Prams.DataBuild.Description</p>
+        <CardFinalCTA Prams="Prams.ICTA" />
+       @*  <div class="@ClassInputGroup">
+            <div class="relative flex-grow">
+                <input type="email" placeholder="@Prams.DataBuild.InputPlaceholder" class="@ClassInput" />
+                <button class="@ClassButton">
+                    @Prams.DataBuild.ButtonText
+                </button>
+            </div>
+        </div> *@
+
+        <div class="@ClassFeatures">
+            @foreach (var feature in Prams.DataBuild.Features)
+            {
+                <div class="@ClassFeatureItem">
+                    <i class="fas fa-check-circle @ClassFeatureIcon"></i>
+                    <span>@feature</span>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@code {
+    [Parameter] public CardFinalCta Prams { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}

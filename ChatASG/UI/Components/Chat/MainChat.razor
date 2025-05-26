@@ -1,0 +1,65 @@
+﻿<div class="d-flex flex-column mx-4 kchatContainer " id="chatContainer">
+
+
+    <div style=@("padding:2%;width:99%;color:black !important;background-color:#fff !important;direction:"+(CurrentQuestion!=null?CurrentQuestion.IsRtl?"rtl":"ltr":"ltr"))>
+       
+        
+        <div class="d-flex ">
+            <MudAvatar Color="Color.Secondary" Style="height:40px; width:40px;">M</MudAvatar>
+            <MudText Typo="Typo.body1" Style="padding-left:10px">Mazunh</MudText>
+
+        </div>
+        <div>
+
+            <MudText Typo="Typo.caption" Style="font-size: xx-small!important;">@DateTime.Now.ToString("dd MMM, yyyy hh:mm tt")</MudText>
+            <MudText Typo="Typo.body2" Style=" padding: 15px;border-radius: 5px;margin-top:5px">@(CurrentQuestion!=null ?CurrentQuestion.Body:"")</MudText>
+        </div>
+      
+        @if (CurrentQuestion !=null)
+        {
+       
+            <ChatASG.Components.Answers.AnswerSuggtion Answer="CurrentQuestion.Awnser"
+                               isDelay=true
+                               ReUpdatePage="ReUpdatePage"
+                               IsRtl=CurrentQuestion.IsRtl
+                               TypeChat="CurrentQuestion.TypeChat"
+                               ClickSuggation=OnClickSuggation />
+           
+        }
+       
+    </div>
+
+
+    <BodyQuestions Questions="Questions" />
+    
+
+
+</div>
+@code{
+
+    [Parameter] public Question CurrentQuestion { set; get; }
+    [Parameter] public List<Question> Questions { set; get; }
+    [Parameter] public Action ReUpdatePage { set; get; }
+
+    [Parameter] public Action<SuggtionAnswer> OnClickSuggation { set; get; } = null;
+
+    int isar = 0;
+    bool flag = false;
+    bool filter = true;
+    bool isSenario = false;
+    bool issearch = false;
+    bool isstopbody = false;
+
+
+
+    string currentsampleText = " ";
+    string body = "";
+    string badydes = "";
+
+
+    private List<Senario> Senarios = new List<Senario>();
+    public List<Order> Orders { get; set; }
+
+
+    
+}

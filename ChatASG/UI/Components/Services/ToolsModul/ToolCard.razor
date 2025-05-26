@@ -1,0 +1,32 @@
+﻿@inherits StylesToolCard
+@using global::Data.Tools
+@if (Prams != null)
+{
+    <div class="@ClassCard">
+        <div class="p-5">
+            <div class="flex items-center mb-4">
+                <div class="@ClassIconBox">
+                    <i class="@Prams.DataBuild.Icon text-xl"></i>
+                </div>
+                <h3 class="@ClassTitle">@Prams.DataBuild.Title</h3>
+            </div>
+            <p class="@ClassDescription">@Prams.DataBuild.Description</p>
+            <div class="flex justify-between items-center">
+                <span class="@ClassBadge"><i class="fas fa-bolt mr-1"></i> @Prams.DataBuild.Badge</span>
+                <button class="@ClassButton">@Prams.DataBuild.ButtonText</button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public CardToolModule? Prams { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}
+
+

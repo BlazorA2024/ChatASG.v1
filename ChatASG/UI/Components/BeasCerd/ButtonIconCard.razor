@@ -1,0 +1,18 @@
+﻿
+
+    <button id="@Id" class="@ClassButton">
+    <i class="@Icon @ClassIcon"></i>
+    <span>@Buttons</span>
+    </button>
+
+
+@code {
+    [Parameter] public string? Id { get; set; }
+
+    [Parameter] public string? Buttons { get; set; } 
+    [Parameter] public string? Icon { get; set; } 
+    [Parameter] public string? ClassButton { get; set; }
+    [Parameter] public string? ClassIcon { get; set; }
+    //  [Parameter] public CardButtonsModul? Prams { get; set; }
+
+}

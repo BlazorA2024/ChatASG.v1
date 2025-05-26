@@ -1,0 +1,20 @@
+﻿<div>
+  <div style="display:flex">  
+        <MudText Typo="Typo.subtitle2">@Model.Title</MudText>
+        <MudTooltip Text="@("Filter " +@Model.Title)" Color="Color.Primary">
+      <MudCheckBox @bind-Checked="Model.Filter" Size="Size.Small"></MudCheckBox>
+        </MudTooltip>
+    </div>
+    <MudChipSet @bind-SelectedChips="Model.Selected" MultiSelection="true" Filter="Model.Filter">
+        @foreach (var item in Model.Items)
+        {
+            <MudChip  Size="Size.Small" Text="@item" Variant="Variant.Text" Color="@MColor">@item</MudChip>
+        }
+    </MudChipSet>
+
+</div>
+
+@code{
+    [Parameter] public AMudChipSetModel Model{set;get;}
+    [Parameter] public Color MColor { set; get; } = Color.Primary;
+}

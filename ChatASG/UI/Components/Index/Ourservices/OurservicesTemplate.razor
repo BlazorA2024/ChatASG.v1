@@ -1,0 +1,98 @@
+﻿
+@using global::Data.Ourservices
+
+<AddCardOurservices Prams="Prams"   />
+
+@code {
+   
+    private List<DataOurservicesCard> studios = new()
+        {
+            new()
+            {
+                IconBackground = "bg-blue-900/20",
+                Icon = "fas fa-comment-dots",
+                IconColor = "text-blue-400",
+                dataOurservice = new(){
+                Title = "Chat AI للأمن السيبراني",
+                Description = "نظام دردشة ذكي يوفر وصولاً سهلاً لخبراء الأمن السيبراني، مع إمكانية الحصول على إجابات مخصصة للأسئلة المعقدة باستخدام الذكاء الاصطناعي.",               
+                IconColor = "text-blue-400",
+                Features = new() {
+                    "تحليل فوري للتهديدات",
+                    "إجابات مخصصة بناءً على حالة النظام",
+                    "دعم متعدد اللغات"
+                }
+                }
+            },
+            new()
+            {
+                IconBackground = "bg-purple-900/20",
+                Icon = "fas fa-vr-cardboard",
+                 IconColor = "text-purple-400",
+                dataOurservice = new(){
+                Title = "الواقع المعزز للتدريب",
+                Description ="بيئة تدريب تفاعلية باستخدام الواقع المعزز لمحاكاة سيناريوهات الهجمات السيبرانية الواقعية، مما يمكن المستخدمين من التعلم من خلال الممارسة.",                
+               IconColor = "text-purple-400",
+                Features = new() {
+                    "سيناريوهات هجومية واقعية",
+                    "بيئة آمنة للتعلم والتجربة",
+                    "تقييم أداء فوري"
+                }
+                }
+            },
+            new()
+            {
+                IconBackground = "bg-red-900/20",
+                Icon = "fas fa-robot",
+                IconColor = "text-red-400",
+                dataOurservice = new(){
+                Title = "أنظمة روبوتية ذكية",
+                Description = "روبوتات متخصصة تعمل كنظم خبراء في الأمن السيبراني، قادرة على أداء مهام معقدة مثل المراقبة والفحص والاستجابة للحوادث.",                
+                 IconColor = "text-red-400",
+                Features = new() {
+                    "مراقبة البنية التحتية الحساسة",
+                    "فحص وتفتيش الأجهزة والنظم",
+                    "استجابة آلية للحوادث الأمنية"
+                }
+                }
+            },
+            new()
+            {
+                IconBackground = "bg-green-900/20",
+                Icon = "fas fa-shield-virus",
+                IconColor = "text-green-400",
+                dataOurservice = new(){
+                Title = "حلول دفاعية متقدمة",
+                Description = "استراتيجيات دفاعية مصممة خصيصًا لحماية أنظمتك من أحدث التهديدات السيبرانية، مع تحديثات مستمرة لمواكبة التطورات.",
+                IconColor = "text-green-400",
+                Features = new() {
+                    "حماية متعددة الطبقات",
+                    "تحديثات تلقائية للتهديدات الجديدة",
+                    "تقارير أمنية مفصلة"
+                }
+                }
+            }
+        
+        };
+    [Parameter]
+    public DataAddStudios? DataBuild { get; set; }
+    private CardAddOurservices Prams = new();
+    protected override void OnInitialized()
+    {
+        if (DataBuild == null)
+        {
+            DataBuild = new DataAddStudios
+                {
+                    Name = " خدماتنا المتكاملة",
+                    Description="نقدم مجموعة متكاملة من الخدمات المصممة لتلبية جميع احتياجاتك في مجال الأمن السيبراني",
+                    Items = studios
+                };
+        }
+
+        Prams = CardAddOurservices.Create(DataBuild);
+        base.OnInitialized();
+    }
+}
+
+
+
+

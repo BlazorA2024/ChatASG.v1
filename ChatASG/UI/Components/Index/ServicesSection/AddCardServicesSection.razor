@@ -1,0 +1,21 @@
+﻿@using global::Data.ServicesSection
+@inherits StylesCardAddStudios
+<h2 class="@ClassName ">@Prams.DataBuild.Name</h2>
+
+<div class="@ClassItem " style="padding:3%">
+    @foreach (var item in Prams.Items)
+    {
+        <StudiosCard Prams="item"   />
+    }
+</div>
+  
+@code {
+    [Parameter]
+    public CardAddStudios? Prams { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}

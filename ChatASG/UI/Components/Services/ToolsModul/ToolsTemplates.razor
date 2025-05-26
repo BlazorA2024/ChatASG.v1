@@ -1,0 +1,115 @@
+﻿@using global::Data.Tools
+
+
+<ToolCardModul Prams="Prams" />
+
+@code {
+    private List<DataToolCard> toolCardsList = new List<DataToolCard>
+    {
+           
+        new DataToolCard
+        {
+            Title = "AI Writer Pro",
+            Description = "Advanced AI writing assistant for content creation, blogging, and copywriting.",
+            Icon = "fas fa-pen-fancy",
+          
+            Badge = "GPT-4",
+            ButtonText = "Try Now"
+        },
+        new DataToolCard
+        {
+            Title = "ArtGen Studio",
+            Description = "Create stunning digital art with AI-powered image generation and editing tools.",
+            Icon = "fas fa-paint-brush",
+            Badge = "Stable Diffusion",
+            ButtonText = "Try Now"
+        },
+        new DataToolCard
+        {
+            Title = "VideoAI",
+            Description = "Automated video editing, enhancement and generation powered by artificial intelligence.",
+            Icon = "fas fa-video",
+            Badge = "Custom Model",
+            ButtonText = "Try Now"
+        },
+        // إضافة المزيد من البطاقات حسب الحاجة
+      new DataToolCard
+        {
+            Title = "ChatMaster",
+            Description = "Advanced conversational AI with customizable personalities and deep knowledge.",
+            Icon = "fas fa-robot",
+            Badge = "GPT-4",
+            ButtonText = "Try Now"
+        },
+        new DataToolCard
+        {
+            Title = "MelodyAI",
+            Description = "Generate original music tracks and sound effects with AI composition tools.",
+            Icon = "fas fa-music",
+            Badge = "Jukebox",
+            ButtonText = "Try Now"
+        },
+        new DataToolCard
+        {
+            Title = "CodePilot",
+            Description = "AI pair programmer that helps you write better code faster with intelligent suggestions.",
+            Icon = "fas fa-code",
+            Badge = "Codex",
+            ButtonText = "Try Now"
+        },
+        new DataToolCard
+        {
+            Title = "DataSense",
+            Description = "AI-powered data analysis and visualization tool for business intelligence.",
+            Icon = "fas fa-chart-line",
+            Badge = "Custom Model",
+            ButtonText = "Try Now"
+           
+        },
+           new DataToolCard
+        {
+            Title = "DataSen",
+            Description = "AI-powered data analysis and visualization tool for business intelligence.",
+            Icon = "fas fa-chart-line",
+            Badge = "Custom Model",
+            ButtonText = "Try Now"
+
+        },
+        // new DataToolCard
+        // {
+        //     Title = "TranslatePro",
+        //     Description = "Advanced AI translation supporting 100+ languages with context-aware accuracy.",
+        //     Icon = "fas fa-language",
+        //     Badge = "NLLB",
+        //     ButtonText = "Try Now"
+        // }
+        
+    };
+    [Parameter]
+    public DataCardListToolsModul? DataBuild { get; set; }
+
+
+
+    private CardListUnifiedToolsModul Prams;
+
+    protected override void OnInitialized()
+    {
+        if (DataBuild == null)
+        {
+
+            DataBuild = new DataCardListToolsModul
+                {
+                    Items = toolCardsList,
+                    Button = "Load More Tools",
+                    Icon = "fas fa-plus"
+
+
+                };
+        }
+
+        Prams = CardListUnifiedToolsModul.Create(DataBuild);
+
+        // Prams.ClassItem = "gdfgd";
+        base.OnInitialized();
+    }
+}

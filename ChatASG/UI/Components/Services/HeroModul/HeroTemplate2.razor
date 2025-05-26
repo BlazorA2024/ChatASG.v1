@@ -1,0 +1,58 @@
+﻿
+
+@using global::Data.Hero
+
+@code {
+
+    private DataSocialIcon socialIcon=new ()
+    {
+            Title = "Pandu Dhaulagiri",
+            Subtitle = "AI Engineer & Creative Technologist",
+            Description = "uilding unconventional systems at the intersection of AI, gaming, and interactive storytelling. Passionate about reverse engineering, local AI systems, and creating unique digital experiences.",
+            CallToActionText = "Get in touch",
+            Items = new List<DataIcon>
+            {
+        new DataIcon { Link = "mailto:@card.ContactEmail0-" ,IconColor = "social-icon text-blue-400 text-2xl" , Icon = "fas fa-envelope"},
+        new DataIcon { Link = "https://github.com/example",IconColor = "social-icon text-slate-200 text-2xl",Icon = "fab fa-github" },
+        new DataIcon { Link = "https://linkedin.com/in/pandu-dhaulagiri",IconColor = "social-icon text-blue-500 text-2xl" ,Icon = "fab fa-linkedin" },
+        new DataIcon { Link = "https://discordapp.com/users/example" ,IconColor = "social-icon text-indigo-400 text-2xl", Icon = "fab fa-discord" }
+
+            }
+    
+        };
+    [Parameter]
+    public DataHero? DataBuild { get; set; }
+
+
+
+    private CardHeroModule Prams;
+
+    protected override void OnInitialized()
+    {
+        if (DataBuild == null)
+        {
+
+            DataBuild = new DataHero
+                {
+                    IconTitle = "Ars Paradox",
+                    IconSubtitle = "Engineered Serendipity",
+                    // Name = "Pandu Dhaulagiri",
+                    // Title = "AI Engineer & Creative Technologist",
+                    // Description = "Building unconventional systems at the intersection of AI, gaming, and interactive storytelling. Passionate about reverse engineering, local AI systems, and creating unique digital experiences.",
+                    Image = "https://grainy-gradients.vercel.app/noise.svg",
+                    ISocial = socialIcon,
+
+
+
+
+                };
+        }
+
+        Prams = CardHeroModule.Create(DataBuild);
+
+        // Prams.ClassItem = "gdfgd";
+        base.OnInitialized();
+    }
+}
+
+<HeroCardComponent2 Prams="Prams" />

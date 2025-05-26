@@ -1,0 +1,65 @@
+﻿ @inherits StylesCardOurservices
+@using global::Data.Ourservices
+
+<section id="services" class="@ClassContainer">
+    <div class="@ClassItem">
+        <div class="@ClassTitle">
+            <h2 class="@ClassName">
+                @Prams.DataBuild.Name
+            </h2>
+            <p class="@ClassDescription">
+                @Prams.DataBuild.Description
+            </p>
+        </div>
+
+        <div class="@ClassItems">
+            @if (Prams?.Items != null)
+            {
+                @foreach (var item in Prams.Items)
+                {
+                    <OurservicesCard Prams="item" />
+                }
+            }
+        </div>
+    </div>
+</section>
+
+@code {
+    [Parameter]
+    public CardAddOurservices? Prams { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}
+ 
+@*  @using global::Data.Ourservices
+   
+<section id="services" class="py-20 px-4 sm:px-6 lg:px-8 bg-gray-800">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold mb-4">خدماتنا المتكاملة</h2>
+            <p class="text-gray-400 max-w-3xl mx-auto">
+                نقدم مجموعة متكاملة من الخدمات المصممة لتلبية جميع احتياجاتك في مجال الأمن السيبراني
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            @if (Prams?.Items != null)
+            {
+                @foreach (var item in Prams.Items)
+                {
+                    <OurservicesCard Prams="item" />
+                }
+            }
+        </div>
+    </div>
+</section>
+
+@code {
+    [Parameter]
+    public CardAddOurservices? Prams { get; set; }
+} *@
+ 

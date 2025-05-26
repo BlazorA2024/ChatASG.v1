@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+
+body {
+    font-family: 'Tajawal', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.voice-wave {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    height: 40px;
+}
+
+    .voice-wave span {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background-color: #3b82f6;
+        animation: voice-wave 1.5s infinite ease-in-out;
+    }
+
+        .voice-wave span:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .voice-wave span:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .voice-wave span:nth-child(3) {
+            animation-delay: 0.5s;
+        }
+
+        .voice-wave span:nth-child(4) {
+            animation-delay: 0.7s;
+        }
+
+        .voice-wave span:nth-child(5) {
+            animation-delay: 0.9s;
+        }
+
+@keyframes voice-wave {
+    0%, 100% {
+        transform: scaleY(1);
+    }
+
+    50% {
+        transform: scaleY(3);
+    }
+}
+
+.message-bubble {
+    max-width: 80%;
+    border-radius: 1rem;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    position: relative;
+}
+
+.user-message {
+    background-color: #3b82f6;
+    color: white;
+    margin-left: auto;
+    border-bottom-right-radius: 0.25rem;
+}
+
+.bot-message {
+    background-color: #e5e7eb;
+    color: #111827;
+    margin-right: auto;
+    border-bottom-left-radius: 0.25rem;
+}
+
+.typing-indicator {
+    display: inline-flex;
+    align-items: center;
+    background-color: #e5e7eb;
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}

@@ -1,0 +1,29 @@
+@using global::Data.Pricing
+@inherits StylesPricingQuiz
+@if (Prams != null)
+{
+<div class="@ClassContainer">
+    <h4 class="@ClassTitle">@Prams.DataBuild.Title</h4>
+    <p class="@ClassDescription">@Prams.DataBuild.Description</p>
+    <button class="@ClassButton">
+        @Prams.DataBuild.Button
+        <i class="@ClassButtonIcon"></i>
+    </button>
+</div>
+}
+@code {
+    [Parameter] public CardPricingQuiz? Prams { get; set; } 
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}
+        @* <div class="max-w-2xl mx-auto mt-16 glass-card rounded-2xl p-6 text-center">
+            <h4 class="font-bold text-lg mb-3">Not sure which plan is right for you?</h4>
+            <p class="text-gray-400 mb-4">Take our 30-second quiz to find the perfect plan based on your needs.</p>
+            <button class="text-accent font-medium flex items-center justify-center mx-auto">
+                Take the quiz
+                <i class="fas fa-arrow-right ml-2"></i>
+            </button>
+        </div> *@

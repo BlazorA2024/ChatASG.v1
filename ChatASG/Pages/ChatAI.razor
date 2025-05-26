@@ -1,0 +1,589 @@
+﻿@* @page "/chatai" *@
+@using ChatASG.Data
+@inject WeatherForecastService ForecastService
+@using System.Net.Http.Headers;
+@using System.Collections.Generic;
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject ProtectedSessionStorage Pss;
+@using ChatASG.UI.Components.Chat
+<PageTitle>Chat AI</PageTitle>
+@inject IJSRuntime JsRuntime
+@inherits Auth 
+
+<div class="d-flex flex-grow-1 flex-row" style="padding:2%;padding-bottom:0">
+
+    <MudPaper Elevation="25" Class="flex-grow-1 w70" Style="border-bottom: 11px solid rgba(89,74,226,1);">
+        <MudToolBar Dense="true">
+         
+                <MudIcon Icon="@Icons.Material.Outlined.ChatBubble" Style="margin-right:10px"></MudIcon>
+        @*        <MudText Style="width:30%" Typo="Typo.h6">ASG AI @CurrentTypeChat.TypeChat.ToString()</MudText>
+*@       
+
+<div style="width:30%">
+            <MudSelect T="TypeChat"  Label="ASG AI" Value="CurrentTypeChat.TypeChat"  ValueChanged="cheackTypeChat"  >
+                @foreach (var state in SampleData.BODYCHATS)
+                {
+                    <MudSelectItem T="TypeChat"  Value="@state.TypeChat">@state.TypeChat.ToString()</MudSelectItem>
+                }
+            </MudSelect>
+            </div>
+                <MudProgressLinear Color="Color.Primary" Indeterminate="@flag" Class="my-7" />
+
+          </MudToolBar>
+        <div style=" max-height: 65vh;height: 65vh;">
+        @if(isStartMean!=0){
+
+
+          @if(isStartMean==2){
+      
+              <ChooseModels  Action="cheackTypeChat1" />
+    
+    
+           }
+           else{
+
+                    <MainChat Questions="Questions" CurrentQuestion="@currentQuestion" ReUpdatePage=ReUpdatePage OnClickSuggation=OnClickSuggation />
+               
+               
+                 }
+        }
+        else{
+        
+                  <MudProgressCircular  Color="Color.Primary" Indeterminate="true" />
+
+        }
+        </div>
+
+
+
+        @*TextInput Chat*@
+        <MudPaper Elevation="25" Class="d-flex flex-row  " Style="padding:2%">
+            <MudTextField @ref="multilineReference" T="string"
+                          Label="enter any text" Lines="1" Class="mt-n2 mx-4" 
+                          Variant="Variant.Outlined" Text="@sampleText" 
+                          Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Send"
+                          OnAdornmentClick="@(() => SendTextInput(multilineReference.Text))" />
+        
+
+        </MudPaper>
+
+    </MudPaper>
+
+
+
+
+    <MudPaper Elevation="25" Class="pa-3 ml-6 w30">
+        <MudToolBar Dense="true">
+            <MudText Typo="Typo.h6" Inline="true" Class="mr-2">#</MudText>
+            <MudText Typo="Typo.h6">contacts</MudText>
+        </MudToolBar>
+
+    </MudPaper>
+</div>
+@code {
+    public List<Question> Questions = new List<Question>();
+    private List<Senario> Senarios = new List<Senario>();
+    private Question currentQuestion = null;
+    public List<Order> Orders { get; set; }
+    private IEnumerable<TypeChat> options { get; set; } = new HashSet<TypeChat>();
+    bool flag = false;
+    bool filter = true;
+    bool isSenario = false;
+
+    int  isStartMean =0;
+    private MudTextField<string> multilineReference;
+    string sampleText = " ";
+    string currentsampleText = " ";
+    string body = "";
+    string badydes = "";
+    MudChip[] selected;
+    bool issearch = false;
+    bool isstopbody = false;
+    string idsesion;
+    
+    List<Message> messages;
+    int isar = 0;
+
+    BodyChat CurrentTypeChat = SampleData.BODYCHATS[(int)TypeChat.General];
+
+    private FormStateBased formState = null;
+    private async void cheackTypeChat(TypeChat typeChat){
+
+        CurrentTypeChat = SampleData.BODYCHATS[(int)typeChat];
+
+        await Pss.SetAsync("typechat", (int)typeChat);
+
+        StateHasChanged();
+
+    }
+
+    private async void ReUpdatePage()
+    {
+        StateHasChanged();
+    }
+    private async void cheackTypeChat1(TypeChat typeChat)
+    {
+
+        CurrentTypeChat = SampleData.BODYCHATS[(int)typeChat];
+
+        await Pss.SetAsync("isStartMeank", (int)typeChat);
+        isStartMean = 1;
+        CurrentTypeChat = SampleData.BODYCHATS[(int)typeChat];
+        StateHasChanged();
+
+    }
+    class OutputModelASG
+    {
+        public int id { set; get; }
+        public string title { set; get; }
+
+    }
+
+    public string currentInputValue;
+    public async Task Save()
+    {
+        await Pss.SetAsync("name", currentInputValue);
+    }
+
+    public async Task Read()
+    {
+        var result = await Pss.GetAsync<string>("name");
+        currentInputValue = result.Success ? result.Value : "";
+    }
+
+    public async Task Delete()
+    {
+        await Pss.DeleteAsync("name");
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+
+
+
+        messages = new List<Message>();
+
+        try{
+            int? vs = (await Pss.GetAsync<int>("isStartMeank")).Value;
+
+            if (vs != null){
+                cheackTypeChat1((TypeChat)vs);
+
+
+            }
+            else {
+                isStartMean = 2;
+                StateHasChanged();
+            }
+            int? vs2 = (await Pss.GetAsync<int>("typechat")).Value;
+
+            if (vs2 != null)
+            {
+                cheackTypeChat((TypeChat)vs2);
+                StateHasChanged();
+
+            }
+
+        }
+        catch 
+        {
+
+        }
+        idsesion = await IDSesion;
+
+
+    }
+    private void senttextBybtn(string text)
+    {
+        var inp = text + " ";
+        foreach (var ms in messages)
+        {
+            inp += ms.BodyMessage + " " + ms.AwnserAI;
+        }
+
+        SendText(text, inp);
+
+    }
+    public string txtSenario = "Senario - Senarios - create Senario - create Senarios - Show Senario - display Senario ";
+
+    private  void SendTextInput(string text)
+    {
+        body = "";
+        isStartMean = 1;
+        isSenario = false;
+        isstopbody = false;
+        flag = true;
+        StateHasChanged();
+
+        if (CurrentTypeChat.TypeChat == TypeChat.StateBase)
+        {
+            if (formState == null)
+                formState = FormStateBased.getDSB();
+
+            sendState(text,StateBasedValueModel.Address);
+
+            return;
+        }
+        var kp = true;
+        var inp = text + " ";
+        foreach (var ms in messages)
+        {
+            inp += ms.BodyMessage + " " + ms.AwnserAI;
+        }
+        foreach(var txt in text.Split("-"))
+            if (txtSenario.Contains(txt, StringComparison.OrdinalIgnoreCase))
+            {
+                kp = false;
+                break;
+            }
+        if(kp)
+            SendText(text, text);
+        else
+            SendTextInputsen(text);
+
+
+    }
+
+    private void sendState(string txt,StateBasedValueModel stateBasedValueModel)
+    {
+        badydes = " ";
+        currentQuestion = null;
+        issearch = false; flag = true;
+
+        StateHasChanged();
+        var rowstate = formState.Values.FirstOrDefault(x => x.StateBasedValueModel == stateBasedValueModel);
+        if(rowstate.Items.Count>0)
+            rowstate.Items.Add(
+             new ValueSB()
+                 {
+                     TypeValueSB = TypeValueSB.Condition,
+                     Values = SampleData.TypeConditions.ToList()
+
+                 });
+        rowstate.Items.Add(new ValueSB());
+
+
+        var sugs= new List<SuggtionAnswer>();
+
+        foreach(var vfs in formState.Values)
+        {
+            sugs.Add(
+                 new SuggtionAnswer()
+                     {
+                         TypeSuggtion = TypeSuggtion.OnlyMessage,
+                         Body = "Add Or Update " +vfs.StateBasedValueModel.ToString()+ " with state ",
+                         Sender=vfs.StateBasedValueModel
+                     }
+            );
+        }
+        sugs.Add(new SuggtionAnswer()
+            {
+                TypeSuggtion = TypeSuggtion.GenerateMassage,
+                Body = "generate scenarios "
+            });
+
+        currentQuestion = new Question()
+            {
+                Body = txt,
+                TypeChat = CurrentTypeChat.TypeChat,
+                IsRtl = false,
+                Awnser = new Answer()
+                {
+                    Body = "  " +rowstate.Description,
+                    AnswerAI = new AnswerAI()
+                    {
+                        TypeAnswerAI = TypeAnswerAI.Form,
+                        Answer =rowstate
+                    },
+                    SuggtionAnswers = sugs
+
+                }
+            };
+
+        StateHasChanged();
+        issearch = true;
+        flag = false;
+
+
+
+
+        Questions.Add(currentQuestion);
+    }
+    private void SendTextInputsen(string text)
+    {
+        isSenario = true;
+        isstopbody = false;
+
+        //var inp = text + " ";
+        //foreach (var ms in messages)
+        //{
+        //    inp += ms.BodyMessage + " " + ms.AwnserAI;
+        //}
+
+        SendSen(text, text);
+
+
+    }
+    class Result
+    {
+        public string result { set; get; }="";
+    }
+    private async void SendSen(string text, string textsend)
+    {
+
+        badydes = body = "";
+        issearch = false; flag = true;
+        currentQuestion = null;
+        StateHasChanged();
+        var answ = "";
+
+        currentsampleText = text;
+        try
+        {
+            var client = new HttpClient();
+            var request = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Get,
+                    RequestUri = new Uri("https://asgmodel.pythonanywhere.com/api/search/" + textsend),
+
+
+                };
+
+
+            using (var response = await client.SendAsync(request))
+            {
+                response.EnsureSuccessStatusCode();
+
+                var Outputs = (await response.Content.ReadFromJsonAsync<List<TSenario>>());
+                currentQuestion = new Question()
+                    {
+                        Body = currentsampleText,
+                        TypeChat = CurrentTypeChat.TypeChat,
+                        IsRtl =false,
+                        Awnser = new Answer()
+                        {
+                            Body =" ",
+                            AnswerAI = new AnswerAI()
+                            {
+                                TypeAnswerAI = TypeAnswerAI.Genreate,
+                                Answer = Outputs
+                            },
+                            SuggtionAnswers = new List<SuggtionAnswer>()
+                            {
+                                new SuggtionAnswer()
+                                {
+                                    TypeSuggtion=TypeSuggtion.GenerateMassage,
+                                    Body="generate scenarios "
+                                },
+                                 new SuggtionAnswer()
+                                {
+                                    TypeSuggtion=TypeSuggtion.OnlyMessage,
+                                    Body="yes"
+                                }
+                            }
+
+                        }
+                    };
+
+
+                StateHasChanged();
+                Questions.Add(currentQuestion);
+            }
+
+        }
+        catch
+        {
+
+        }
+        issearch = true;
+        flag = false;
+
+
+        StateHasChanged();
+
+    }
+
+    private async void SendText(string text, string textsend)
+    {
+
+        badydes = " ";
+        currentQuestion = null;
+        issearch = false; flag = true;
+        StateHasChanged();
+        var answ = "";
+        currentsampleText = text;
+        try {
+            var client = new HttpClient();
+            var request = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Get,
+                    RequestUri = new Uri("https://asgmodel.pythonanywhere.com//api/"+CurrentTypeChat.Url+"/" + textsend),
+                    Content = new StringContent("{\r\"token\": \" " + idsesion + "\"}")
+                    {
+                        Headers =
+    {
+        ContentType = new MediaTypeHeaderValue("application/json")
+    }
+                    }
+
+                };
+
+
+            using (var response = await client.SendAsync(request))
+            {
+                response.EnsureSuccessStatusCode();
+
+                var Output = (await response.Content.ReadFromJsonAsync<OutputModel>());
+                isar = (Output.published) ? 1 : 0;
+                StateHasChanged();
+                flag = false;
+                var texts = CurrentTypeChat.LG[isar][5] + "  -  " + Output.title + " - ";
+                currentQuestion = new Question()
+                    {
+                        Body = currentsampleText,
+                        TypeChat = CurrentTypeChat.TypeChat,
+                        IsRtl = Output.published,
+                        Awnser=new Answer()
+                        {
+                            Body=Output.title,
+                            AnswerAI=new AnswerAI()
+                            {
+                                TypeAnswerAI=TypeAnswerAI.Text,
+                                Answer=Output.description
+                            },
+                            SuggtionAnswers=new List<SuggtionAnswer>()
+                            {
+                                 new SuggtionAnswer()
+                                {
+                                    TypeSuggtion=TypeSuggtion.GenerateMassage,
+                                    Body="generate scenarios  " +Output.title
+                                },
+                                 new SuggtionAnswer()
+                                {
+                                    TypeSuggtion=TypeSuggtion.OnlyMessage,
+                                    Body="yes"
+                                }
+                            }
+
+                        }
+                    };
+
+                StateHasChanged();
+                //foreach (var txt in texts.Split())
+                //{
+                //    body += txt + " ";
+                //    Thread.Sleep(100);
+                //    StateHasChanged();
+                //}
+                //body += "                                                                                 ";
+                //foreach (var txt in Output.description.Split())
+                //{
+                //    body += txt + " ";
+                //    Thread.Sleep(100);
+                //    StateHasChanged();
+                //}
+
+                //badydes = Output.title;
+                //answ = Output.description;
+
+            }
+        }
+        catch
+        {
+            var texts = "Did you mean ? " + currentsampleText;
+
+            foreach (var txt in texts.Split())
+            {
+                body += txt + " ";
+                Thread.Sleep(100);
+                StateHasChanged();
+            }
+        }
+        issearch = true;
+        flag = false;
+
+
+
+        messages.Add(new Message() { BodyMessage = currentsampleText, AwnserAI = answ });
+
+        Questions.Add(currentQuestion);
+
+    }
+
+    private void sendTextByState(string text,string textsend)
+    {
+
+    }
+
+
+    void OnClickSuggation(SuggtionAnswer sug)
+    {
+        if (sug.TypeSuggtion == TypeSuggtion.GenerateMassage)
+        {
+            SendTextInputsen(sug.Body);
+            return;
+        }
+        if (CurrentTypeChat.TypeChat != TypeChat.StateBase)
+            SendTextInput(sug.Body);
+        else
+            sendState(sug.Body, (StateBasedValueModel)sug.Sender);
+    }
+
+    public class Stepsbenchmark
+    {
+        public string begin { set; get; } = "";
+        public string check_expected_inputs { set; get; } = "";
+        public string finalization { set; get; } = "";
+        public string get_outputs { set; get; } = "";
+        public string input_blocks_matching { set; get; } = "";
+        public string input_blocks_matching_cached { set; get; } = "";
+        public string input_query { set; get; } = "";
+    }
+    public class OutChatBot
+    {
+        public string Out { set; get; } = " ";
+        public string request_duration { set; get; } = " ";
+        public Stepsbenchmark steps_benchmark { set; get; }
+        public string who { set; get; } = "";
+        public int whotype { set; get; }
+    }
+    protected  async Task Sendbot(string message)
+    {
+
+        var client = new HttpClient();
+var request = new HttpRequestMessage
+{
+	Method = HttpMethod.Post,
+	RequestUri = new Uri("https://open-ai21.p.rapidapi.com/qa"),
+	Headers =
+	{
+		{ "X-RapidAPI-Key", "e8af95d120msha76214f99ebe838p1ad208jsnda6e1e2cd7d9" },
+		{ "X-RapidAPI-Host", "open-ai21.p.rapidapi.com" },
+	},
+	Content = new StringContent("{\r\"question\": \"what is "+message+"\",\r\"context\": \".\"\r}")
+	{
+		Headers =
+		{
+			ContentType = new MediaTypeHeaderValue("application/json")
+		}
+	}
+};
+using (var response = await client.SendAsync(request))
+{
+	response.EnsureSuccessStatusCode();
+            var Output = (await response.Content.ReadFromJsonAsync<Result>());
+	
+
+            foreach (var txt in Output.result.Split())
+            {
+                body += txt + " ";
+                Thread.Sleep(100);
+                StateHasChanged();
+            }
+
+        
+}
+
+       
+    }
+}

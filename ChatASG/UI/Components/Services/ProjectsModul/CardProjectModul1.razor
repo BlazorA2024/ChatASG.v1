@@ -1,0 +1,25 @@
+﻿@using global::Data.Projects
+
+
+
+
+    @if (Prams != null)
+    {
+
+                <div class="card-gradient rounded-xl overflow-hidden border border-slate-700 glow-effect">
+                    <div class="md:flex">
+                     
+                        <CardProject Prams="Prams.IProject" />
+                     
+                        <CardProjectDetail Prams="Prams.IDetail" />
+                    </div>
+                </div>
+    }
+        
+    
+        
+  
+@code {
+
+    [Parameter] public ListUnifiedProjectModul? Prams { get; set; }
+}

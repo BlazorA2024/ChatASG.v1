@@ -1,0 +1,27 @@
+﻿@using global::Data.HeaderModels
+
+@inherits StylesButtonIcon
+
+@if (Prams != null)
+{
+    <button id="toggleMic" class="@ClassButton">
+    <i class="@Prams.DataBuild.Icon @ClassIcon"></i>
+    <span>@Prams.DataBuild.Buttons</span>
+</button>
+}
+
+@code {
+    [Parameter] public CardButtonsModul? Prams { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+
+        await base.OnInitializedAsync();
+    }
+}
+
+@* 
+<button class="text-sm text-purple-400 hover:text-purple-300 flex items-center">
+    <i class="fas fa-sliders-h mr-1"></i> @Prams.DataBuild.AdvancedFiltersText
+</button> *@

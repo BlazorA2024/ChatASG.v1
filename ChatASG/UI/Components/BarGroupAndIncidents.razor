@@ -1,0 +1,31 @@
+﻿<MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
+         <MudTabPanel Text="Incidents">
+
+        <BarTemplate Height="@Height" Orders="@OrdersIncidents" isHorizontal=true
+                         Title="Percentage of similarity with ICS incidents" />
+
+         </MudTabPanel>
+
+         <MudTabPanel Text="Groups">
+        <BarTemplate Height="@Height" Orders="@OrdersGroups" isHorizontal=true
+                         Title="Percentage of similarity with ICS groups" />
+
+         </MudTabPanel>
+ </MudTabs>
+
+@code{
+
+
+    [Parameter] public List<Order> OrdersGroups { get; set; }
+
+    [Parameter] public List<Order> OrdersIncidents { get; set; }
+    [Parameter] public int Height { get; set; } = 400;
+
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+       
+
+    }
+ }                                   

@@ -1,0 +1,31 @@
+﻿@using ChatASG.UI.Components.Index.ContactSection.Maelumat
+@using Microsoft.AspNetCore.Components
+@using global::Data.ContactSection
+@inherits StylesContactCard
+@if(Prams != null)
+{
+<section id="contact" class="@ClassSection">
+    <div class="@ClassContainer">
+        <div class="text-center mb-16">
+            <h2 class="@ClassTitle">@Prams.DataBuild.Title</h2>
+            <p class="@ClassDescription">@Prams.DataBuild.Description</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <CardForrm Prams="Prams.Iform" />
+         <ContactInfoSection Prams="Prams.contact2"/>
+
+           
+        </div>
+    </div>
+</section>
+}
+
+@code {
+    [Parameter] public CardContact? Prams { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}

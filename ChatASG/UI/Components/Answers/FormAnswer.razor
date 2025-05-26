@@ -1,0 +1,31 @@
+﻿
+<MudAlert Style="width:100%">
+
+    <TextAnswer TAnswer="@(new AnswerText(){
+            Body="State",
+            TitelBody=Answer.Body,
+            IsRtl=IsRtl,
+            TypeChat=TypeChat
+            })"
+                isDelay=isDelay
+                ReUpdatePage=OnEndDelay />
+</MudAlert>
+@if (isShow) {
+    <TemplateRowBased Model="@((StateBasedValue)Answer.AnswerAI.Answer)"    />
+}
+@code{
+    [Parameter] public Answer Answer { set; get; }
+    [Parameter] public bool isDelay { set; get; } = false;
+    [Parameter] public Action ReUpdatePage { set; get; } = null;
+    [Parameter] public bool IsRtl { set; get; } = false;
+    [Parameter] public TypeChat TypeChat { set; get; } = TypeChat.General;
+    bool isShow = false;
+    private void OnEndDelay()
+    {
+        isShow = true;
+        isDelay = false;
+
+        StateHasChanged();
+        ReUpdatePage();
+    }
+}

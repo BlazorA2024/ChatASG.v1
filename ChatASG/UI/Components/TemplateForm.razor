@@ -1,0 +1,99 @@
+﻿@inject ISnackbar Snackbar
+
+<div style="width:100%;display:flex">
+    
+        <MudSelect T="StateBasedValue" Label="@Label"  Value="basedValue" ValueChanged="cheackType">
+         
+        @foreach (var item in Values)
+        {
+
+            <MudSelectItem T="StateBasedValue" Value="item">
+               
+             
+                <MudTooltip Arrow="true" Placement="Placement.Right" Color="Color.Primary" >
+                <ChildContent>
+                        <MudIconButton Size="Size.Small" Icon="@Icons.Outlined.Info" />
+                      
+                </ChildContent>
+                <TooltipContent >
+                        <MudText Typo="Typo.h6"> @item.StateBasedValueModel.ToString()</MudText>
+                    <div style="padding:2%;display:flex;flex-direction:column">
+                  
+
+                            @foreach (var txt in ((basedValue != null) ? basedValue.Description : "select").Split("\n")){
+                                <MudText Typo="Typo.caption" Style="width:250px;" >@txt </MudText>
+                            }
+                 </div>
+                </TooltipContent>
+            </MudTooltip>
+                @item.StateBasedValueModel.ToString()
+                </MudSelectItem>
+               
+      }
+       
+    </MudSelect>
+    <div class="btnstate">
+    <MudButton Disabled="@_processing" OnClick="ProcessSomething" Variant="Variant.Filled" Color="Color.Primary">
+        @if (_processing)
+        {
+            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+            <MudText Class="ms-2">Processing</MudText>
+        }
+        else
+        {
+            <MudText>Add</MudText>
+        }
+    </MudButton>
+    </div>
+       
+
+</div>
+
+@foreach (var item in Values){
+   
+    <TemplateRowBased Model="item" />
+    
+} 
+
+@code{
+    [Parameter] public List<StateBasedValue> Values { set; get; }
+    [Parameter] public Color MColor { set; get; } = Color.Primary;
+    [Parameter] public string Label { set; get; } = "init  State";
+    StateBasedValue basedValue { set; get; } = null;
+
+    async  void cheackType(StateBasedValue state)
+    {
+        basedValue = state;
+
+    }
+    private bool _processing = false;
+
+    async Task ProcessSomething()
+    {
+        if(basedValue!=null){
+            _processing = true;
+            await Task.Delay(2000);
+            _processing = false;
+            if (basedValue.Items.Count>0)
+                basedValue.Items.Add(
+           new ValueSB()
+               {
+                   TypeValueSB = TypeValueSB.Condition,
+                   Values = SampleData.TypeConditions.ToList()
+
+               });
+
+
+            basedValue.Items.Add(new ValueSB());
+            StateHasChanged();
+            Snackbar.Add("Success", Severity.Success);
+            
+        }
+        else
+        {
+            Snackbar.Add("Please select the system status", Severity.Error);
+           
+        }
+    }
+    
+}

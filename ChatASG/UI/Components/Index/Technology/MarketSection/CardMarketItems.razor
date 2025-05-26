@@ -1,0 +1,22 @@
+@using global::Data.Technology
+@inherits StylesCardMarketItem
+@if (Prams !=null)
+{
+
+    <div class="@ClassContainer ">
+        <i class="@Prams.DataBuild.IconClass mb-2"></i>
+        <h4 class="@ClassTitle ">@Prams.DataBuild.Title</h4>
+        <p class="@ClassDescription ">@Prams.DataBuild.Description</p>
+    </div>
+}
+@code {
+ 
+    [Parameter]
+    public CardMarketItem? Prams { get; set; } 
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}
+ 

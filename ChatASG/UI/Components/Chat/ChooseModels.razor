@@ -1,0 +1,18 @@
+﻿<MudGrid Class="RCardP hdp kpf" Justify="Justify.Center">
+
+    @foreach (var cht in SampleData.BODYCHATS)
+    {
+
+        <MudItem>
+            <MudPaper Class="mdbt" Height="140px" Width="140px">
+                <MudChip Style="font-size:12px " Variant="Variant.Outlined" Label="true" OnClick="@(()=>Action(cht.TypeChat))" Color="(Color)(int)cht.TypeChat">Model AI @cht.TypeChat.ToString()</MudChip>
+            </MudPaper>
+        </MudItem>
+    }
+
+</MudGrid>
+
+@code{
+
+    [Parameter] public Action<TypeChat> Action{ set; get; }
+}

@@ -1,0 +1,34 @@
+@inherits StylesCardStillFAQ
+@using global::Data.FAQ
+
+
+@if (Prams != null)
+{
+<div class="@ClassContainer">
+    <h4 class="@ClassTitle">@Prams.DataBuild.Title</h4>
+    <p class="@ClassDescription">@Prams.DataBuild.Description</p>
+    <button class="@ClassButton">
+        @Prams.DataBuild.Button
+    </button>
+</div>
+
+}
+@code {
+    [Parameter] public CardStillFAQ? Prams { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}
+        @*  
+        
+        <div class="text-center mt-16">
+                <h4 class="text-xl font-bold mb-4">Still have questions?</h4>
+                <p class="text-gray-400 mb-6">
+                    We're happy to help! Our team typically responds within 1 business day.
+                </p>
+                <button class="px-6 py-3 bg-gradient-to-r from-accent to-accent2 text-dark font-bold rounded-lg hover:opacity-90 transition">
+                    Contact Support
+                </button>
+            </div>*@

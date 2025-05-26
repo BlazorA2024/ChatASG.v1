@@ -1,0 +1,25 @@
+@using global::Data.ContactSection
+@inherits StylesCardContactInfo
+
+@if (Prams != null)
+{
+    <div class="@ClassContainer " style="gap: 12px;">
+        <div class="@($"{Prams.DataBuild.Bg} {ClassIconBox}")">
+            <i class="@Prams.DataBuild.Icon"></i>
+        </div>
+        <div>
+            <h4 class="@ClassTitle">@Prams.DataBuild.Title</h4>
+            <p class="@ClassTextInfo">@Prams.DataBuild.Text</p>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public CardContactInfo? Prams { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}

@@ -1,0 +1,1098 @@
+﻿@page "/vtc2"
+@using Microsoft.AspNetCore.Components.Web
+@namespace ChatASG.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.AspNetCore.Authentication
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محادثة صوتية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link href="~/css/vct2.css" rel="stylesheet" />
+    <style>
+ 
+    </style>
+</head>
+
+
+<body class="min-h-screen flex flex-col">
+    <header class="gradient-bg text-white p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <div class="bg-white/20 p-3 rounded-full">
+                    <i class="fas fa-robot text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold">المساعد الصوتي الذكي</h1>
+                    <p class="text-sm opacity-80">مساعدك الشخصي للتفاعل الصوتي</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4 space-x-reverse">
+                <div id="connection-status" class="flex items-center bg-white/10 px-3 py-1 rounded-full">
+                    <span class="text-sm">متصل</span>
+                    <span class="connection-dot connected ml-2"></span>
+                </div>
+                <button id="help-btn" class="tooltip bg-white/10 hover:bg-white/20 p-3 rounded-full text-white transition">
+                    <i class="fas fa-question"></i>
+                    <span class="tooltip-text">مساعدة</span>
+                </button>
+                <button id="settings-btn" class="tooltip bg-white/10 hover:bg-white/20 p-3 rounded-full text-white transition">
+                    <i class="fas fa-cog"></i>
+                    <span class="tooltip-text">الإعدادات</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 container mx-auto p-4">
+        <div id="chat-container" class="chat-container bg-white/50 rounded-2xl shadow-sm p-4 mb-4">
+            <div class="message-bubble bot-message">
+                <div class="flex items-center mb-2">
+                    <div class="avatar avatar-bot">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="mr-3">
+                        <span class="font-bold text-blue-600">المساعد الذكي</span>
+                        <div class="timestamp">الآن</div>
+                    </div>
+                </div>
+                <p>مرحباً بك! 👋 أنا مساعدك الصوتي الذكي. يمكنك التحدث معي بالضغط على زر الميكروفون وسأساعدك في أي استفسار لديك.</p>
+                <div class="suggestions-container">
+                    <div class="suggestion-chip" onclick="sendSuggestion('ما هو اسمك؟')">
+                        <i class="fas fa-comment-dots ml-2"></i>
+                        ما هو اسمك؟
+                    </div>
+                    <div class="suggestion-chip" onclick="sendSuggestion('كم الساعة الآن؟')">
+                        <i class="fas fa-clock ml-2"></i>
+                        كم الساعة الآن؟
+                    </div>
+                    <div class="suggestion-chip" onclick="sendSuggestion('كيف حالك؟')">
+                        <i class="fas fa-smile ml-2"></i>
+                        كيف حالك؟
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Audio Wave Container -->
+        <div id="audio-wave-container" class="audio-wave-container hidden">
+            <div class="listening-indicator" id="listening-indicator">
+                <div class="listening-text">جاري الاستماع لك...</div>
+                <div class="listening-wave">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <div class="audio-wave" id="audio-wave">
+                <div class="audio-wave-bar"></div>
+                <div class="audio-wave-bar"></div>
+                <div class="audio-wave-bar"></div>
+                <div class="audio-wave-bar"></div>
+                <div class="audio-wave-bar"></div>
+                <div class="audio-wave-bar"></div>
+                <div class="audio-wave-bar"></div>
+                <div class="audio-wave-bar"></div>
+                <div class="audio-wave-bar"></div>
+            </div>
+        </div>
+
+        <div class="suggestions-container bg-white/80 rounded-xl p-3 shadow-sm">
+            <p class="text-center text-gray-600 mb-2">جرب أن تسأل:</p>
+            <div class="flex flex-wrap justify-center">
+                <div class="suggestion-chip" onclick="sendSuggestion('ما هو الطقس اليوم؟')">
+                    <i class="fas fa-cloud-sun ml-2"></i>
+                    ما هو الطقس اليوم؟
+                </div>
+                <div class="suggestion-chip" onclick="sendSuggestion('أخبرني نكتة')">
+                    <i class="fas fa-grin-squint-tears ml-2"></i>
+                    أخبرني نكتة
+                </div>
+                <div class="suggestion-chip" onclick="sendSuggestion('ما هي آخر الأخبار؟')">
+                    <i class="fas fa-newspaper ml-2"></i>
+                    ما هي آخر الأخبار؟
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white p-4 shadow-lg border-t border-gray-200">
+        <div class="container mx-auto">
+            <div class="flex flex-col items-center">
+                <div class="relative mb-4">
+                    <button id="mic-btn" class="floating-btn gradient-bg hover:opacity-90 text-white rounded-full p-5 shadow-xl pulse">
+                        <i class="fas fa-microphone text-3xl"></i>
+                    </button>
+                    <div class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white text-xs px-2 py-1 rounded-full whitespace-nowrap">
+                        تحدث الآن
+                    </div>
+                </div>
+
+                <div class="flex space-x-4 space-x-reverse">
+                    <button id="clear-btn" class="tooltip floating-btn bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-full p-3">
+                        <i class="fas fa-trash-alt"></i>
+                        <span class="tooltip-text">مسح المحادثة</span>
+                    </button>
+                    <button id="history-btn" class="tooltip floating-btn bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-full p-3">
+                        <i class="fas fa-history"></i>
+                        <span class="tooltip-text">سجل المحادثات</span>
+                    </button>
+                    <button id="feedback-btn" class="tooltip floating-btn bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-full p-3">
+                        <i class="fas fa-comment-dots"></i>
+                        <span class="tooltip-text">إرسال ملاحظات</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="status-message" class="text-center mt-4 text-sm text-gray-600 flex justify-center items-center">
+                <span>اضغط على زر الميكروفون للتحدث مع المساعد</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header gradient-bg text-white">
+                <h3 class="text-xl font-bold">إعدادات المساعد</h3>
+                <button id="close-settings" class="text-white hover:text-gray-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label class="input-label">سرعة الصوت</label>
+                    <input type="range" min="0.5" max="2" step="0.1" value="1" class="range-slider" id="voice-rate">
+                    <div class="range-labels">
+                        <span>بطيء</span>
+                        <span>متوسط</span>
+                        <span>سريع</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">نبرة الصوت</label>
+                    <input type="range" min="0" max="2" step="0.1" value="1" class="range-slider" id="voice-pitch">
+                    <div class="range-labels">
+                        <span>منخفضة</span>
+                        <span>متوسطة</span>
+                        <span>عالية</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">لغة المساعد</label>
+                    <select class="input-field select-field">
+                        <option value="ar-SA">العربية (السعودية)</option>
+                        <option value="en-US">الإنجليزية (أمريكي)</option>
+                        <option value="fr-FR">الفرنسية</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">نمط المحادثة</label>
+                    <select class="input-field select-field">
+                        <option value="formal">رسمي</option>
+                        <option value="casual">ودي</option>
+                        <option value="professional">مهني</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancel-settings">إلغاء</button>
+                <button class="btn btn-primary" id="save-settings">حفظ التغييرات</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div id="help-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header gradient-bg text-white">
+                <h3 class="text-xl font-bold">مساعدة المساعد الصوتي</h3>
+                <button id="close-help" class="text-white hover:text-gray-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-6">
+                    <h4 class="font-bold text-lg mb-3 text-gray-800">كيفية استخدام المساعد</h4>
+                    <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                        <li>اضغط على زر <span class="command-highlight"><i class="fas fa-microphone"></i> تحدث الآن</span> لبدء التحدث</li>
+                        <li>انتظر حتى ينتهي المساعد من الاستماع (سترى موجة صوتية)</li>
+                        <li>سيتم عرض رد المساعد نصياً وسماعه صوتياً</li>
+                        <li>استخدم الأزرار في الأسفل للتحكم في المحادثة</li>
+                    </ol>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-bold text-lg mb-3 text-gray-800">أمثلة على الأوامر</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div class="bg-blue-50 p-3 rounded-lg">
+                            <div class="font-bold text-blue-700 mb-1"><i class="fas fa-info-circle mr-1"></i> معلومات عامة</div>
+                            <p class="text-sm text-gray-700">"ما هو اسمك؟"</p>
+                            <p class="text-sm text-gray-700">"كم الساعة الآن؟"</p>
+                            <p class="text-sm text-gray-700">"ما هو تاريخ اليوم؟"</p>
+                        </div>
+                        <div class="bg-green-50 p-3 rounded-lg">
+                            <div class="font-bold text-green-700 mb-1"><i class="fas fa-cloud-sun mr-1"></i> الطقس</div>
+                            <p class="text-sm text-gray-700">"ما هو الطقس اليوم؟"</p>
+                            <p class="text-sm text-gray-700">"كيف الطقس في الرياض؟"</p>
+                        </div>
+                        <div class="bg-purple-50 p-3 rounded-lg">
+                            <div class="font-bold text-purple-700 mb-1"><i class="fas fa-newspaper mr-1"></i> الأخبار</div>
+                            <p class="text-sm text-gray-700">"ما هي آخر الأخبار؟"</p>
+                            <p class="text-sm text-gray-700">"أخبرني عن أخبار الرياضة"</p>
+                        </div>
+                        <div class="bg-yellow-50 p-3 rounded-lg">
+                            <div class="font-bold text-yellow-700 mb-1"><i class="fas fa-grin-squint-tears mr-1"></i> ترفيه</div>
+                            <p class="text-sm text-gray-700">"أخبرني نكتة"</p>
+                            <p class="text-sm text-gray-700">"ما هي أقوال الحكماء؟"</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-100 p-3 rounded-lg">
+                    <h4 class="font-bold text-lg mb-2 text-gray-800">نصائح للاستخدام الأمثل</h4>
+                    <ul class="list-disc list-inside space-y-1 text-gray-700">
+                        <li>تحدث بوضوح وبجمل كاملة</li>
+                        <li>استخدم بيئة هادئة للتفاعل مع المساعد</li>
+                        <li>يمكنك تعديل سرعة ونبرة الصوت من الإعدادات</li>
+                        <li>اضغط على زر <span class="command-highlight"><i class="fas fa-trash-alt"></i></span> لمسح المحادثة</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary w-full" id="close-help-btn">حسناً، فهمت</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div id="feedback-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header gradient-bg text-white">
+                <h3 class="text-xl font-bold">إرسال ملاحظات</h3>
+                <button id="close-feedback" class="text-white hover:text-gray-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label class="input-label">عنوان الملاحظة</label>
+                    <input type="text" class="input-field" placeholder="مثال: مشكلة في التعرف على الصوت">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">نوع الملاحظة</label>
+                    <select class="input-field select-field">
+                        <option value="bug">مشكلة تقنية</option>
+                        <option value="suggestion">اقتراح تحسين</option>
+                        <option value="compliment">إشادة</option>
+                        <option value="other">أخرى</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">تفاصيل الملاحظة</label>
+                    <textarea class="input-field textarea-field" placeholder="صف ملاحظتك بالتفصيل..."></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">تقييمك للمساعد</label>
+                    <div class="flex justify-center space-x-2 my-2">
+                        <i class="fas fa-star text-gray-300 text-2xl hover:text-yellow-400 cursor-pointer" onmouseover="highlightStars(1)" onclick="setRating(1)"></i>
+                        <i class="fas fa-star text-gray-300 text-2xl hover:text-yellow-400 cursor-pointer" onmouseover="highlightStars(2)" onclick="setRating(2)"></i>
+                        <i class="fas fa-star text-gray-300 text-2xl hover:text-yellow-400 cursor-pointer" onmouseover="highlightStars(3)" onclick="setRating(3)"></i>
+                        <i class="fas fa-star text-gray-300 text-2xl hover:text-yellow-400 cursor-pointer" onmouseover="highlightStars(4)" onclick="setRating(4)"></i>
+                        <i class="fas fa-star text-gray-300 text-2xl hover:text-yellow-400 cursor-pointer" onmouseover="highlightStars(5)" onclick="setRating(5)"></i>
+                    </div>
+                    <div class="text-center text-sm text-gray-500" id="rating-text">اضغط على النجوم للتقييم</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancel-feedback">إلغاء</button>
+                <button class="btn btn-primary" id="submit-feedback">إرسال الملاحظة</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notification-message">تم الإجراء بنجاح</span>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const micBtn = document.getElementById('mic-btn');
+            const clearBtn = document.getElementById('clear-btn');
+            const helpBtn = document.getElementById('help-btn');
+            const settingsBtn = document.getElementById('settings-btn');
+            const feedbackBtn = document.getElementById('feedback-btn');
+            const historyBtn = document.getElementById('history-btn');
+
+            // Audio Wave Elements
+            const audioWaveContainer = document.getElementById('audio-wave-container');
+            const listeningIndicator = document.getElementById('listening-indicator');
+            const audioWave = document.getElementById('audio-wave');
+
+            // Modals
+            const settingsModal = document.getElementById('settings-modal');
+            const closeSettings = document.getElementById('close-settings');
+            const cancelSettings = document.getElementById('cancel-settings');
+            const saveSettings = document.getElementById('save-settings');
+
+            const helpModal = document.getElementById('help-modal');
+            const closeHelp = document.getElementById('close-help');
+            const closeHelpBtn = document.getElementById('close-help-btn');
+
+            const feedbackModal = document.getElementById('feedback-modal');
+            const closeFeedback = document.getElementById('close-feedback');
+            const cancelFeedback = document.getElementById('cancel-feedback');
+            const submitFeedback = document.getElementById('submit-feedback');
+
+            // Chat elements
+            const chatContainer = document.getElementById('chat-container');
+            const statusMessage = document.getElementById('status-message');
+            const connectionStatus = document.getElementById('connection-status');
+            const connectionDot = document.querySelector('.connection-dot');
+
+            // Notification
+            const notification = document.getElementById('notification');
+            const notificationMessage = document.getElementById('notification-message');
+
+            // App State
+            let isListening = false;
+            let recognition;
+            let voices = [];
+            let selectedVoice = null;
+            let voiceRate = 1;
+            let voicePitch = 1;
+            let currentRating = 0;
+            let audioContext;
+            let analyser;
+            let microphone;
+            let audioWaveBars;
+
+            // Knowledge Base for intelligent responses
+            const knowledgeBase = {
+                greetings: ["مرحباً", "أهلاً وسهلاً", "مرحباً بك", "أهلاً بك"],
+                farewells: ["مع السلامة", "إلى اللقاء", "أراك لاحقاً"],
+                questions: {
+                    "اسمك": "أنا المساعد الصوتي الذكي، يمكنك تسميتي كما تريد! 😊",
+                    "الوقت": `الوقت الآن هو ${new Date().toLocaleTimeString('ar-SA')} ⏰`,
+                    "التاريخ": `تاريخ اليوم هو ${new Date().toLocaleDateString('ar-SA')} 📅`,
+                    "حالك": "بخير الحمد لله، كيف حالك أنت؟ 🌟",
+                    "مساعدة": "كيف يمكنني مساعدتك؟ يمكنك سؤالي عن أي شيء وسأحاول مساعدتك بأفضل طريقة ممكنة. 💡",
+                    "شكر": "العفو! دائماً سعيد بمساعدتك. هل هناك شيء آخر تحتاجه؟ 🤗",
+                    "نكتة": "لماذا لم يستطع الكمبيوتر النوم؟ لأنه كان لديه الكثير من البايتات! 😄",
+                    "أخبار": "حالياً، يمكنني إخبارك أن هذا المساعد في مرحلة التطوير. قريباً سأتمكن من إخبارك بآخر الأخبار! 📰",
+                    "طقس": "للأسف لا يمكنني التحقق من الطقس حالياً، ولكن يمكنك استخدام تطبيق الطقس على هاتفك. ☀️⛈️"
+                },
+                defaultResponses: [
+                    "أنا أفهم أنك تقول: \"{input}\". هل يمكنك توضيح سؤالك أكثر؟ 🤔",
+                    "هذا مثير للاهتمام! {input} - هل لديك أي أسئلة أخرى؟ 💭",
+                    "شكراً لمشاركة ذلك معي. هل تريد أن أساعدك في شيء محدد؟ 🎯"
+                ]
+            };
+
+            // Initialize the app
+            function initApp() {
+                initSpeechRecognition();
+                initSpeechSynthesis();
+                setupEventListeners();
+                simulateConnection();
+                initAudioWave();
+            }
+
+            // Initialize speech recognition
+            function initSpeechRecognition() {
+                if (!('webkitSpeechRecognition' in window)) {
+                    showNotification('عذراً، متصفحك لا يدعم ميزة التعرف على الصوت. يرجى استخدام متصفح Chrome أو Edge.', 'error');
+                    return;
+                }
+
+                recognition = new webkitSpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = 'ar-SA';
+
+                recognition.onstart = onListeningStart;
+                recognition.onresult = onSpeechResult;
+                recognition.onerror = onRecognitionError;
+                recognition.onend = onListeningEnd;
+            }
+
+            // Initialize speech synthesis
+            function initSpeechSynthesis() {
+                if (!('speechSynthesis' in window)) {
+                    showNotification('عذراً، متصفحك لا يدعم ميزة التحدث. يرجى استخدام متصفح Chrome أو Edge.', 'error');
+                    return;
+                }
+
+                speechSynthesis.onvoiceschanged = function() {
+                    voices = speechSynthesis.getVoices();
+                    selectedVoice = voices.find(voice => voice.lang.includes('ar')) || voices[0];
+                };
+
+                if (speechSynthesis.getVoices().length > 0) {
+                    voices = speechSynthesis.getVoices();
+                    selectedVoice = voices.find(voice => voice.lang.includes('ar')) || voices[0];
+                }
+            }
+
+            // Initialize audio wave visualization
+            function initAudioWave() {
+                audioWaveBars = document.querySelectorAll('.audio-wave-bar');
+            }
+
+            // Setup event listeners
+            function setupEventListeners() {
+                // Mic button
+                micBtn.addEventListener('click', toggleListening);
+
+                // Clear chat
+                clearBtn.addEventListener('click', clearChat);
+
+                // Help button
+                helpBtn.addEventListener('click', () => showModal(helpModal));
+                closeHelp.addEventListener('click', () => hideModal(helpModal));
+                closeHelpBtn.addEventListener('click', () => hideModal(helpModal));
+
+                // Settings button
+                settingsBtn.addEventListener('click', () => showModal(settingsModal));
+                closeSettings.addEventListener('click', () => hideModal(settingsModal));
+                cancelSettings.addEventListener('click', () => hideModal(settingsModal));
+                saveSettings.addEventListener('click', saveSettingsHandler);
+
+                // Feedback button
+                feedbackBtn.addEventListener('click', () => showModal(feedbackModal));
+                closeFeedback.addEventListener('click', () => hideModal(feedbackModal));
+                cancelFeedback.addEventListener('click', () => hideModal(feedbackModal));
+                submitFeedback.addEventListener('click', submitFeedbackHandler);
+
+                // History button
+                historyBtn.addEventListener('click', showHistory);
+
+                // Settings controls
+                document.getElementById('voice-rate').addEventListener('input', function(e) {
+                    voiceRate = parseFloat(e.target.value);
+                });
+
+                document.getElementById('voice-pitch').addEventListener('input', function(e) {
+                    voicePitch = parseFloat(e.target.value);
+                });
+            }
+
+            // Toggle listening state
+            function toggleListening() {
+                if (!isListening) {
+                    startListening();
+                } else {
+                    stopListening();
+                }
+            }
+
+            // Start listening
+            function startListening() {
+                try {
+                    // Show audio wave visualization
+                    audioWaveContainer.classList.remove('hidden');
+                    listeningIndicator.classList.remove('hidden');
+                    audioWave.classList.add('hidden');
+
+                    // Initialize audio context if not already done
+                    if (!audioContext) {
+                        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                        analyser = audioContext.createAnalyser();
+                        analyser.fftSize = 32;
+                    }
+
+                    recognition.start();
+                } catch (e) {
+                    showNotification('حدث خطأ في بدء الاستماع. يرجى المحاولة مرة أخرى.', 'error');
+                    resetMicButton();
+                }
+            }
+
+            // Stop listening
+            function stopListening() {
+                isListening = false;
+                recognition.stop();
+
+                // Hide audio wave visualization
+                audioWaveContainer.classList.add('hidden');
+                listeningIndicator.classList.add('hidden');
+                audioWave.classList.remove('hidden');
+
+                // Close audio context if open
+                if (microphone) {
+                    microphone.disconnect();
+                    microphone = null;
+                }
+            }
+
+            // On listening start
+            function onListeningStart() {
+                isListening = true;
+                updateMicButton(true);
+                showStatus('جاري الاستماع... تحدث الآن', true);
+                connectionDot.classList.remove('connected');
+                connectionDot.classList.add('disconnected');
+                connectionStatus.querySelector('span').textContent = 'جاري المعالجة';
+
+                // Start audio visualization
+                startAudioVisualization();
+            }
+
+            // Start audio visualization
+            function startAudioVisualization() {
+                navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+                    .then(function(stream) {
+                        microphone = audioContext.createMediaStreamSource(stream);
+                        microphone.connect(analyser);
+
+                        const bufferLength = analyser.frequencyBinCount;
+                        const dataArray = new Uint8Array(bufferLength);
+
+                        function visualize() {
+                            if (!isListening) return;
+
+                            analyser.getByteFrequencyData(dataArray);
+
+                            // Normalize the data and update wave bars
+                            for (let i = 0; i < audioWaveBars.length; i++) {
+                                const value = dataArray[i] / 255;
+                                const height = value * 40 + 4; // Scale to visible height
+                                audioWaveBars[i].style.height = `${height}px`;
+
+                                // Change color based on intensity
+                                if (value > 0.7) {
+                                    audioWaveBars[i].style.backgroundColor = '#EF4444'; // Red for high intensity
+                                } else if (value > 0.4) {
+                                    audioWaveBars[i].style.backgroundColor = '#F59E0B'; // Orange for medium intensity
+                                } else {
+                                    audioWaveBars[i].style.backgroundColor = '#4F46E5'; // Default color
+                                }
+                            }
+
+                            requestAnimationFrame(visualize);
+                        }
+
+                        visualize();
+                    })
+                    .catch(function(err) {
+                        console.error('Error accessing microphone:', err);
+                    });
+            }
+
+            // On speech result
+            function onSpeechResult(event) {
+                const transcript = event.results[0][0].transcript;
+                addUserMessage(transcript);
+
+                // Hide listening indicator and show processing wave
+                listeningIndicator.classList.add('hidden');
+                audioWave.classList.remove('hidden');
+
+                // Simulate processing
+                setTimeout(() => {
+                    addTypingIndicator();
+
+                    // Generate intelligent response after a short delay
+                    setTimeout(() => {
+                        removeTypingIndicator();
+                        const response = generateResponse(transcript);
+                        addBotMessage(response);
+                        speak(response);
+                        connectionDot.classList.remove('disconnected');
+                        connectionDot.classList.add('connected');
+                        connectionStatus.querySelector('span').textContent = 'متصل';
+
+                        // Hide audio wave after response
+                        setTimeout(() => {
+                            audioWaveContainer.classList.add('hidden');
+                        }, 1000);
+                    }, 1500 + Math.random() * 1000); // Random delay for more natural feel
+                }, 500);
+            }
+
+            // On recognition error
+            function onRecognitionError(event) {
+                console.error('Recognition error:', event.error);
+                showNotification('حدث خطأ: ' + getErrorText(event.error), 'error');
+                resetMicButton();
+            }
+
+            // On listening end
+            function onListeningEnd() {
+                if (isListening) {
+                    recognition.start(); // Restart recognition if still listening
+                } else {
+                    resetMicButton();
+                }
+            }
+
+            // Generate intelligent response
+            function generateResponse(input) {
+                const lowerInput = input.toLowerCase();
+
+                // Check for greetings
+                if (/(مرحبا|اهلا|سلام|السلام عليكم)/.test(lowerInput)) {
+                    return getRandomResponse(knowledgeBase.greetings) + " كيف يمكنني مساعدتك اليوم؟";
+                }
+
+                // Check for farewells
+                if (/(مع السلامة|الى اللقاء|اراك لاحقا|باي)/.test(lowerInput)) {
+                    return getRandomResponse(knowledgeBase.farewells) + " أتمنى لك يوماً رائعاً!";
+                }
+
+                // Check for known questions
+                for (const [keyword, response] of Object.entries(knowledgeBase.questions)) {
+                    if (lowerInput.includes(keyword)) {
+                        return response;
+                    }
+                }
+
+                // Default response
+                const randomDefault = knowledgeBase.defaultResponses[Math.floor(Math.random() * knowledgeBase.defaultResponses.length)];
+                return randomDefault.replace('{input}', input);
+            }
+
+            // Get random response from array
+            function getRandomResponse(responses) {
+                return responses[Math.floor(Math.random() * responses.length)];
+            }
+
+            // Get error text
+            function getErrorText(errorCode) {
+                const errors = {
+                    'no-speech': 'لم يتم الكشف عن أي كلام',
+                    'audio-capture': 'لا يمكن التقاط الصوت',
+                    'not-allowed': 'يجب السماح بالوصول إلى الميكروفون',
+                    'aborted': 'تم إيقاف التعرف على الكلام',
+                    'network': 'مشكلة في الشبكة',
+                    'not-allowed': 'المتصفح لا يسمح بالوصول إلى الميكروفون',
+                    'service-not-allowed': 'المتصفح لا يسمح بالوصول إلى خدمة التعرف على الكلام'
+                };
+                return errors[errorCode] || 'حدث خطأ غير معروف';
+            }
+
+            // Add user message to chat
+            function addUserMessage(text) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message-bubble user-message';
+
+                const now = new Date();
+                const timeString = now.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
+
+                messageDiv.innerHTML = `
+                    <div class="flex items-center justify-end mb-2">
+                        <div class="ml-3 text-right">
+                            <span class="font-bold text-white/90">أنت</span>
+                            <div class="timestamp">${timeString}</div>
+                        </div>
+                        <div class="avatar avatar-user">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                    ${text}
+                `;
+                chatContainer.appendChild(messageDiv);
+                scrollToBottom();
+            }
+
+            // Add bot message to chat
+            function addBotMessage(text) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message-bubble bot-message';
+
+                const now = new Date();
+                const timeString = now.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
+
+                messageDiv.innerHTML = `
+                    <div class="flex items-center mb-2">
+                        <div class="avatar avatar-bot">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="mr-3">
+                            <span class="font-bold text-blue-600">المساعد الذكي</span>
+                            <div class="timestamp">${timeString}</div>
+                        </div>
+                    </div>
+                    ${text}
+                `;
+                chatContainer.appendChild(messageDiv);
+                scrollToBottom();
+            }
+
+            // Add typing indicator
+            function addTypingIndicator() {
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'typing-indicator';
+                typingDiv.id = 'typing-indicator';
+                typingDiv.innerHTML = `
+                    <div class="flex items-center">
+                        <div class="avatar avatar-bot">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="mr-3">
+                            <span class="font-medium">يكتب...</span>
+                            <div class="wave-animation">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                chatContainer.appendChild(typingDiv);
+                scrollToBottom();
+            }
+
+            // Remove typing indicator
+            function removeTypingIndicator() {
+                const typingIndicator = document.getElementById('typing-indicator');
+                if (typingIndicator) {
+                    typingIndicator.remove();
+                }
+            }
+
+            // Speak text
+            function speak(text) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                if (selectedVoice) {
+                    utterance.voice = selectedVoice;
+                }
+                utterance.lang = 'ar-SA';
+                utterance.rate = voiceRate;
+                utterance.pitch = voicePitch;
+
+                // Add some variation to make it more natural
+                if (text.length > 50) {
+                    utterance.rate = voiceRate * 0.95;
+                } else if (text.length < 20) {
+                    utterance.rate = voiceRate * 1.05;
+                }
+
+                speechSynthesis.speak(utterance);
+            }
+
+            // Update mic button state
+            function updateMicButton(listening) {
+                if (listening) {
+                    micBtn.classList.remove('gradient-bg', 'hover:opacity-90');
+                    micBtn.classList.add('bg-red-600', 'hover:bg-red-700');
+                    micBtn.innerHTML = '<i class="fas fa-microphone-slash text-3xl"></i>';
+                    micBtn.nextElementSibling.textContent = 'إيقاف';
+                } else {
+                    micBtn.classList.remove('bg-red-600', 'hover:bg-red-700');
+                    micBtn.classList.add('gradient-bg', 'hover:opacity-90');
+                    micBtn.innerHTML = '<i class="fas fa-microphone text-3xl"></i>';
+                    micBtn.nextElementSibling.textContent = 'تحدث الآن';
+                }
+            }
+
+            // Reset mic button to initial state
+            function resetMicButton() {
+                isListening = false;
+                updateMicButton(false);
+                showStatus('اضغط على زر الميكروفون للتحدث مع المساعد');
+                removeVoiceWave();
+
+                // Hide audio wave visualization
+                audioWaveContainer.classList.add('hidden');
+                listeningIndicator.classList.add('hidden');
+                audioWave.classList.remove('hidden');
+            }
+
+            // Show status message
+            function showStatus(message, showWave = false) {
+                statusMessage.innerHTML = `<span>${message}</span>`;
+
+                if (showWave) {
+                    const voiceWave = document.createElement('div');
+                    voiceWave.className = 'voice-wave mr-3';
+                    voiceWave.innerHTML = `
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    `;
+                    statusMessage.appendChild(voiceWave);
+                }
+            }
+
+            // Remove voice wave animation
+            function removeVoiceWave() {
+                const voiceWave = document.querySelector('.voice-wave');
+                if (voiceWave) {
+                    voiceWave.remove();
+                }
+            }
+
+            // Clear chat
+            function clearChat() {
+                chatContainer.innerHTML = `
+                    <div class="message-bubble bot-message">
+                        <div class="flex items-center mb-2">
+                            <div class="avatar avatar-bot">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="mr-3">
+                                <span class="font-bold text-blue-600">المساعد الذكي</span>
+                                <div class="timestamp">الآن</div>
+                            </div>
+                        </div>
+                        <p>المحادثة جديدة الآن. كيف يمكنني مساعدك؟</p>
+                        <div class="suggestions-container">
+                            <div class="suggestion-chip" onclick="sendSuggestion('ما هو اسمك؟')">
+                                <i class="fas fa-comment-dots ml-2"></i>
+                                ما هو اسمك؟
+                            </div>
+                            <div class="suggestion-chip" onclick="sendSuggestion('كم الساعة الآن؟')">
+                                <i class="fas fa-clock ml-2"></i>
+                                كم الساعة الآن؟
+                            </div>
+                            <div class="suggestion-chip" onclick="sendSuggestion('كيف حالك؟')">
+                                <i class="fas fa-smile ml-2"></i>
+                                كيف حالك؟
+                            </div>
+                        </div>
+                    </div>
+                `;
+                showNotification('تم مسح المحادثة بنجاح', 'success');
+            }
+
+            // Show history
+            function showHistory() {
+                showNotification('هذه الميزة قيد التطوير حالياً', 'warning');
+            }
+
+            // Show modal
+            function showModal(modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            // Hide modal
+            function hideModal(modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            // Save settings handler
+            function saveSettingsHandler() {
+                voiceRate = parseFloat(document.getElementById('voice-rate').value);
+                voicePitch = parseFloat(document.getElementById('voice-pitch').value);
+                hideModal(settingsModal);
+                showNotification('تم حفظ الإعدادات بنجاح', 'success');
+            }
+
+            // Submit feedback handler
+            function submitFeedbackHandler() {
+                hideModal(feedbackModal);
+                showNotification('شكراً لك على ملاحظاتك القيمة!', 'success');
+                // Reset feedback form
+                document.querySelector('#feedback-modal textarea').value = '';
+                document.querySelector('#feedback-modal input[type="text"]').value = '';
+                currentRating = 0;
+                resetStars();
+            }
+
+            // Show notification
+            function showNotification(message, type = 'success') {
+                notification.className = 'notification';
+                notification.classList.add(`notification-${type}`);
+                notification.classList.add('show');
+                notificationMessage.textContent = message;
+
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            }
+
+            // Scroll chat to bottom
+            function scrollToBottom() {
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+
+            // Simulate connection status changes
+            function simulateConnection() {
+                setInterval(() => {
+                    if (Math.random() > 0.95) {
+                        connectionDot.classList.remove('connected');
+                        connectionDot.classList.add('disconnected');
+                        connectionStatus.querySelector('span').textContent = 'غير متصل';
+
+                        setTimeout(() => {
+                            connectionDot.classList.remove('disconnected');
+                            connectionDot.classList.add('connected');
+                            connectionStatus.querySelector('span').textContent = 'متصل';
+                        }, 2000 + Math.random() * 3000);
+                    }
+                }, 15000);
+            }
+
+            // Send suggestion
+            window.sendSuggestion = function(text) {
+                addUserMessage(text);
+                addTypingIndicator();
+
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    const response = generateResponse(text);
+                    addBotMessage(response);
+                    speak(response);
+                }, 1000 + Math.random() * 1000);
+            }
+
+            // Rating functions
+            function highlightStars(count) {
+                const stars = document.querySelectorAll('#feedback-modal .fa-star');
+                stars.forEach((star, index) => {
+                    if (index < count) {
+                        star.classList.add('text-yellow-400');
+                        star.classList.remove('text-gray-300');
+                    } else {
+                        star.classList.remove('text-yellow-400');
+                        star.classList.add('text-gray-300');
+                    }
+                });
+
+                const ratingText = document.getElementById('rating-text');
+                const texts = ['سيء جداً', 'سيء', 'متوسط', 'جيد', 'ممتاز'];
+                ratingText.textContent = count > 0 ? texts[count - 1] : 'اضغط على النجوم للتقييم';
+            }
+
+            function setRating(count) {
+                currentRating = count;
+                const stars = document.querySelectorAll('#feedback-modal .fa-star');
+                stars.forEach((star, index) => {
+                    if (index < count) {
+                        star.classList.add('text-yellow-400');
+                        star.classList.remove('text-gray-300');
+                    } else {
+                        star.classList.remove('text-yellow-400');
+                        star.classList.add('text-gray-300');
+                    }
+                });
+
+                const ratingText = document.getElementById('rating-text');
+                const texts = ['سيء جداً', 'سيء', 'متوسط', 'جيد', 'ممتاز'];
+                ratingText.textContent = texts[count - 1];
+            }
+
+            function resetStars() {
+                const stars = document.querySelectorAll('#feedback-modal .fa-star');
+                stars.forEach(star => {
+                    star.classList.remove('text-yellow-400');
+                    star.classList.add('text-gray-300');
+                });
+                document.getElementById('rating-text').textContent = 'اضغط على النجوم للتقييم';
+            }
+
+            // Initialize the app
+            initApp();
+        });
+    async function t2t(data) {
+        //const url = 'https://wasmdashai-t2t.hf.space/gradio_api/call/predict';
+
+        data = JSON.parse(data);
+
+        try {
+            // Step 1: POST request to get EVENT_ID
+            const postResponse = await fetch(data.URL, {
+                method: data.Method,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    data: [data.Text, data.Key],
+                }),
+            });
+
+            const postData = await postResponse.json();
+            const eventId = postData?.event_id;
+
+
+
+
+
+            const getResponse = await fetch(`${data.URL}/${eventId}`, {
+                method: 'GET',
+            });
+
+            const reader = getResponse.body.getReader();
+            const decoder = new TextDecoder('utf-8');
+            let result = '';
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+                result += decoder.decode(value);
+            }
+
+            const dataLine = result.split('\n').find(line => line.startsWith('data:'));
+            const jsonString = dataLine.replace('data: ', '');
+
+            return jsonString;
+        } catch (error) {
+
+            return null;
+        }
+
+
+                async function queryT2S1(inputText) {
+
+            const response = await fetch(
+                "https://api-inference.huggingface.co/models/wasmdashai/vits-ar-sa-huba-v2",
+                {
+                    headers: {
+                        Authorization: "Bearer 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", // Replace with your actual API token
+                        "Content-Type": "application/json",
+                    },
+                    method: "POST",
+                    body: JSON.stringify(inputText),
+                }
+            );
+            const result = await response.blob(); // Returns a blob containing the audio data
+            return result;
+        }
+
+
+
+        async function queryModelTextToSpeech1(inputText) {
+
+           if (!inputText) {
+               alert("Please enter some text");
+               return "333";
+           }
+
+           const audioData = await queryT2S1(inputText);
+
+           // Create a URL for the audio Blob
+           const audioUrl = URL.createObjectURL(audioData);
+
+           // Get the audio player element and set the source
+           const audioPlayer = document.getElementById("OutputPlayerId");
+           audioPlayer.src = audioUrl;
+
+           // Play the audio
+           audioPlayer.play();
+
+        }
+    </script>
+</body>
+
+</html>

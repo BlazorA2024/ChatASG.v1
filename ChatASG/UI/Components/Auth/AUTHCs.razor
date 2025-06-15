@@ -1,0 +1,1125 @@
+﻿@* @page "/register" *@
+@* 
+@using global::Data.AddAuth
+@using global::Data.DataLoginForm
+@using global::Data.Welcome
+@using global::Data.DataSignUpForm
+@using MyApiClient
+@using NWHttps
+@inject IWebApiClientFactory ApiClientFactory
+
+@inject NavigationManager Navigation
+@inject ISnackbar Snackbar
+<div class="dialog-backdrop">
+
+    <MudPaper class="dialog-window p-6 auth-container min-h-screen flex items-center justify-center p-4">
+
+        <style>
+
+
+            .auth-container {
+                background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important;
+                animation: fadeIn 0.5s ease-out;
+            }
+
+
+            .auth-card {
+                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+                transform: perspective(1000px) rotateX(0deg);
+                transition: transform 0.5s ease, box-shadow 0.5s ease;
+            }
+
+                .auth-card:hover {
+                    transform: perspective(1000px) rotateX(5deg);
+                    box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.2);
+                }
+
+            .tab-active {
+                background: white;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                position: relative;
+            }
+
+                .tab-active::after {
+                    content: '';
+                    position: absolute;
+                    bottom: -1px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    width: 50%;
+                    height: 3px;
+                    background: linear-gradient(90deg, #3b82f6, #6366f1);
+                    border-radius: 3px;
+                    animation: tabUnderline 0.3s ease-out;
+                }
+
+
+            .input-error {
+                border-color: #ef4444;
+                animation: shake 0.5s ease;
+            }
+
+
+
+            .social-btn {
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+            }
+
+                .social-btn::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: -100%;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+                    transition: all 0.5s ease;
+                }
+
+                .social-btn:hover::before {
+                    left: 100%;
+                }
+
+                .social-btn:hover {
+                    transform: translateY(-3px);
+                    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                }
+
+            .transition-all-300 {
+                transition: all 0.3s ease;
+            }
+
+            .password-toggle {
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+                .password-toggle:hover {
+                    color: #3b82f6;
+                    transform: translateY(-50%) scale(1.1);
+                }
+
+            .floating-icon {
+                animation: float 4s ease-in-out infinite;
+            }
+
+            .btn-submit {
+                position: relative;
+                overflow: hidden;
+                z-index: 1;
+            }
+
+                .btn-submit::after {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(90deg, #3b82f6, #6366f1);
+                    z-index: -1;
+                    transition: all 0.3s ease;
+                    opacity: 1;
+                }
+
+                .btn-submit:hover::after {
+                    opacity: 0.9;
+                    transform: scale(1.05);
+                }
+
+                .btn-submit:active::after {
+                    transform: scale(0.95);
+                }
+
+            .input-field {
+                transition: all 0.3s ease;
+                background: rgba(255,255,255,0.8);
+            }
+
+                .input-field:focus {
+                    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+                }
+
+            .checkbox:checked {
+                background-color: #3b82f6;
+                border-color: #3b82f6;
+                animation: pulse 0.5s ease;
+            }
+
+
+
+            .divider {
+                position: relative;
+            }
+
+                .divider::before {
+                    content: '';
+                    position: absolute;
+                    top: 50%;
+                    left: 0;
+                    right: 0;
+                    height: 1px;
+                    background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent);
+                }
+
+                .divider span {
+                    position: relative;
+                    z-index: 1;
+                    background: white;
+                    padding: 0 10px;
+                }
+        </style>
+
+        <style>
+            .dialog-backdrop {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                /*             background: rgba(0,0,0,0.5);
+             */ display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+            }
+
+            .dialog-window {
+                background: white;
+                width: 100%;
+                /*         max-width: 600px;
+                     */ border-radius: 12px;
+                box-shadow: var(--mud-elevation-8);
+            }
+
+            .form-content {
+                margin-top: 16px;
+            }
+        </style>
+
+
+        <div class="auth-card max-w-2xl w-full bg-white rounded-2xl overflow-hidden">
+            <div class="flex flex-col md:flex-row">
+                <!-- Left Side - Branding/Image -->
+             
+                <LeSideTemplate Prams="Prams.DataLeftSide" />
+                <!-- Right Side - Authentication Forms -->
+                <div class="w-full md:w-1/2 p-8">
+                    <!-- Tabs -->
+                    <div class="flex mb-8 bg-gray-100 rounded-lg p-1">
+                        @foreach(var itms in Prams.DataBuild.IButtons)
+                        {
+                            <RightSideTemplate Prams="itms" ActiveTab="@activeTab" OnTabClicked="HandleTabClick" />
+                        }
+                       
+                    </div>
+
+                    <!-- Login Form -->
+                    <LoginForm Prams="Prams.login" IsVisible="@(activeTab == "Login")" OnLoginSubmitted="HandleLogin" />
+
+
+                    <!-- Sign Up Form -->
+                    <SignUpForm Prams="Prams.IsignUp" IsVisible='@(activeTab == "Sign Up")'
+                                OnSignUpSubmitted="HandleSignUp"
+                                OnSwitchToLogin='() => activeTab = "Login"' />
+
+
+                  </div>
+            </div>
+        </div>
+
+
+       
+    </MudPaper>
+</div>
+
+@code {
+    //  [Parameter] public CardAddAuth? Prams { get; set; }ApplicationUserCreateVM
+    private string activeTab = "Login";
+    // private ApplicationUserCreateVM? User;
+
+    // private async Task HandleLogin(LoginModel model)
+    // {
+    //     if (string.IsNullOrWhiteSpace(model.Email) ||
+    //         string.IsNullOrWhiteSpace(model.Password) || !model.RememberMe)
+    //     {
+    //         Console.WriteLine("Invalid Login data!");
+    //         // يمكنك عرض رسالة للمستخدم هنا أو معالجة الخطأ بطريقة مناسبة
+    //         return;
+    //     }
+    //     // هنا تضع منطق إرسال البيانات للسيرفر أو تخزينها
+    //     // await YourAuthService.RegisterUserAsync(model);
+
+    //     // محاكاة انتظار عملية التسجيل
+    //     await Task.Delay(500);
+
+    //     // بعد التسجيل الناجح، يمكن التنقل أو تغيير الحالة
+    //     Console.WriteLine("User registered successfully!");
+    //     // منطق التحقق من تسجيل الدخول هنا
+    //     // Console.WriteLine($"Email: {model.Email}, Password: {model.Password}, Remember: {model.RememberMe}");
+    //     // return Task.CompletedTask;
+    // }
+
+    private async Task HandleLogin(LoginModel model)
+    {
+        if (string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.Password))
+        {
+            Console.WriteLine("Invalid login data!");
+            Snackbar.Add("يرجى إدخال البريد الإلكتروني وكلمة المرور", Severity.Error);
+            return;
+        }
+
+        try
+        {
+            var client = new ApplicationUserClient(await ApiClientFactory.GetClientAsync());
+
+            // جلب كل المستخدمين (إذا كان العدد مناسب)
+            var users = await client.ApplicationUserAllAsync();
+
+            var result = users.FirstOrDefault(u => u.Email?.Equals(model.Email, StringComparison.OrdinalIgnoreCase) == true);
+
+            if (result != null)
+            {
+                if (result.PasswordHash == model.Password)  // ⚠️ لا تقم بهذه الطريقة في بيئة حقيقية - فقط مثال!
+                {
+                    Snackbar.Add("تم تسجيل الدخول بنجاح", Severity.Success);
+                    Navigation.NavigateTo("/");
+                    Console.WriteLine($"Login Success. Welcome {result.UserName}");
+                }
+                else
+                {
+                    Snackbar.Add("فشل تسجيل الدخول: كلمة المرور غير صحيحة", Severity.Error);
+                }
+            }
+            else
+            {
+                Snackbar.Add("فشل تسجيل الدخول: المستخدم غير موجود", Severity.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add("خطأ أثناء تسجيل الدخول", Severity.Error);
+            Console.WriteLine($"Login failed: {ex.Message}");
+        }
+    }
+
+
+    private ApplicationUserOutputVM? User;
+    private async Task HandleSignUp(SignUpModel model)
+    {
+        if (string.IsNullOrWhiteSpace(model.FullName) ||
+            string.IsNullOrWhiteSpace(model.Email) ||
+            string.IsNullOrWhiteSpace(model.Password) ||
+            model.Password != model.ConfirmPassword ||
+            !model.AcceptTerms)
+        {
+            Console.WriteLine("Invalid sign-up data!");
+            Snackbar.Add("يرجى ملء جميع الحقول بشكل صحيح والموافقة على الشروط", Severity.Error);
+            return;
+        }
+
+        try
+        {
+            var userVm = new ApplicationUserCreateVM
+                {
+                    UserName = model.FullName,
+                    NormalizedUserName = model.Email.ToUpper(),
+                    Email = model.Email,
+                    NormalizedEmail = model.Email.ToUpper(),
+                    EmailConfirmed = false,
+                    PasswordHash = model.Password, // ملاحظة: كلمة المرور هنا ليست مشفرة - تأكد من تشفيرها في API
+                    SecurityStamp = Guid.NewGuid().ToString(),
+                    ConcurrencyStamp = Guid.NewGuid().ToString(),
+                    PhoneNumberConfirmed = false,
+                    TwoFactorEnabled = false,
+                    LockoutEnabled = true,
+                    AccessFailedCount = 0
+                };
+
+            var client = new ApplicationUserClient(await ApiClientFactory.GetClientAsync());
+            var User = await client.ApplicationUserPOSTAsync(userVm);
+
+            if (User != null && !string.IsNullOrEmpty(User.Id))
+            {
+                Snackbar.Add("تم التسجيل بنجاح", Severity.Success);
+                Navigation.NavigateTo("/");
+                Console.WriteLine("User registered successfully!");
+            }
+            else
+            {
+                Snackbar.Add("حدث خطأ أثناء التسجيل، يرجى المحاولة لاحقًا", Severity.Error);
+                Console.WriteLine("User registration failed.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add("حدث خطأ أثناء التسجيل: " + ex.Message, Severity.Error);
+            Console.WriteLine("Registration error: " + ex.Message);
+        }
+    }
+
+    // private async Task HandleSignUp(SignUpModel model)
+    // {
+    //     if (string.IsNullOrWhiteSpace(model.FullName) ||
+    //         string.IsNullOrWhiteSpace(model.Email) ||
+    //         string.IsNullOrWhiteSpace(model.Password) ||
+    //         model.Password != model.ConfirmPassword ||
+    //         !model.AcceptTerms)
+    //     {
+    //         Console.WriteLine("Invalid sign-up data!");
+    //         return;
+    //     }
+
+    //     var userVm = new ApplicationUserCreateVM
+    //         {
+    //             UserName = model.FullName,
+    //             NormalizedUserName = model.Email.ToUpper(),
+    //             Email = model.Email,
+    //             NormalizedEmail = model.Email.ToUpper(),
+    //             EmailConfirmed = false,
+    //             PasswordHash = model.Password, // تذكر أن هذا قد يكون غير صحيح منطقياً، راجع ملاحظاتي السابقة
+
+    //             // لا تضع كلمة المرور في PasswordHash هنا
+    //             SecurityStamp = Guid.NewGuid().ToString(),
+    //             ConcurrencyStamp = Guid.NewGuid().ToString(),
+    //             PhoneNumberConfirmed = false,
+    //             TwoFactorEnabled = false,
+    //             LockoutEnabled = true,
+    //             AccessFailedCount = 0
+    //         };
+
+    //     var client = new ApplicationUserClient(await ApiClientFactory.GetClientAsync());
+    //     User = await client.ApplicationUserPOSTAsync(userVm);
+       
+    //     await Task.Delay(500);
+    //     Snackbar.Add("تم التسجيل بنجاح", Severity.Success);
+    //     Navigation.NavigateTo("/");
+    //     Console.WriteLine("User registered successfully!");
+    // }
+
+
+    // private Task HandleLogin(LoginForm.LoginModel model)
+    // {
+    //     // منطق التحقق من تسجيل الدخول هنا
+    //     Console.WriteLine($"Email: {model.Email}, Password: {model.Password}, Remember: {model.RememberMe}");
+    //     return Task.CompletedTask;
+    // }
+    // private Task HandleSignUp(SignUpForm.SignUpModel model)
+    // {
+    //     Console.WriteLine($"FullName: {model.FullName}, Email: {model.Email}");
+    //     return Task.CompletedTask;
+    // }
+    // private async Task HandleSignUp(SignUpForm.SignUpModel model)
+    // {
+    //     // هنا يمكنك إضافة التحقق من صحة البيانات
+    //     if (string.IsNullOrWhiteSpace(model.FullName) ||
+    //         string.IsNullOrWhiteSpace(model.Email) ||
+    //         string.IsNullOrWhiteSpace(model.Password) ||
+    //         model.Password != model.ConfirmPassword ||
+    //         !model.AcceptTerms)
+    //     {
+    //         Console.WriteLine("Invalid sign-up data!");
+    //         // يمكنك عرض رسالة للمستخدم هنا أو معالجة الخطأ بطريقة مناسبة
+    //         return;
+    //     }
+
+    //     // مثال: طباعة البيانات في الكونسول (للتجربة)
+    //     Console.WriteLine($"Registering user: {model.FullName}, Email: {model.Email}");
+
+    //     // هنا تضع منطق إرسال البيانات للسيرفر أو تخزينها
+    //     // await YourAuthService.RegisterUserAsync(model);
+
+    //     // محاكاة انتظار عملية التسجيل
+    //     await Task.Delay(500);
+
+    //     // بعد التسجيل الناجح، يمكن التنقل أو تغيير الحالة
+    //     Console.WriteLine("User registered successfully!");
+    // }
+    private DataLeftSideModel LeftSide = new()
+        {
+
+      IconClass  = "fas fa-lock-open",
+    Title  = "Welcome Back",
+     Subtitle  = "Join our community and access exclusive features",
+    Quote = "\"Security is not a product, but a process.\""
+
+        };
+    private List<DataButtons> IButton = new()
+    {
+        new DataButtons
+        {
+            Button = "Login",
+        },
+         new DataButtons
+        {
+            Button = "Sign Up",
+        },
+    };
+    private SignUpModel SignUp = new()
+        {
+            Dataform = new Dataform
+            {
+                NameLabel = "Full Name",
+                EmailLabel = "Email",
+                PasswordLabel = "Password",
+                ConfirmPasswordLabel = "Confirm Password",
+                SubmitCreateAccount = "Create Account",
+            }
+        };
+    private LoginModel Login = new()
+        {
+            ILabels = new DataLoginFormLabels
+            {
+                Title = "Login to your account",
+                EmailOrUsernameLabel = "Email or Username",
+                EmailOrUsernamePlaceholder = "Enter your email or username",
+                PasswordLabel = "Password",
+                PasswordPlaceholder = "Enter your password",
+                RememberMe = "Remember me",
+                ForgotPassword = "Forgot password?",
+                LoginButton = "Login",
+                OrContinueWith = "Or continue with",
+                Google = "Google",
+                Facebook = "Facebook"
+            }
+        };
+
+    [Parameter]
+    public DataAddAuth? DataBuild { get; set; }
+
+    private CardAddAuth Prams = new();
+
+    protected override void OnInitialized()
+    {
+        if (DataBuild == null)
+        {
+            DataBuild = new DataAddAuth
+                {
+                   
+                    DataLeftSide = LeftSide,
+                    IButtons = IButton,
+                    IsignUp = SignUp,
+                    login = Login,
+
+                };
+        }
+
+        Prams = CardAddAuth.Create(DataBuild);
+        base.OnInitialized();
+    }
+
+    private Task HandleTabClick(string tab)
+    {
+        activeTab = tab;
+        return Task.CompletedTask;
+    }
+
+}
+ *@
+@*  <!-- Left Side - Branding/Image -->
+<div class="hidden md:block md:w-1/2 bg-gradient-to-br from-blue-500 to-indigo-600 p-10 text-white relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute top-1/4 left-1/4 w-32 h-32 rounded-full bg-white opacity-20 filter blur-xl"></div>
+        <div class="absolute bottom-1/3 right-1/4 w-40 h-40 rounded-full bg-indigo-400 opacity-20 filter blur-xl"></div>
+    </div>
+    <div class="flex flex-col h-full justify-center relative z-10">
+        <div class="mb-8">
+            <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 floating-icon">
+                <i class="fas fa-lock-open text-blue-600 text-2xl"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-center">Welcome Back</h2>
+            <p class="text-center opacity-90 mt-2">Join our community and access exclusive features</p>
+        </div>
+        <div class="mt-auto">
+            <p class="text-center text-sm opacity-80">"Security is not a product, but a process."</p>
+        </div>
+    </div>
+</div> *@
+@*                     <div id="login-form" class="transition-all-300 @(activeTab == "Login" ? "" : "hidden")">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-6">Login to your account</h2>
+
+                        <form id="loginForm" class="space-y-4">
+                            <div>
+                                <label for="login-email" class="block text-sm font-medium text-gray-700 mb-1">Email or Username</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <i class="fas fa-user text-gray-400"></i>
+                                    </div>
+                                    <input type="text" id="login-email" placeholder="Enter your email or username"
+                                           class="pl-10 w-full px-4 py-2 border border-gray-300 rounded-lg input-field focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all-300">
+                                    <div id="login-email-error" class="text-red-500 text-xs mt-1 hidden">Please enter a valid email or username</div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="login-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <i class="fas fa-lock text-gray-400"></i>
+                                    </div>
+                                    <input type="password" id="login-password" placeholder="Enter your password"
+                                           class="pl-10 w-full px-4 py-2 border border-gray-300 rounded-lg input-field focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all-300">
+                                    <div class="password-toggle absolute right-0 pr-3">
+                                        <i class="fas fa-eye-slash text-gray-400" id="login-password-toggle"></i>
+                                    </div>
+                                    <div id="login-password-error" class="text-red-500 text-xs mt-1 hidden">Password must be at least 6 characters</div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <input id="remember-me" type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded checkbox">
+                                    <label for="remember-me" class="ml-2 block text-sm text-gray-700">Remember me</label>
+                                </div>
+                                <div>
+                                    <a href="#" class="text-sm text-blue-600 hover:text-blue-500 hover:underline transition-colors">Forgot password?</a>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="w-full text-white font-medium py-2 px-4 rounded-lg btn-submit focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                                Login
+                            </button>
+                        </form>
+
+                        <div class="mt-6">
+                            <div class="divider flex items-center justify-center">
+                                <span class="text-sm text-gray-500">Or continue with</span>
+                            </div>
+
+                            <div class="mt-6 grid grid-cols-2 gap-3">
+                                <button class="social-btn flex items-center justify-center py-2 px-4 border border-gray-300 rounded-lg bg-white text-gray-700 hover:bg-gray-50">
+                                    <i class="fab fa-google text-red-500 mr-2"></i>
+                                    Google
+                                </button>
+                                <button class="social-btn flex items-center justify-center py-2 px-4 border border-gray-300 rounded-lg bg-white text-gray-700 hover:bg-gray-50">
+                                    <i class="fab fa-facebook text-blue-600 mr-2"></i>
+                                    Facebook
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+ *@
+  @*    <div id="signup-form" class="transition-all-300   @(activeTab == "Sign Up" ? "" : "hidden")">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-6">Create an account</h2>
+
+                        <form id="signupForm" class="space-y-4">
+                            <div>
+                                <label for="signup-name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <i class="fas fa-user text-gray-400"></i>
+                                    </div>
+                                    <input type="text" id="signup-name" placeholder="Enter your full name"
+                                           class="pl-10 w-full px-4 py-2 border border-gray-300 rounded-lg input-field focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all-300">
+                                    <div id="signup-name-error" class="text-red-500 text-xs mt-1 hidden">Please enter your full name</div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="signup-email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <i class="fas fa-envelope text-gray-400"></i>
+                                    </div>
+                                    <input type="email" id="signup-email" placeholder="Enter your email"
+                                           class="pl-10 w-full px-4 py-2 border border-gray-300 rounded-lg input-field focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all-300">
+                                    <div id="signup-email-error" class="text-red-500 text-xs mt-1 hidden">Please enter a valid email</div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="signup-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <i class="fas fa-lock text-gray-400"></i>
+                                    </div>
+                                    <input type="password" id="signup-password" placeholder="Create a password"
+                                           class="pl-10 w-full px-4 py-2 border border-gray-300 rounded-lg input-field focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all-300">
+                                    <div class="password-toggle absolute right-0 pr-3">
+                                        <i class="fas fa-eye-slash text-gray-400" id="signup-password-toggle"></i>
+                                    </div>
+                                    <div id="signup-password-error" class="text-red-500 text-xs mt-1 hidden">Password must be at least 8 characters</div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="signup-confirm-password" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <i class="fas fa-lock text-gray-400"></i>
+                                    </div>
+                                    <input type="password" id="signup-confirm-password" placeholder="Confirm your password"
+                                           class="pl-10 w-full px-4 py-2 border border-gray-300 rounded-lg input-field focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all-300">
+                                    <div id="signup-confirm-password-error" class="text-red-500 text-xs mt-1 hidden">Passwords don't match</div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center">
+                                <input id="terms" type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded checkbox">
+                                <label for="terms" class="ml-2 block text-sm text-gray-700">
+                                    I agree to the <a href="#" class="text-blue-600 hover:text-blue-500 hover:underline transition-colors">Terms</a> and <a href="#" class="text-blue-600 hover:text-blue-500 hover:underline transition-colors">Privacy Policy</a>
+                                </label>
+                            </div>
+
+                            <button type="submit" class="w-full text-white font-medium py-2 px-4 rounded-lg btn-submit focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                                Create Account
+                            </button>
+                        </form>
+
+                        <div class="mt-6 text-center text-sm text-gray-600">
+                            Already have an account?
+                            <button id="switch-to-login" class="text-blue-600 hover:text-blue-500 hover:underline font-medium transition-colors">Log in</button>
+                        </div>
+                    </div>
+              *@ 
+
+
+
+
+
+
+
+@* @using MudBlazor
+@inject NavigationManager Navigation
+@inject ISnackbar Snackbar
+
+<div class="dialog-backdrop">
+    <MudPaper Class="dialog-window p-6">
+        <MudText Typo="Typo.h6" Class="mb-4 d-flex align-items-center">
+            <MudIconButton Icon="@Icons.Material.Filled.Close" OnClick="@(() => Navigation.NavigateTo("/"))" />
+            <span class="ms-2">صفحة التسجيل</span>
+        </MudText>
+        <_Auth1 />
+
+    
+
+        <MudDivider Class="my-3" />
+
+      
+    </MudPaper>
+</div>
+
+<style>
+    .dialog-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+      
+          width: 100vw;
+          height: 100vh; 
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+
+    .dialog-window {
+        background: white;
+        width: 100%;
+/*         max-width: 600px;
+ */        border-radius: 12px;
+        box-shadow: var(--mud-elevation-8);
+    }
+
+    .form-content {
+        margin-top: 16px;
+    }
+</style>
+
+@code {
+    private int regIndex = 0;
+    private string FullName;
+    private string Email;
+    private string Password;
+    private string ConfirmPassword;
+
+    private void RegisterUser()
+    {
+        if (Password != ConfirmPassword)
+        {
+            Snackbar.Add("كلمتا المرور غير متطابقتين", Severity.Error);
+            regIndex = 1;
+            return;
+        }
+
+        Snackbar.Add("تم التسجيل بنجاح", Severity.Success);
+        Navigation.NavigateTo("/");
+    }
+}
+
+ *@
+@* @page "/register"
+@using MudBlazor
+@inject NavigationManager Navigation
+@inject ISnackbar Snackbar
+
+<div class="dialog-backdrop">
+    <MudPaper Class="dialog-window p-6">
+        <MudText Typo="Typo.h6" Class="mb-4 d-flex align-items-center">
+            <MudIconButton Icon="@Icons.Material.Filled.Close" OnClick="@(() => Navigation.NavigateTo("/"))" />
+            <span class="ms-2">صفحة التسجيل</span>
+        </MudText>
+
+        <MudTimeline TimelineOrientation="TimelineOrientation.Horizontal">
+            <MudTimelineItem Color="@(regIndex == 0 ? Color.Primary : Color.Default)">
+                <MudText Typo="Typo.caption">البيانات الشخصية</MudText>
+            </MudTimelineItem>
+            <MudTimelineItem Color="@(regIndex == 1 ? Color.Primary : Color.Default)">
+                <MudText Typo="Typo.caption">بيانات الدخول</MudText>
+            </MudTimelineItem>
+            <MudTimelineItem Color="@(regIndex == 2 ? Color.Primary : Color.Default)">
+                <MudText Typo="Typo.caption">تأكيد</MudText>
+            </MudTimelineItem>
+        </MudTimeline>
+
+        <MudDivider Class="my-3" />
+
+        <div class="form-content">
+            @if (regIndex == 0)
+            {
+                <MudTextField T="string" Label="الاسم الكامل" @bind-Value="FullName" Required="true" FullWidth="true" />
+            }
+            else if (regIndex == 1)
+            {
+                <MudTextField T="string" Label="البريد الإلكتروني" @bind-Value="Email" Required="true" FullWidth="true" />
+                <MudTextField T="string" Label="كلمة المرور" InputType="InputType.Password" @bind-Value="Password" Required="true" FullWidth="true" />
+                <MudTextField T="string" Label="تأكيد كلمة المرور" InputType="InputType.Password" @bind-Value="ConfirmPassword" Required="true" FullWidth="true" />
+            }
+            else
+            {
+                <MudPaper Class="p-4">
+                    <MudText Typo="Typo.subtitle2">يرجى تأكيد البيانات:</MudText>
+                    <MudList>
+                        <MudListItem>الاسم: @FullName</MudListItem>
+                        <MudListItem>البريد: @Email</MudListItem>
+                    </MudList>
+                </MudPaper>
+            }
+        </div>
+
+        <MudDivider Class="my-3" />
+
+        <div class="d-flex justify-content-between">
+            <MudButton Disabled="@(regIndex == 0)" OnClick="@(() => regIndex--)" StartIcon="@Icons.Material.Filled.NavigateBefore">السابق</MudButton>
+            @if (regIndex < 2)
+            {
+                <MudButton OnClick="@(() => regIndex++)" EndIcon="@Icons.Material.Filled.NavigateNext">التالي</MudButton>
+            }
+            else
+            {
+                <MudButton Color="Color.Success" OnClick="@RegisterUser">تسجيل</MudButton>
+            }
+        </div>
+    </MudPaper>
+</div>
+
+<style>
+    .dialog-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+
+    .dialog-window {
+        background: white;
+        width: 90%;
+        max-width: 600px;
+        border-radius: 12px;
+        box-shadow: var(--mud-elevation-8);
+    }
+
+    .form-content {
+        margin-top: 16px;
+    }
+</style>
+
+@code {
+    private int regIndex = 0;
+    private string FullName;
+    private string Email;
+    private string Password;
+    private string ConfirmPassword;
+
+    private void RegisterUser()
+    {
+        if (Password != ConfirmPassword)
+        {
+            Snackbar.Add("كلمتا المرور غير متطابقتين", Severity.Error);
+            regIndex = 1;
+            return;
+        }
+
+        Snackbar.Add("تم التسجيل بنجاح", Severity.Success);
+        Navigation.NavigateTo("/");
+    }
+}
+ *@
+@* @inject NavigationManager navigator;
+@inject ISnackbar Snackbar
+
+<MudDialog DefaultFocus="DefaultFocus.LastChild" @bind-IsVisible=isVisible Options="dialogOptions">
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIconButton Icon="@Icons.Material.Filled.ArrowBack" aria-label="delete"></MudIconButton>
+
+            Generating scenarios using a model:
+        </MudText>
+    </TitleContent>
+    <DialogActions>
+        <MudButton Disabled="@(index==0)" Variant="Variant.Text" OnClick="@(()=>checkstep(-1))" StartIcon="@Icons.Material.Filled.NavigateBefore" Color="Color.Primary">Before</MudButton>
+        <MudButton Variant="Variant.Text" OnClick="@(()=>checkstep(1))" EndIcon="@Icons.Material.Filled.NavigateNext" Color="Color.Primary">Next</MudButton>
+    </DialogActions>
+    <DialogContent>
+        <MudContainer>
+
+
+            <MudTimeline Reverse="true" TimelinePosition="TimelinePosition.Bottom" TimelineOrientation="TimelineOrientation.Horizontal">
+                <MudTimelineItem Color="@(GetColorByActive(0))">
+                    <MudText Typo="Typo.caption" Align="Align.End">Choose  generate scenarios</MudText>
+                </MudTimelineItem>
+                <MudTimelineItem Color="@(GetColorByActive(1))">
+                    <MudText Typo="Typo.caption" Align="Align.End">Enter Text</MudText>
+                </MudTimelineItem>
+
+
+
+                <MudTimelineItem Color="@(GetColorByActive(2))">
+                    <MudText Typo="Typo.caption" Align="Align.End">Filtering </MudText>
+
+
+                </MudTimelineItem>
+                <MudTimelineItem Color="@(GetColorByActive(3))">
+                    <MudText Typo="Typo.caption" Align="Align.End">Generting</MudText>
+                </MudTimelineItem>
+            </MudTimeline>
+
+            <div class="d-flex gsc mkp">
+                @if (index == 0)
+                {
+
+                    <div Class="wgs100   RCardP" style="display:flex;justify-content:center;align-items:center;">
+
+                        @foreach (var cht in SampleData.TG)
+                        {
+
+                            <div>
+                                <MudPaper Class="mdbt mmmk">
+                                    <MudChip Style="font-size:12px " Variant="Variant.Outlined" Label="true" OnClick="@(()=>cheackType(cht.TypeGeneratingModel))" Color="(Color)(int)cht.TypeGeneratingModel">  @cht.Name</MudChip>
+                                </MudPaper>
+                            </div>
+                        }
+
+                    </div>
+                }
+                else if (index == 1)
+                {
+                    <div class="wgs100  RCardP">
+
+                        @if (TypeGenerating?.TypeGeneratingModel == TypeGeneratingModel.Threatbased)
+                        {
+                            <div class="  RCardP  " style="padding:2%;background:#fff;border-radius:12px !important">
+
+
+
+
+                                <MudTextField @bind-Value="valuetext" T="string" Label="enter any text" Lines="6" Class="mt-n2 mx-4" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Send" OnAdornmentClick="@(()=>checkstep(1))" />
+
+
+
+
+
+
+
+                            </div>
+                            <br>
+                        }
+                        else
+                        {
+                            <TemplateFormBased Model="@((FormStateBased)TypeGenerating.Form)" />
+                        }
+
+
+
+
+
+
+                    </div>
+                }
+                else if (index == 2)
+                {
+                    <div class=" wgs100 RCardP ">
+
+                        <AMudChipSet Model="@ModelGroup3" />
+                        <br>
+                        <MudDivider />
+                        <br>
+                        <AMudChipSet Model="@ModelIncidents" />
+
+                        <br>
+                        <MudDivider />
+                        <AMudChipSet Model="@ModelGroup" />
+
+
+
+
+
+
+                    </div>
+                }
+                else
+                {
+                    <div class=" wgs100 RCardP " style="display:flex;justify-content:center;align-items:center;flex-direction:column">
+                        <MudProgressCircular Color="Color.Primary" Style="height:100px;width:100px;" Value="@Value" />
+                        <MudText Typo="Typo.subtitle2">@SampleData.ArrayDataSoftwares[Value % 15]</MudText>
+                    </div>
+                }
+
+            </div>
+        </MudContainer>
+    </DialogContent>
+
+</MudDialog>
+@code {
+
+
+    [Parameter]
+    public List<Senario> Senarios { get; set; } = new List<Senario>();
+    bool isvisablenext = true;
+    private AMudChipSetModel ModelIncidents = new AMudChipSetModel() { Title = "Incidents", Items = SampleData.ArrayDataSoftwares };
+    string valuetext = "api";
+    async void checkstep(int i)
+    {
+        if (TypeGenerating != null)
+        {
+            if ((i > 0 && index < 4) || (i < 0 && index > 0))
+                index += i;
+
+            if (index == 3)
+            {
+                StateHasChanged();
+
+                SimulateProgress();
+                //  var output = await GetGSenariosAsync();
+                isVisible = false;
+                navigator.NavigateTo("/generatingai/" + valuetext, true);
+            }
+
+            StateHasChanged();
+        }
+        else
+        {
+            Snackbar.Add("Please choose a scenario generation method ....", Severity.Error);
+        }
+
+    }
+    private async Task<OutputModel> GetGSenariosAsync()
+    {
+        try
+        {
+            var client = new HttpClient();
+            var request = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Get,
+                    RequestUri = new Uri("https://asgmodel.pythonanywhere.com/api/generatingai/" + valuetext),
+
+
+                };
+
+
+            using (var response = await client.SendAsync(request))
+            {
+                response.EnsureSuccessStatusCode();
+
+                var Output = (await response.Content.ReadFromJsonAsync<OutputModel>());
+
+                return Output;
+
+            }
+        }
+        catch
+        {
+            return null;
+        }
+    }
+    private AMudChipSetModel ModelGroup = new AMudChipSetModel() { Title = "Groups", Items = SampleData.ArrayDataGroups };
+    private AMudChipSetModel ModelGroup2 = new AMudChipSetModel() { Title = "Groups", Items = SampleData.ArrayDataGroups };
+    private AMudChipSetModel ModelGroup3 = new AMudChipSetModel() { Title = "Types of scenarios to be generated", Items = SampleData.ArrayDataAnlayses };
+    int index = 0;
+    private TypeGenerating? TypeGenerating;
+
+    protected override void OnInitialized()
+    {
+
+
+
+
+    }
+
+    Color GetColorByActive(int act)
+    {
+        if (index == act)
+            return Color.Primary;
+        if (index > act)
+            return Color.Success;
+
+        return Color.Default;
+
+    }
+    void cheackType(TypeGeneratingModel type)
+    {
+        index = 1;
+        if (TypeGenerating == null)
+            if (type == TypeGeneratingModel.Threatbased)
+                TypeGenerating = TypeGenerating.getThreadBase();
+            else
+                TypeGenerating = TypeGenerating.getStateBase();
+        else
+        if (TypeGenerating.TypeGeneratingModel == TypeGeneratingModel.Threatbased)
+            TypeGenerating = TypeGenerating.getStateBase();
+        else
+            TypeGenerating = TypeGenerating.getThreadBase();
+
+
+        StateHasChanged();
+    }
+    private bool isVisible = true;
+    private DialogOptions dialogOptions = new() { FullScreen = true, CloseButton = true };
+
+    public int Value { get; set; }
+
+    public async Task SimulateProgress()
+    {
+        Value = 0;
+        do
+        {
+            if (_disposed)
+            {
+                return;
+            }
+
+            Value += 1;
+
+            StateHasChanged();
+            await Task.Delay(100);
+
+        } while (Value < 100);
+
+        SimulateProgress();
+    }
+    bool _disposed = false;
+
+
+} *@

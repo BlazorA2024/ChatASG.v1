@@ -1,0 +1,49 @@
+﻿@using global::Data.ASGSTATE
+<AddCardHeader Prams="Prams" />
+
+@code {
+
+
+    private List<DataButton> studios = new()
+    {
+
+            new DataButton
+            {
+                Icon = "fas fa-volume-up",
+                ClassButton = "bg-gray-200 hover:bg-gray-300 p-2 rounded-full text-gray-700",
+                
+            },
+            new DataButton
+            {
+               Icon = "fas fa-question-circle  mr-2 ",
+                Button = "Help",
+              ClassButton = "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center",
+
+            },
+          
+
+    };
+ 
+    [Parameter]
+    public DataAddHeader? DataBuild { get; set; }
+    private CardAddHeader Prams = new();
+        protected override void OnInitialized()
+        {
+            if (DataBuild == null)
+            {
+            DataBuild = new DataAddHeader
+                    {
+                    Name = "CyberShield ASG",
+                    Description = "State-Based Attack Scenario Generator",
+                    Icon = "fas fa-shield-alt",
+                    Items = studios,
+                   //Iquiz = Quiz,
+                    };
+            }
+
+        Prams = CardAddHeader.Create(DataBuild);
+            base.OnInitialized();
+        }
+
+}
+

@@ -1,4 +1,5 @@
-﻿@using global::Data.FooterSectio
+﻿
+@using global::Data.FooterSectio
 @using global::Data.FooterSection
 
 <AddFooter Prams="Prams" />
@@ -23,19 +24,14 @@
                 Title = "الخدمات",
                 Links = new()
                 {
-                    new() { Text = "Chat AI" },
-                    new() { Text = "الواقع المعزز" },
-                    new() { Text = "الروبوتات الدفاعية" },
-                    new() { Text = "الحلول الأمنية" }
+                    new() { Text = "Chat AI",Url = "#"},
+                    new() { Text = "الواقع المعزز" ,Url = "#"},
+                    new() { Text = "الروبوتات الدفاعية",Url = "#" },
+                    new() { Text = "الحلول الأمنية" ,Url = "#"}
                 }
             }
 
-        // PolicyLinks = new()
-        // {
-        //     new() { Text = "شروط الخدمة" },
-        //     new() { Text = "سياسة الخصوصية" },
-        //     new() { Text = "الأسئلة الشائعة" }
-        // }
+       
     };
     private DataFooterBrandInfo Inf = new()
     {
@@ -55,15 +51,15 @@
         {
            
             Title = "    &copy; 2023 منصة ASG. جميع الحقوق محفوظة.",
-            Links = new()
+            ILinks = new()
             {
-                new() { Text = "شروط الخدمة" },
-                new() { Text = "سياسة الخصوصية" },
-                new() { Text = "الأسئلة الشائعة" }
+                new() { Text = "شروط الخدمة" ,Url = "#"},
+                new() { Text = "سياسة الخصوصية",Url = "#" },
+                new() { Text = "الأسئلة الشائعة",Url = "#" }
             }
         };
     [Parameter]
-    public FooterData? DataBuild { get; set; }
+    public DataAddFooter? DataBuild { get; set; }
 
     private CardAddFooter Prams = new();
 
@@ -71,7 +67,7 @@
     {
         if (DataBuild == null)
         {
-            DataBuild = new FooterData
+            DataBuild = new DataAddFooter
                 {
                     LinkSections = footerData,
                     Iinfo = Inf,

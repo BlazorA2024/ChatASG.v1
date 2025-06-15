@@ -1,0 +1,67 @@
+﻿@using global::Data.ScenarioGeneration
+@if (Prams != null)
+{
+    <button id="generate-scenarios" @onclick="HandleClear" class="@Prams.DataBuild.ClassButton ">
+        <i class="@Prams.DataBuild.Icon "></i>@Prams.DataBuild.Button
+</button>
+
+    @*   <button id="generate-scenarios" class="bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-md transition flex items-center justify-center transform hover:scale-[1.02] glow">
+                <i class="fas fa-play mr-2"></i> Generate Scenarios
+            </button>
+            <button id="validate-scenarios" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-3 rounded-md transition flex items-center justify-center transform hover:scale-[1.02]">
+                <i class="fas fa-check-circle mr-2"></i> Validate Scenarios
+            </button> *@
+}
+@code {
+
+
+    [Parameter] public CardGeneration? Prams { get; set; }
+    [Parameter] public EventCallback<DataGeneration> OnClearClicked { get; set; }
+    private async Task HandleClear()
+    {
+
+        StateHasChanged();
+        await OnClearClicked.InvokeAsync(Prams.DataBuild);
+    }
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     await UpdateStyleAsync(CLASSES);
+    //     await base.OnInitializedAsync();
+    // }
+}
+@* @using global::Data.Pricing
+@inherits StylesCardAddPricing
+@if (Prams != null)
+{
+    <section class="@ClassContainer ">
+        <div class="@ClassItem ">
+            <h2 class="@ClassName ">@Prams.DataBuild.Name  </h2>
+            <p class="@ClassDescription ">
+             @Prams.DataBuild.Description   
+            </p>
+        </div>
+
+        <div class="@ClassItems ">
+            @foreach (var plan in Prams.Items)
+            {
+                <div>
+                    <CardPriceng Prams="plan" />
+                </div>
+            }
+        </div>
+        <CardPricengQuiz Prams="Prams.Iquiz" />
+
+    </section>
+}
+@code {
+
+   
+    [Parameter] public CardAddPricing? Prams { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}
+ *@

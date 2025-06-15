@@ -1,0 +1,37 @@
+﻿@using global::Data.MainContent
+@inherits StylesCardStatecards
+@if (Prams != null)
+{
+    <div id="state-cards" class="@ClassItem  ">
+        <!-- State cards will be added here dynamically -->
+        <div class="@ClassIconrounded" id="empty-state-message">
+            <i class="@Prams.DataBuild.Icon      @ClassIcon "></i>
+            <p class="@ClassTitle ">@Prams.DataBuild.Title </p>
+        </div>
+    </div>
+
+}
+@code {
+    
+
+    [Parameter] public CardStatecards? Prams { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+    // [Parameter] public EventCallback<DataStatecards> OnClick { get; set; }
+    // private async Task HandleClick()
+    // {
+    //     state-cards = ClassContent == "" ? "accordion-content" : "";
+    //     StateHasChanged();
+    //     await OnClick.InvokeAsync(Prams.DataBuild);
+    // }
+}
+ @*  <div id="state-cards" class="space-y-3 max-h-64 overflow-y-auto pr-2">
+            <!-- State cards will be added here dynamically -->
+            <div class="text-center py-4 text-gray-500" id="empty-state-message">
+                <i class="fas fa-info-circle mb-1"></i>
+                <p class="text-sm">Add state fields to begin</p>
+            </div>
+        </div> *@

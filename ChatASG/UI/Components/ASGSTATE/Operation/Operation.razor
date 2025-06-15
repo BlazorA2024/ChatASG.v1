@@ -1,0 +1,43 @@
+﻿@using global::Data.Operation
+@inherits StylesCardSyste
+
+@if (Prams != null)
+{
+    <div id="operation-log" class="@ClassContainer ">
+        <div class="@ClassItem ">
+            <div class="@ClassName ">
+                <span class="text-blue-600 mr-2">></span>
+                <span>@Prams.DataBuild.Name </span>
+            </div>
+            <div class="@ClassTitle ">[@Prams.DataBuild.YSTEM] @Prams.DataBuild.Timestamp.ToString("g") </div>
+        </div>
+    </div>
+}
+
+
+
+ @code {
+
+   
+
+    [Parameter] public CardSystem Prams { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}
+
+
+
+
+@*  <div id="operation-log" class="space-y-2 text-sm max-h-64 overflow-y-auto pr-2">
+        <div class="log-entry bg-gray-50 px-3 py-2 rounded">
+            <div class="flex items-start">
+                <span class="text-blue-600 mr-2">></span>
+                <span>System initialized. Ready to configure attack scenarios.</span>
+            </div>
+            <div class="text-xs text-gray-500 mt-1 ml-4">[SYSTEM] Just now</div>
+        </div>
+    </div> *@

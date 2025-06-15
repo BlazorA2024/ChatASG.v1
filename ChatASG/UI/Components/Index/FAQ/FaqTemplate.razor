@@ -1,4 +1,6 @@
 ﻿@using global::Data.FAQ
+@using global::Data.FAQModels
+
 <AddCardFaq Prams="Prams" />
 
 @code {
@@ -48,7 +50,7 @@
     };
     private DataStillFAQ FAQ = new()
         {
-            Title = "Still have questions?",
+            Name = "Still have questions?",
             Description = " We're happy to help! Our team typically responds within 1 business day.",
             Button = "  Contact Support",
         };

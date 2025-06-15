@@ -5,10 +5,13 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 
 using MudBlazor.Services;
+using NWHttps;
+using MyApiClient;
+using Data.FeaturesSection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services to the container.Required.AllowNull
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
@@ -16,8 +19,26 @@ builder.Services.AddMudServices();
 builder.Services.AddScoped<ProtectedSessionStorage>();
 builder.Services.AddTransient<Auth>();
 builder.Services.AddDistributedMemoryCache();
+builder.Services.AddTransient(typeof(IMapper<,>), typeof(GenericMapper<,>));
+//builder.Services.AddScoped<IMapper<FeatureItemOutputVM, DataAddFeatures>, GenericMapper<FeatureItemOutputVM, DataAddFeatures>>();
+//builder.Services.AddScoped<IMapper<DataFeatureOutputVM, DataFeatures>, GenericMapper<DataFeatureOutputVM, DataFeatures>>();
 
 
+//builder.Services.AddMudServices();
+//builder.Services.AddHttpClient("LocalApi", client =>
+//{
+//    client.BaseAddress = new Uri("https://localhost:7107/");
+
+
+//});
+builder.Services.AddMudServices();
+builder.Services.AddHttpClient("LocalApi", client =>
+{
+    client.BaseAddress = new Uri("https://lahja-api-v1.runasp.net/");
+
+
+});
+builder.Services.AddScoped<IWebApiClientFactory, WebApiClientFactory>();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = "Cookies";
@@ -62,7 +83,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-   app.UseExceptionHandler("/Error");
+ //  app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }

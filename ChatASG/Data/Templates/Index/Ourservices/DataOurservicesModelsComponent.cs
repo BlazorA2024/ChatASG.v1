@@ -1,14 +1,13 @@
 ﻿using ChatASG.Data.Templates.Base;
+using ChatASG.Pages;
 using Data.HeaderModels;
+using Data.OurservicesModels;
 using Microsoft.AspNetCore.Components;
 
 namespace Data.Ourservices;
 
-public class DataOurservice : ModulsBase
-{
-
-    public List<string> Features { get; set; } = new();
-}
+//<!--4 Services Section -->
+  //  <!-- خدماتنا المتكاملة    -->
 
 
 
@@ -83,12 +82,6 @@ public class Ourservices : ComponentBaseCard<DataOurservice>
     }
 }
 
-public class DataOurservicesCard : ModulsBase
-{
-      public DataOurservice dataOurservice {  get; set; }
-        public string IconBackground { get; set; } = "";
-        public List<string> Features { get; set; } = new();
-    }
 
    
 
@@ -159,10 +152,7 @@ public class CardOurservices : ComponentBaseCard<DataOurservicesCard>
     }
 }
 
-public class DataAddStudios : ModulsBase
-{
-    public List<DataOurservicesCard> Items { get; set; } = new();
-}
+
 
 public class StylesCardOurservices : StyleBaseComponentCard
 {
@@ -217,15 +207,15 @@ public class StylesCardOurservices : StyleBaseComponentCard
     }
 }
 
-public class CardAddOurservices : ComponentBaseCard<DataAddStudios>
+public class CardAddOurservices : ComponentBaseCard<DataAddOurservices>
 {
-    public List<CardOurservices> Items { get; set; } = new();
+    public List<CardOurservices> Items { get; set; } = new List<CardOurservices>();
 
     public override TypeComponentCard Type => throw new NotImplementedException();
 
     public static ICollection<string> NAMECLASSES => StylesCardOurservices.CLASSES.Keys.ToList();
 
-    public override void Build(DataAddStudios db)
+    public override void Build(DataAddOurservices db)
     {
         DataBuild = db;
        // IStats = CardHeroImageStats.Create(db.IStats);
@@ -237,7 +227,7 @@ public class CardAddOurservices : ComponentBaseCard<DataAddStudios>
         }
     }
 
-    public static CardAddOurservices Create(DataAddStudios data)
+    public static CardAddOurservices Create(DataAddOurservices data)
     {
         var instance = new CardAddOurservices();
         instance.Build(data);

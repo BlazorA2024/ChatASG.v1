@@ -1,0 +1,1332 @@
+﻿@page "/cv"
+@using ChatASG.UI.Components.ASGSTATE
+@using ChatASG.UI.Components.ASGSTATE.HeaderLogo
+@using ChatASG.UI.Components.ASGSTATE.MainContent
+@using ChatASG.UI.Components.ASGSTATE.ScenarioGeneration
+
+
+<body class="bg-gray-100">
+<ChatASG.UI.Components.ASGSTATE.Addasgstat />
+</body>
+
+
+@* 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>State-Based Attack Scenario Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="~/css/ASGSTATSoundManagement.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+     <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --secondary: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            color: var(--dark);
+        }
+        
+        .mono {
+            font-family: 'Roboto Mono', monospace;
+        }
+        
+        .card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .node {
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+        }
+        
+        .node:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
+        }
+        
+        .connection {
+            stroke-dasharray: 5;
+            animation: dash 30s linear infinite;
+        }
+        
+       
+        .pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+      
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+       
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .log-entry {
+            border-left: 3px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        .log-entry:hover {
+            background-color: rgba(59, 130, 246, 0.05);
+        }
+        
+        .log-entry.warning {
+            border-left-color: var(--warning);
+        }
+        
+        .log-entry.error {
+            border-left-color: var(--danger);
+        }
+        
+        .log-entry.success {
+            border-left-color: var(--secondary);
+        }
+        
+        .glow {
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.7);
+        }
+        
+        .terminal {
+            background-color: #1e293b;
+            color: #f8fafc;
+            font-family: 'Roboto Mono', monospace;
+            border-radius: 0.5rem;
+        }
+        
+        .terminal-cursor {
+            animation: blink 1s step-end infinite;
+        }
+        
+       
+    </style> 
+</head>
+
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <!-- Header with Logo -->
+        
+        <header class="mb-8 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-blue-600 text-white p-2 rounded-lg">
+                    <i class="fas fa-shield-alt text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800">CyberShield ASG</h1>
+                    <p class="text-gray-600">State-Based Attack Scenario Generator</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="sound-toggle" class="bg-gray-200 hover:bg-gray-300 p-2 rounded-full text-gray-700">
+                    <i class="fas fa-volume-up"></i>
+                </button>
+                <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center">
+                    <i class="fas fa-question-circle mr-2"></i> Help
+                </button>
+            </div>
+        </header> 
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 py-1">
+            <!-- Left Panel - State Configuration -->
+            
+             <div class="lg:col-span-1 space-y-6">
+                <!-- State Configuration Card -->
+                <div class="card bg-white rounded-xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+                            <i class="fas fa-server mr-2 text-blue-600"></i> System State
+                        </h2>
+                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">9 Fields</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Add State Field</label>
+                            <div class="flex items-center space-x-2">
+                                <select id="state-field" class="flex-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                                    <option value="address">IP Address</option>
+                                    <option value="protocol">Protocol</option>
+                                    <option value="os">Operating System</option>
+                                    <option value="ports">Ports</option>
+                                    <option value="shell">Shell</option>
+                                    <option value="privilege">Privilege</option>
+                                    <option value="binaries">Binaries</option>
+                                    <option value="cwd">Current Working Directory</option>
+                                    <option value="misudo">Misudo Configurations</option>
+                                </select>
+                                <button id="add-state-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md transition-all duration-300 transform hover:scale-105">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- State Cards Container -->
+                        <div id="state-cards" class="space-y-3 max-h-64 overflow-y-auto pr-2">
+                            <!-- State cards will be added here dynamically -->
+                            <div class="text-center py-4 text-gray-500" id="empty-state-message">
+                                <i class="fas fa-info-circle mb-1"></i>
+                                <p class="text-sm">Add state fields to begin</p>
+                            </div>
+                        </div>
+
+                        <div class="pt-2 flex justify-between items-center">
+                            <button id="clear-states" class="text-red-600 hover:text-red-800 text-sm transition flex items-center">
+                                <i class="fas fa-trash mr-1"></i> Clear All
+                            </button>
+                            <span class="text-xs text-gray-500" id="state-count">0 fields added</span>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+ 
+
+        
+             <!-- Right Panel - Scenario Generation & Visualization -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Scenario Generation Card -->
+                <div class="card bg-white rounded-xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+                            <i class="fas fa-project-diagram mr-2 text-purple-600"></i> Scenario Generation
+                        </h2>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full" id="scenario-count">0 scenarios</span>
+                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full hidden" id="valid-count">0 validated</span>
+                        </div>
+                    </div>
+
+                    <!-- Generation Controls -->
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <button id="generate-scenarios" class="bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-md transition flex items-center justify-center transform hover:scale-[1.02] glow">
+                            <i class="fas fa-play mr-2"></i> Generate Scenarios
+                        </button>
+                        <button id="validate-scenarios" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-3 rounded-md transition flex items-center justify-center transform hover:scale-[1.02]">
+                            <i class="fas fa-check-circle mr-2"></i> Validate Scenarios
+                        </button>
+                    </div>
+
+                    <!-- Scenario Results -->
+                    <div class="border rounded-md p-4 bg-gray-50 max-h-64 overflow-y-auto">
+                        <h3 class="text-sm font-medium text-gray-700 mb-3 flex items-center">
+                            <i class="fas fa-list-ol mr-1 text-gray-500"></i> Generated Scenarios
+                        </h3>
+                        <div id="scenario-results" class="space-y-3">
+                            <div class="text-center py-8 text-gray-500">
+                                <i class="fas fa-project-diagram text-2xl mb-2"></i>
+                                <p class="text-sm">No scenarios generated yet</p>
+                                <p class="text-xs mt-1">Configure states and techniques, then click Generate</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+ 
+
+            <!-- Middle Panel - Attack Techniques -->
+            <div class="lg:col-span-1 space-y-6">
+                <!-- Attack Techniques Card -->
+                <div class="card bg-white rounded-xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+                            <i class="fas fa-bug mr-2 text-red-600"></i> Attack Techniques
+                        </h2>
+                        <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full" id="selected-count">0 selected</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Select Technique</label>
+                            <select id="technique-select" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                                <option value="">-- Select a technique --</option>
+                                <option value="nmap">Nmap Scanning</option>
+                                <option value="cve-exploit">CVE-2016-3714 Exploit</option>
+                                <option value="system-investigation">System Investigation (Unix)</option>
+                                <option value="download-wget">Download (Wget)</option>
+                                <option value="privilege-escalation">Privilege Escalation</option>
+                                <option value="lateral-movement">Lateral Movement</option>
+                                <option value="credential-dumping">Credential Dumping</option>
+                                <option value="persistence">Persistence Mechanism</option>
+                            </select>
+                        </div>
+
+                        <!-- Selected Techniques List -->
+                        <div class="border rounded-md p-3 bg-gray-50 max-h-64 overflow-y-auto">
+                            <h3 class="text-sm font-medium text-gray-700 mb-2 flex items-center">
+                                <i class="fas fa-list-ul mr-1 text-gray-500"></i> Selected Techniques
+                            </h3>
+                            <ul id="selected-techniques" class="space-y-2">
+                                <!-- Selected techniques will appear here -->
+                                <li class="text-center py-4 text-gray-500 text-sm" id="empty-tech-message">
+                                    No techniques selected
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Pre/Post Conditions Button -->
+                        <div class="mt-4">
+                            <button id="configure-conditions" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition w-full flex items-center justify-center transform hover:scale-[1.02]">
+                                <i class="fas fa-cog mr-2"></i> Configure Conditions
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Visualization Panel -->
+    <div style="padding:3%">
+        <div class="card bg-white rounded-xl p-6 ">
+            <!-- Tabs -->
+            <div class="flex border-b mb-4">
+                <button class="tab-btn px-4 py-2 font-medium text-blue-600 border-b-2 border-blue-600 flex items-center" data-tab="graph">
+                    <i class="fas fa-network-wired mr-2"></i> Graph View
+                </button>
+                <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 flex items-center" data-tab="sequence">
+                    <i class="fas fa-list-ul mr-2"></i> Sequence View
+                </button>
+                <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 flex items-center" data-tab="validation">
+                    <i class="fas fa-shield-alt mr-2"></i> Validation
+                </button>
+            </div>
+
+            <!-- Tab Contents -->
+            <div class="tab-content active" id="graph-tab">
+                <div class="graph-container bg-gray-50 rounded-lg p-4 h-64 flex items-center justify-center relative" id="attack-graph">
+                    <svg width="100%" height="100%" viewBox="0 0 800 300" id="graph-svg">
+                        <!-- Graph visualization will be rendered here -->
+                        <text x="400" y="150" text-anchor="middle" fill="#64748b" font-size="14" font-family="Inter">
+                            Graph visualization will appear here after generation
+                        </text>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="tab-content" id="sequence-tab">
+                <div class="bg-gray-50 p-4 rounded-md h-64 overflow-y-auto">
+                    <h3 class="font-medium text-gray-700 mb-3 flex items-center">
+                        <i class="fas fa-list-ol mr-2 text-gray-500"></i> Attack Scenario Sequence
+                    </h3>
+                    <ol id="scenario-sequence" class="list-decimal pl-5 space-y-2">
+                        <li class="text-gray-600">No sequence generated yet</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="tab-content" id="validation-tab">
+                <div class="bg-gray-50 p-4 rounded-md h-64 overflow-y-auto">
+                    <h3 class="font-medium text-gray-700 mb-3 flex items-center">
+                        <i class="fas fa-shield-alt mr-2 text-gray-500"></i> Validation Against ICS Incidents
+                    </h3>
+                    <div id="validation-results" class="space-y-4">
+                        <div class="text-center py-8 text-gray-500">
+                            <i class="fas fa-check-circle text-2xl mb-2"></i>
+                            <p class="text-sm">No validation results yet</p>
+                            <p class="text-xs mt-1">Generate scenarios and click Validate</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Operation Log Card -->
+    <div class="card bg-white rounded-xl p-6 " style="padding:3%">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+                <i class="fas fa-terminal mr-2 text-blue-600"></i> Operation Log
+            </h2>
+            <button id="clear-logs" class="text-gray-500 hover:text-gray-700 text-sm">
+                <i class="fas fa-broom mr-1"></i> Clear
+            </button>
+        </div>
+        <div id="operation-log" class="space-y-2 text-sm max-h-64 overflow-y-auto pr-2">
+            <div class="log-entry bg-gray-50 px-3 py-2 rounded">
+                <div class="flex items-start">
+                    <span class="text-blue-600 mr-2">></span>
+                    <span>System initialized. Ready to configure attack scenarios.</span>
+                </div>
+                <div class="text-xs text-gray-500 mt-1 ml-4">[SYSTEM] Just now</div>
+            </div>
+        </div>
+    </div>
+    <!-- Terminal Simulation -->
+   
+    <!-- Pre/Post Conditions Modal -->
+    <div id="conditions-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-xl shadow-2xl p-6 w-full max-w-4xl animate-fade-in">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                    <i class="fas fa-cog mr-2 text-blue-600"></i>
+                    <span id="modal-tech-name">Configure Conditions</span>
+                </h3>
+                <button id="close-modal" class="text-gray-500 hover:text-gray-700 transition">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <!-- Pre-Conditions -->
+                <div>
+                    <h4 class="text-sm font-medium text-gray-700 mb-2 flex items-center">
+                        <i class="fas fa-sign-in-alt mr-2 text-blue-600"></i> Pre-Conditions
+                    </h4>
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-2">
+                            <select id="pre-condition-select" class="flex-1 border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                                <option value="">Select condition...</option>
+                                <option value="address">IP Address</option>
+                                <option value="protocol">Protocol</option>
+                                <option value="os">Operating System</option>
+                                <option value="ports">Ports</option>
+                                <option value="shell">Shell</option>
+                                <option value="privilege">Privilege</option>
+                                <option value="binaries">Binaries</option>
+                                <option value="cwd">Current Working Directory</option>
+                                <option value="misudo">Misudo Configurations</option>
+                            </select>
+                            <button id="add-pre-condition" class="bg-blue-600 text-white px-3 py-2 rounded-md text-sm hover:bg-blue-700">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div id="pre-conditions-list" class="space-y-2">
+                            <!-- Pre-conditions will be added here -->
+                            <div class="text-center py-4 text-gray-500 text-sm" id="empty-pre-conditions">
+                                No pre-conditions configured
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Post-Conditions -->
+                <div>
+                    <h4 class="text-sm font-medium text-gray-700 mb-2 flex items-center">
+                        <i class="fas fa-sign-out-alt mr-2 text-green-600"></i> Post-Conditions
+                    </h4>
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-2">
+                            <select id="post-condition-select" class="flex-1 border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                                <option value="">Select condition...</option>
+                                <option value="shell:TEMPORAL">Shell: TEMPORAL</option>
+                                <option value="shell:DOWNLOADED">Shell: DOWNLOADED</option>
+                                <option value="shell:PERMANENT">Shell: PERMANENT</option>
+                                <option value="privilege:user">Privilege: User</option>
+                                <option value="privilege:superuser">Privilege: Superuser</option>
+                                <option value="ports:SC">Ports: SC</option>
+                                <option value="os:SC">OS: SC</option>
+                                <option value="binaries:UNDEFINED">Binaries: UNDEFINED</option>
+                            </select>
+                            <button id="add-post-condition" class="bg-green-600 text-white px-3 py-2 rounded-md text-sm hover:bg-green-700">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div id="post-conditions-list" class="space-y-2">
+                            <!-- Post-conditions will be added here -->
+                            <div class="text-center py-4 text-gray-500 text-sm" id="empty-post-conditions">
+                                No post-conditions configured
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 flex justify-end space-x-3">
+                <button id="cancel-conditions" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100 transition">
+                    Cancel
+                </button>
+                <button id="save-conditions" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+                    Save Conditions
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Elements for Sound Effects -->
+    <audio id="click-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.mp3" preload="auto"></audio>
+    <audio id="success-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3" preload="auto"></audio>
+    <audio id="error-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3" preload="auto"></audio>
+    <audio id="generate-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.mp3" preload="auto"></audio>
+    <audio id="validate-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-positive-interface-beep-221.mp3" preload="auto"></audio>
+
+    <script>
+        // Sound Management
+        const clickSound = document.getElementById('click-sound');
+        const successSound = document.getElementById('success-sound');
+        const errorSound = document.getElementById('error-sound');
+        const generateSound = document.getElementById('generate-sound');
+        const validateSound = document.getElementById('validate-sound');
+        const soundToggle = document.getElementById('sound-toggle');
+
+        let soundEnabled = true;
+
+        soundToggle.addEventListener('click', () => {
+            soundEnabled = !soundEnabled;
+            soundToggle.innerHTML = soundEnabled ? '<i class="fas fa-volume-up"></i>' : '<i class="fas fa-volume-mute"></i>';
+            soundToggle.classList.toggle('bg-gray-200');
+            soundToggle.classList.toggle('bg-blue-100');
+            soundToggle.classList.toggle('text-blue-600');
+            playSound(clickSound);
+        });
+
+        function playSound(sound) {
+            if (soundEnabled) {
+                sound.currentTime = 0;
+                sound.play().catch(e => console.log("Audio play failed:", e));
+            }
+        }
+
+        // State Management
+        const stateCards = document.getElementById('state-cards');
+        const stateField = document.getElementById('state-field');
+        const addStateBtn = document.getElementById('add-state-btn');
+        const clearStatesBtn = document.getElementById('clear-states');
+        const emptyStateMessage = document.getElementById('empty-state-message');
+        const stateCount = document.getElementById('state-count');
+
+        // Technique Management
+        const techniqueSelect = document.getElementById('technique-select');
+        const selectedTechniques = document.getElementById('selected-techniques');
+        const emptyTechMessage = document.getElementById('empty-tech-message');
+        const configureConditionsBtn = document.getElementById('configure-conditions');
+        const selectedCount = document.getElementById('selected-count');
+
+        // Scenario Generation
+        const generateScenariosBtn = document.getElementById('generate-scenarios');
+        const validateScenariosBtn = document.getElementById('validate-scenarios');
+        const scenarioResults = document.getElementById('scenario-results');
+        const scenarioSequence = document.getElementById('scenario-sequence');
+        const validationResults = document.getElementById('validation-results');
+        const scenarioCount = document.getElementById('scenario-count');
+        const validCount = document.getElementById('valid-count');
+
+        // Operation Log
+        const operationLog = document.getElementById('operation-log');
+        const clearLogsBtn = document.getElementById('clear-logs');
+
+        // Visualization
+        const attackGraph = document.getElementById('attack-graph');
+        const graphSvg = document.getElementById('graph-svg');
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        // Modal Elements
+        const conditionsModal = document.getElementById('conditions-modal');
+        const closeModalBtn = document.getElementById('close-modal');
+        const cancelConditionsBtn = document.getElementById('cancel-conditions');
+        const saveConditionsBtn = document.getElementById('save-conditions');
+        const modalTechName = document.getElementById('modal-tech-name');
+        const preConditionSelect = document.getElementById('pre-condition-select');
+        const postConditionSelect = document.getElementById('post-condition-select');
+        const addPreConditionBtn = document.getElementById('add-pre-condition');
+        const addPostConditionBtn = document.getElementById('add-post-condition');
+        const preConditionsList = document.getElementById('pre-conditions-list');
+        const postConditionsList = document.getElementById('post-conditions-list');
+        const emptyPreConditions = document.getElementById('empty-pre-conditions');
+        const emptyPostConditions = document.getElementById('empty-post-conditions');
+
+        // Terminal Simulation
+        const terminalOutput = document.getElementById('terminal-output');
+        const terminalPrompt = document.getElementById('terminal-prompt');
+        const terminalInput = document.getElementById('terminal-input');
+
+        // Sample data
+        const techniquesData = {
+            'nmap': {
+                name: 'Nmap Scanning',
+                tactic: 'Discovery',
+                preconditions: ['IP: 192.168.0.1', 'Protocol: IPv4'],
+                postconditions: ['Ports: SC', 'OS: SC'],
+                color: 'bg-green-500'
+            },
+            'cve-exploit': {
+                name: 'CVE-2016-3714 Exploit',
+                tactic: 'Exploitation',
+                preconditions: ['Ports: 80,443', 'OS: Linux'],
+                postconditions: ['Shell: TEMPORAL'],
+                color: 'bg-yellow-500'
+            },
+            'system-investigation': {
+                name: 'System Investigation (Unix)',
+                tactic: 'Discovery',
+                preconditions: ['OS: SC', 'Shell: TEMPORAL'],
+                postconditions: ['Privilege: UNDEFINED', 'Binaries: UNDEFINED'],
+                color: 'bg-blue-500'
+            },
+            'download-wget': {
+                name: 'Download (Wget)',
+                tactic: 'Execution',
+                preconditions: ['Shell: TEMPORAL', 'OS: Linux'],
+                postconditions: ['Shell: PERMANENT'],
+                color: 'bg-purple-500'
+            },
+            'privilege-escalation': {
+                name: 'Privilege Escalation',
+                tactic: 'Privilege Escalation',
+                preconditions: ['Shell: PERMANENT', 'Privilege: User'],
+                postconditions: ['Privilege: Superuser'],
+                color: 'bg-red-500'
+            },
+            'lateral-movement': {
+                name: 'Lateral Movement',
+                tactic: 'Lateral Movement',
+                preconditions: ['Privilege: Superuser'],
+                postconditions: ['IP: NEW_TARGET'],
+                color: 'bg-indigo-500'
+            },
+            'credential-dumping': {
+                name: 'Credential Dumping',
+                tactic: 'Credential Access',
+                preconditions: ['Privilege: Superuser', 'OS: Windows'],
+                postconditions: ['Credentials: EXTRACTED'],
+                color: 'bg-pink-500'
+            },
+            'persistence': {
+                name: 'Persistence Mechanism',
+                tactic: 'Persistence',
+                preconditions: ['Shell: PERMANENT'],
+                postconditions: ['Persistence: ESTABLISHED'],
+                color: 'bg-orange-500'
+            }
+        };
+
+        // Current technique being configured in modal
+        let currentTechniqueId = null;
+
+        // Add log entry
+        function addLogEntry(message, type = 'info', source = 'USER') {
+            const entry = document.createElement('div');
+            let icon = '';
+            let borderColor = 'border-blue-600';
+
+            switch (type) {
+                case 'warning':
+                    icon = '<i class="fas fa-exclamation-triangle text-yellow-500 mr-2"></i>';
+                    borderColor = 'border-yellow-500';
+                    break;
+                case 'error':
+                    icon = '<i class="fas fa-times-circle text-red-500 mr-2"></i>';
+                    borderColor = 'border-red-500';
+                    break;
+                case 'success':
+                    icon = '<i class="fas fa-check-circle text-green-500 mr-2"></i>';
+                    borderColor = 'border-green-500';
+                    break;
+                default:
+                    icon = '<i class="fas fa-info-circle text-blue-500 mr-2"></i>';
+            }
+
+            entry.className = `log-entry bg-gray-50 px-3 py-2 rounded mb-2 border-l-4 ${borderColor} fade-in`;
+            entry.innerHTML = `
+                            <div class="flex items-start">
+                                ${icon}
+                                <span>${message}</span>
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1 ml-4 mono">[${source}] ${new Date().toLocaleTimeString()}</div>
+                        `;
+
+            operationLog.insertBefore(entry, operationLog.firstChild);
+
+            // Auto-scroll if at bottom
+            if (operationLog.scrollTop === 0) {
+                operationLog.scrollTop = 0;
+            }
+
+            // Add to terminal
+            addTerminalOutput(message, type);
+        }
+
+        // Add terminal output
+        function addTerminalOutput(message, type = 'info') {
+            let color = 'text-green-400';
+
+            switch (type) {
+                case 'warning':
+                    color = 'text-yellow-400';
+                    break;
+                case 'error':
+                    color = 'text-red-400';
+                    break;
+                case 'success':
+                    color = 'text-green-400';
+                    break;
+                default:
+                    color = 'text-blue-400';
+            }
+
+            const output = document.createElement('div');
+            output.className = `mb-1 ${color}`;
+            output.innerHTML = message;
+
+            terminalOutput.insertBefore(output, terminalPrompt);
+        }
+
+        // Simulate terminal typing
+        function simulateTerminalTyping(commands, delay = 500) {
+            let i = 0;
+            const typeNext = () => {
+                if (i < commands.length) {
+                    addTerminalOutput(`> ${commands[i]}`);
+                    i++;
+                    setTimeout(typeNext, delay);
+                }
+            };
+            typeNext();
+        }
+
+        // Initialize terminal with some commands
+        setTimeout(() => {
+            simulateTerminalTyping([
+                'check system --status',
+                'load techniques --database=ics-attacks',
+                'init scenario-generator --mode=state-based',
+                'ready'
+            ], 300);
+        }, 1000);
+
+        // Add state card
+        addStateBtn.addEventListener('click', () => {
+            playSound(clickSound);
+            const field = stateField.value;
+            let placeholder = '';
+            let options = '';
+            let inputType = 'text';
+
+            switch (field) {
+                case 'address':
+                    placeholder = 'e.g., 192.168.0.1';
+                    break;
+                case 'protocol':
+                    placeholder = 'e.g., TCP, UDP, IPv4';
+                    break;
+                case 'os':
+                    placeholder = 'e.g., Windows, Linux';
+                    break;
+                case 'ports':
+                    placeholder = 'e.g., 80, 443, 22';
+                    inputType = 'number';
+                    break;
+                case 'shell':
+                    options = `
+                                    <option value="">Select shell type...</option>
+                                    <option value="TEMPORAL">TEMPORAL</option>
+                                    <option value="DOWNLOADED">DOWNLOADED</option>
+                                    <option value="PERMANENT">PERMANENT</option>
+                                `;
+                    break;
+                case 'privilege':
+                    options = `
+                                    <option value="">Select privilege level...</option>
+                                    <option value="user">Regular User</option>
+                                    <option value="superuser">Superuser</option>
+                                `;
+                    break;
+                case 'binaries':
+                    placeholder = 'e.g., /usr/bin/python, /bin/bash';
+                    break;
+                case 'cwd':
+                    placeholder = 'e.g., /home/user, C:\\Users\\user';
+                    break;
+                case 'misudo':
+                    placeholder = 'e.g., sudofind, sudovim';
+                    break;
+            }
+
+            const card = document.createElement('div');
+            card.className = 'state-card bg-white border rounded-md p-3 shadow-sm fade-in';
+            card.innerHTML = `
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-xs font-medium uppercase text-gray-500">${field}</span>
+                                <button class="text-red-500 hover:text-red-700 text-xs remove-state transition">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            ${options ? `
+                                <select class="w-full border border-gray-300 rounded px-2 py-1 text-sm focus:ring-blue-500 focus:border-blue-500">
+                                    ${options}
+                                </select>
+                            ` : `
+                                <input type="${inputType}" class="w-full border border-gray-300 rounded px-2 py-1 text-sm focus:ring-blue-500 focus:border-blue-500" placeholder="${placeholder}">
+                            `}
+                        `;
+
+            if (emptyStateMessage.style.display !== 'none') {
+                emptyStateMessage.style.display = 'none';
+            }
+
+            stateCards.appendChild(card);
+
+            // Add remove event
+            card.querySelector('.remove-state').addEventListener('click', () => {
+                playSound(clickSound);
+                card.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+                setTimeout(() => {
+                    card.remove();
+                    updateStateCount();
+                    if (stateCards.children.length === 1) { // Only empty message left
+                        emptyStateMessage.style.display = 'block';
+                    }
+                    addLogEntry(`Removed state field: ${field}`, 'info');
+                }, 300);
+            });
+
+            updateStateCount();
+            addLogEntry(`Added state field: ${field}`, 'info');
+        });
+
+        // Update state count display
+        function updateStateCount() {
+            const count = stateCards.querySelectorAll('.state-card').length;
+            stateCount.textContent = `${count} field${count !== 1 ? 's' : ''} added`;
+        }
+
+        // Clear all states
+        clearStatesBtn.addEventListener('click', () => {
+            playSound(clickSound);
+            const cards = stateCards.querySelectorAll('.state-card');
+            if (cards.length === 0) return;
+
+            cards.forEach(card => {
+                card.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+                setTimeout(() => card.remove(), 300);
+            });
+
+            setTimeout(() => {
+                emptyStateMessage.style.display = 'block';
+                updateStateCount();
+                addLogEntry('Cleared all state fields', 'warning');
+            }, 350);
+        });
+
+        // Add technique to selected list
+        techniqueSelect.addEventListener('change', (e) => {
+            if (!e.target.value) return;
+
+            playSound(clickSound);
+            const techniqueId = e.target.value;
+            const technique = techniquesData[techniqueId];
+
+            // Check if already added
+            if (document.querySelector(`[data-technique="${techniqueId}"]`)) {
+                addLogEntry(`Technique "${technique.name}" is already selected`, 'warning');
+                techniqueSelect.value = '';
+                return;
+            }
+
+            const item = document.createElement('li');
+            item.className = 'flex justify-between items-center bg-gray-100 p-2 rounded text-sm fade-in';
+            item.dataset.technique = techniqueId;
+            item.innerHTML = `
+                            <span class="font-medium">${technique.name}</span>
+                            <span class="text-xs bg-${technique.color.replace('bg-', '')} text-white px-2 py-1 rounded-full">${technique.tactic}</span>
+                            <div class="flex space-x-2">
+                                <button class="text-blue-500 hover:text-blue-700 edit-conditions transition" data-technique="${techniqueId}" title="Edit conditions">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="text-red-500 hover:text-red-700 remove-technique transition" title="Remove technique">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        `;
+
+            if (emptyTechMessage.style.display !== 'none') {
+                emptyTechMessage.style.display = 'none';
+            }
+
+            selectedTechniques.appendChild(item);
+            techniqueSelect.value = '';
+
+            // Add remove event
+            item.querySelector('.remove-technique').addEventListener('click', () => {
+                playSound(clickSound);
+                item.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+                setTimeout(() => {
+                    item.remove();
+                    updateSelectedCount();
+                    if (selectedTechniques.children.length === 1) { // Only empty message left
+                        emptyTechMessage.style.display = 'block';
+                    }
+                    addLogEntry(`Removed technique: ${technique.name}`, 'info');
+                }, 300);
+            });
+
+            // Add edit conditions event
+            item.querySelector('.edit-conditions').addEventListener('click', (e) => {
+                playSound(clickSound);
+                openConditionsModal(e.target.closest('button').dataset.technique);
+            });
+
+            updateSelectedCount();
+            addLogEntry(`Added technique: ${technique.name} (${technique.tactic})`, 'info');
+        });
+
+        // Update selected techniques count
+        function updateSelectedCount() {
+            const count = selectedTechniques.querySelectorAll('li[data-technique]').length;
+            selectedCount.textContent = `${count} selected`;
+        }
+
+        // Configure conditions button
+        configureConditionsBtn.addEventListener('click', () => {
+            playSound(clickSound);
+            if (selectedTechniques.children.length === 1) { // Only empty message
+                addLogEntry('Please select at least one technique first', 'warning');
+                return;
+            }
+
+            // Open modal with first technique
+            openConditionsModal(document.querySelector('#selected-techniques li').dataset.technique);
+        });
+
+        // Open conditions modal
+        function openConditionsModal(techniqueId) {
+            currentTechniqueId = techniqueId;
+            const technique = techniquesData[techniqueId];
+
+            modalTechName.textContent = technique.name;
+
+            // Clear existing conditions
+            preConditionsList.innerHTML = '';
+            postConditionsList.innerHTML = '';
+
+            // Add technique's preconditions
+            if (technique.preconditions && technique.preconditions.length > 0) {
+                emptyPreConditions.style.display = 'none';
+                technique.preconditions.forEach(cond => {
+                    addConditionToModal(cond, true);
+                });
+            } else {
+                emptyPreConditions.style.display = 'block';
+            }
+
+            // Add technique's postconditions
+            if (technique.postconditions && technique.postconditions.length > 0) {
+                emptyPostConditions.style.display = 'none';
+                technique.postconditions.forEach(cond => {
+                    addConditionToModal(cond, false);
+                });
+            } else {
+                emptyPostConditions.style.display = 'block';
+            }
+
+            conditionsModal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+
+            addLogEntry(`Opened conditions editor for: ${technique.name}`, 'info');
+        }
+
+        // Add condition to modal list
+        function addConditionToModal(condition, isPrecondition) {
+            const list = isPrecondition ? preConditionsList : postConditionsList;
+            const emptyMessage = isPrecondition ? emptyPreConditions : emptyPostConditions;
+
+            if (emptyMessage.style.display !== 'none') {
+                emptyMessage.style.display = 'none';
+            }
+
+            const item = document.createElement('div');
+            item.className = 'flex justify-between items-center bg-gray-50 p-2 rounded border border-gray-200 text-sm';
+            item.innerHTML = `
+                            <span>${condition}</span>
+                            <button class="text-red-500 hover:text-red-700 remove-condition transition">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        `;
+
+            item.querySelector('.remove-condition').addEventListener('click', () => {
+                playSound(clickSound);
+                item.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+                setTimeout(() => {
+                    item.remove();
+                    if (list.children.length === 0) {
+                        emptyMessage.style.display = 'block';
+                    }
+                }, 300);
+            });
+
+            list.appendChild(item);
+        }
+
+        // Add pre-condition
+        addPreConditionBtn.addEventListener('click', () => {
+            playSound(clickSound);
+            const value = preConditionSelect.value;
+            if (!value) return;
+
+            const condition = `${value.charAt(0).toUpperCase() + value.slice(1)}: ${value === 'os' ? 'Linux' : '192.168.0.1'}`;
+            addConditionToModal(condition, true);
+            preConditionSelect.value = '';
+        });
+
+        // Add post-condition
+        addPostConditionBtn.addEventListener('click', () => {
+            playSound(clickSound);
+            const value = postConditionSelect.value;
+            if (!value) return;
+
+            const condition = value.includes(':') ? value : `${value}: SET`;
+            addConditionToModal(condition, false);
+            postConditionSelect.value = '';
+        });
+
+        // Close modal
+        function closeModal() {
+            playSound(clickSound);
+            conditionsModal.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+            currentTechniqueId = null;
+        }
+
+        closeModalBtn.addEventListener('click', closeModal);
+        cancelConditionsBtn.addEventListener('click', closeModal);
+
+        // Save conditions
+        saveConditionsBtn.addEventListener('click', () => {
+            playSound(clickSound);
+            if (!currentTechniqueId) return;
+
+            // Get all preconditions
+            const preconditions = [];
+            const preItems = preConditionsList.querySelectorAll('div:not(#empty-pre-conditions)');
+            preItems.forEach(item => {
+                preconditions.push(item.querySelector('span').textContent);
+            });
+
+            // Get all postconditions
+            const postconditions = [];
+            const postItems = postConditionsList.querySelectorAll('div:not(#empty-post-conditions)');
+            postItems.forEach(item => {
+                postconditions.push(item.querySelector('span').textContent);
+            });
+
+            // Update technique data
+            techniquesData[currentTechniqueId].preconditions = preconditions;
+            techniquesData[currentTechniqueId].postconditions = postconditions;
+
+            addLogEntry(`Saved conditions for: ${techniquesData[currentTechniqueId].name}`, 'success');
+            closeModal();
+        });
+
+        // Tab switching
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                playSound(clickSound);
+                // Remove active class from all buttons and contents
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('text-blue-600', 'border-blue-600');
+                    btn.classList.add('text-gray-600', 'hover:text-blue-600');
+                });
+                tabContents.forEach(content => content.classList.remove('active'));
+
+                // Add active class to clicked button and corresponding content
+                button.classList.add('text-blue-600', 'border-blue-600');
+                button.classList.remove('text-gray-600', 'hover:text-blue-600');
+                document.getElementById(`${button.dataset.tab}-tab`).classList.add('active');
+            });
+        });
+
+        // Generate scenarios
+        generateScenariosBtn.addEventListener('click', () => {
+            playSound(generateSound);
+            if (stateCards.children.length === 1) { // Only empty message
+                addLogEntry('Please add at least one state first', 'warning');
+                return;
+            }
+
+            if (selectedTechniques.children.length === 1) { // Only empty message
+                addLogEntry('Please select at least one technique first', 'warning');
+                return;
+            }
+
+            // Show loading state
+            generateScenariosBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Generating...';
+            generateScenariosBtn.classList.add('cursor-not-allowed');
+
+            // Simulate generation delay
+            setTimeout(() => {
+                // Update scenario results
+                scenarioResults.innerHTML = `
+                                <div class="bg-green-50 border border-green-200 rounded-md p-3 mb-3 fade-in">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h4 class="font-medium text-green-800 mb-1">Scenario 1: Initial Access to Privilege Escalation</h4>
+                                            <p class="text-xs text-green-600">Generated from 3 techniques and 5 state conditions</p>
+                                        </div>
+                                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">New</span>
+                                    </div>
+                                    <div class="mt-2 flex flex-wrap gap-1">
+                                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Discovery</span>
+                                        <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Exploitation</span>
+                                        <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">Privilege Escalation</span>
+                                    </div>
+                                </div>
+                                <div class="bg-blue-50 border border-blue-200 rounded-md p-3 fade-in">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h4 class="font-medium text-blue-800 mb-1">Scenario 2: Lateral Movement Path</h4>
+                                            <p class="text-xs text-blue-600">Generated from 4 techniques and 7 state conditions</p>
+                                        </div>
+                                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">New</span>
+                                    </div>
+                                    <div class="mt-2 flex flex-wrap gap-1">
+                                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Discovery</span>
+                                        <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">Execution</span>
+                                        <span class="text-xs bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full">Lateral Movement</span>
+                                    </div>
+                                </div>
+                            `;
+
+                // Update sequence view
+                scenarioSequence.innerHTML = `
+                                <li class="text-gray-800 fade-in">1. Nmap Scanning <span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full ml-2">Discovery</span></li>
+                                <li class="text-gray-800 fade-in">2. CVE-2016-3714 Exploit <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full ml-2">Exploitation</span></li>
+                                <li class="text-gray-800 fade-in">3. System Investigation <span class="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full ml-2">Discovery</span></li>
+                                <li class="text-gray-800 fade-in">4. Download (Wget) <span class="text-xs bg-purple-100 text-purple-800 px-2 py-0.5 rounded-full ml-2">Execution</span></li>
+                                <li class="text-gray-800 fade-in">5. Privilege Escalation <span class="text-xs bg-red-100 text-red-800 px-2 py-0.5 rounded-full ml-2">Privilege Escalation</span></li>
+                            `;
+
+                // Render graph visualization
+                renderAttackGraph();
+
+                // Update scenario count
+                scenarioCount.textContent = '2 scenarios';
+
+                // Reset button state
+                generateScenariosBtn.innerHTML = '<i class="fas fa-play mr-2"></i> Generate Scenarios';
+                generateScenariosBtn.classList.remove('cursor-not-allowed');
+
+                addLogEntry('Generated 2 attack scenarios', 'success');
+                addLogEntry('Scenario 1: Initial Access → Privilege Escalation', 'info', 'SCENARIO');
+                addLogEntry('Scenario 2: Lateral Movement Path', 'info', 'SCENARIO');
+
+                // Enable validate button
+                validateScenariosBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }, 1500);
+        });
+
+        // Validate scenarios
+        validateScenariosBtn.addEventListener('click', () => {
+            playSound(validateSound);
+            if (scenarioResults.textContent.includes('No scenarios generated yet')) {
+                addLogEntry('Please generate scenarios first', 'warning');
+                return;
+            }
+
+            // Show loading state
+            validateScenariosBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Validating...';
+            validateScenariosBtn.classList.add('cursor-not-allowed');
+
+            // Simulate validation delay
+            setTimeout(() => {
+                // Update validation results
+                validationResults.innerHTML = `
+                                <div class="mb-4 fade-in">
+                                    <h4 class="font-medium text-gray-800 mb-2 flex items-center">
+                                        <i class="fas fa-chart-bar mr-2 text-blue-600"></i> Comparison with ICS Incidents
+                                    </h4>
+                                    <div class="flex items-center text-sm mt-2">
+                                        <div class="w-1/2">
+                                            <p class="text-gray-600">Match with known incidents:</p>
+                                        </div>
+                                        <div class="w-1/2">
+                                            <div class="flex items-center">
+                                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                                    <div class="bg-green-600 h-2.5 rounded-full" style="width: 78%"></div>
+                                                </div>
+                                                <span class="ml-2 text-gray-700">78%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="fade-in">
+                                    <h4 class="font-medium text-gray-800 mb-2 flex items-center">
+                                        <i class="fas fa-bug mr-2 text-red-600"></i> Closest Match
+                                    </h4>
+                                    <div class="bg-yellow-50 border border-yellow-200 rounded-md p-3">
+                                        <div class="flex justify-between items-start mb-1">
+                                            <h5 class="font-medium text-yellow-800">PoetRAT Attack Pattern</h5>
+                                            <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">High Confidence</span>
+                                        </div>
+                                        <p class="text-xs text-yellow-700">Similarity: 78% | MITRE Technique: T1059.003</p>
+                                        <div class="mt-2 flex flex-wrap gap-1">
+                                            <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Command-Line Interface</span>
+                                            <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Persistence</span>
+                                            <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Lateral Movement</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+
+                // Show validation tab
+                tabButtons[2].click();
+
+                // Update validation count
+                validCount.textContent = '1 validated';
+                validCount.classList.remove('hidden');
+
+                // Reset button state
+                validateScenariosBtn.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Validate Scenarios';
+                validateScenariosBtn.classList.remove('cursor-not-allowed');
+
+                addLogEntry('Validated scenarios against ICS incident database', 'success');
+                addLogEntry('Closest match: PoetRAT Attack Pattern (78% similarity)', 'info', 'VALIDATION');
+            }, 1500);
+        });
+
+        // Clear operation logs
+        clearLogsBtn.addEventListener('click', () => {
+            playSound(clickSound);
+            operationLog.innerHTML = `
+                            <div class="log-entry bg-gray-50 px-3 py-2 rounded">
+                                <div class="flex items-start">
+                                    <span class="text-blue-600 mr-2">></span>
+                                    <span>Logs cleared. System ready.</span>
+                                </div>
+                                <div class="text-xs text-gray-500 mt-1 ml-4">[SYSTEM] ${new Date().toLocaleTimeString()}</div>
+                            </div>
+                        `;
+
+            addTerminalOutput('> logs --clear');
+            addTerminalOutput('Logs cleared successfully');
+        });
+
+        // Render attack graph visualization
+        function renderAttackGraph() {
+            graphSvg.innerHTML = '';
+
+            // Sample nodes data
+            const nodes = [
+                { id: 'state', name: 'Initial State', type: 'state', x: 100, y: 150, color: 'gray' },
+                { id: 'nmap', name: 'Nmap', type: 'technique', x: 250, y: 80, color: 'green', tactic: 'Discovery' },
+                { id: 'cve', name: 'CVE Exploit', type: 'technique', x: 400, y: 50, color: 'yellow', tactic: 'Exploitation' },
+                { id: 'investigation', name: 'System Inv.', type: 'technique', x: 400, y: 150, color: 'blue', tactic: 'Discovery' },
+                { id: 'download', name: 'Download', type: 'technique', x: 550, y: 100, color: 'purple', tactic: 'Execution' },
+                { id: 'privilege', name: 'Priv. Esc.', type: 'technique', x: 700, y: 50, color: 'red', tactic: 'Privilege Escalation' },
+                { id: 'lateral', name: 'Lateral Mov.', type: 'technique', x: 700, y: 150, color: 'indigo', tactic: 'Lateral Movement' },
+                { id: 'end', name: 'End State', type: 'state', x: 850, y: 150, color: 'gray' }
+            ];
+
+            // Sample connections
+            const connections = [
+                { from: 'state', to: 'nmap' },
+                { from: 'nmap', to: 'cve' },
+                { from: 'nmap', to: 'investigation' },
+                { from: 'cve', to: 'download' },
+                { from: 'investigation', to: 'download' },
+                { from: 'download', to: 'privilege' },
+                { from: 'download', to: 'lateral' },
+                { from: 'privilege', to: 'end' },
+                { from: 'lateral', to: 'end' }
+            ];
+
+            // Draw connections first (so they appear under nodes)
+            connections.forEach(conn => {
+                const fromNode = nodes.find(n => n.id === conn.from);
+                const toNode = nodes.find(n => n.id === conn.to);
+
+                if (fromNode && toNode) {
+                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    line.setAttribute('x1', fromNode.x);
+                    line.setAttribute('y1', fromNode.y);
+                    line.setAttribute('x2', toNode.x);
+                    line.setAttribute('y2', toNode.y);
+                    line.setAttribute('stroke', '#94a3b8');
+                    line.setAttribute('stroke-width', '2');
+                    line.setAttribute('stroke-dasharray', '5');
+                    line.setAttribute('class', 'connection');
+                    graphSvg.appendChild(line);
+
+                    // Add arrowhead
+                    const angle = Math.atan2(toNode.y - fromNode.y, toNode.x - fromNode.x);
+                    const arrowSize = 8;
+                    const arrowX = toNode.x - 20 * Math.cos(angle);
+                    const arrowY = toNode.y - 20 * Math.sin(angle);
+
+                    const arrow = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+                    arrow.setAttribute('points', `0,0 ${arrowSize},${arrowSize / 2} 0,${arrowSize}`);
+                    arrow.setAttribute('transform', `translate(${arrowX},${arrowY}) rotate(${angle * 180 / Math.PI})`);
+                    arrow.setAttribute('fill', '#94a3b8');
+                    graphSvg.appendChild(arrow);
+                }
+            });
+
+            // Create nodes
+            nodes.forEach(node => {
+                // Node circle
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('cx', node.x);
+                circle.setAttribute('cy', node.y);
+                circle.setAttribute('r', node.type === 'state' ? 20 : 25);
+                circle.setAttribute('fill', node.color);
+                circle.setAttribute('class', 'node');
+                graphSvg.appendChild(circle);
+
+                // Node text
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', node.x);
+                text.setAttribute('y', node.y + 5);
+                text.setAttribute('text-anchor', 'middle');
+                text.setAttribute('fill', 'white');
+                text.setAttribute('font-size', '10');
+                text.setAttribute('font-weight', 'bold');
+                text.setAttribute('font-family', 'Inter');
+                text.textContent = node.name;
+                graphSvg.appendChild(text);
+
+                // Add tactic for technique nodes
+                if (node.tactic) {
+                    const tacticText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    tacticText.setAttribute('x', node.x);
+                    tacticText.setAttribute('y', node.y + (node.type === 'state' ? 30 : 35));
+                    tacticText.setAttribute('text-anchor', 'middle');
+                    tacticText.setAttribute('fill', node.color);
+                    tacticText.setAttribute('font-size', '8');
+                    tacticText.setAttribute('font-family', 'Inter');
+                    tacticText.textContent = node.tactic;
+                    graphSvg.appendChild(tacticText);
+                }
+            });
+        }
+
+        // Initialize validate button as disabled
+        validateScenariosBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+        // Add initial log entries
+        addLogEntry('Welcome to CyberShield Attack Scenario Generator', 'info', 'SYSTEM');
+        addLogEntry('Loading system modules...', 'info', 'SYSTEM');
+        addLogEntry('Ready to configure attack scenarios', 'success', 'SYSTEM');
+    </script>
+</body>
+</html> *@
+
+

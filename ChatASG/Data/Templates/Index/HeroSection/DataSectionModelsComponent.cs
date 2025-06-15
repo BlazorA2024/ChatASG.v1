@@ -1,12 +1,10 @@
 ﻿using ChatASG.Data.Templates.Base;
-using Data.HeaderModels;
+using Data.SectionModels;
 using Microsoft.AspNetCore.Components;
 
 namespace Data.Section;
-public class DataButtons : ModulsBase
-{
-    
-}
+//<!-- 1 منصة ASG للذكاء الاصطناعي -->
+
 
 public class StylesButtonIcon : StyleBaseComponentCard
 {
@@ -56,10 +54,7 @@ public class CardButtonsModul : ComponentBaseCard<DataButtons>
         return instance;
     }
 }
-public class DataHeroImageStats : ModulsBase
-{
 
-}
 public class StylesHeroImageStats : StyleBaseComponentCard
 {
     [Parameter] public string? ClassImage { get; set; }
@@ -108,12 +103,7 @@ public class CardHeroImageStats : ComponentBaseCard<DataHeroImageStats>
 }
 
 
-public class DataHeroIntro : ModulsBase
-{
-  
-    public DataHeroImageStats? IStats { get; set; } 
-    public List<DataButtons> Items { get; set; } = new();
-}
+
 public class StylesHeroIntro : StyleBaseComponentCard
 {
     [Parameter] public string? ClassTitle { get; set; }

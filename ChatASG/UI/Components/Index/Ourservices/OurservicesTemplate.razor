@@ -1,5 +1,7 @@
-﻿
+﻿@using global::Data.OurservicesModels
+
 @using global::Data.Ourservices
+
 
 <AddCardOurservices Prams="Prams"   />
 
@@ -71,16 +73,17 @@
                 }
                 }
             }
+
         
         };
     [Parameter]
-    public DataAddStudios? DataBuild { get; set; }
+    public DataAddOurservices? DataBuild { get; set; }
     private CardAddOurservices Prams = new();
     protected override void OnInitialized()
     {
         if (DataBuild == null)
         {
-            DataBuild = new DataAddStudios
+            DataBuild = new DataAddOurservices
                 {
                     Name = " خدماتنا المتكاملة",
                     Description="نقدم مجموعة متكاملة من الخدمات المصممة لتلبية جميع احتياجاتك في مجال الأمن السيبراني",
@@ -92,7 +95,30 @@
         base.OnInitialized();
     }
 }
+@* <!--4 Services Section -->
+<!-- خدماتنا المتكاملة    -->
+ @using global::Data.Ourservices
+@using global::Data.OurservicesModels
 
+<AddCardOurservices Prams="Prams" />
+
+@code {
+    [Parameter]
+    public DataAddOurservices? Data { get; set; }
+
+    private CardAddOurservices? Prams;
+
+    protected override void OnParametersSet()
+    {
+        if (Data == null)
+        {
+            throw new ArgumentNullException(nameof(Data), "Data parameter must be provided.");
+        }
+
+        Prams = CardAddOurservices.Create(Data);
+    }
+}
+ *@
 
 
 

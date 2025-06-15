@@ -357,7 +357,7 @@ public class StylesFooter : StyleBaseComponentCard
 }
 
 
-public class CardAddFooter : ComponentBaseCard<FooterData>
+public class CardAddFooter : ComponentBaseCard<DataAddFooter>
 {
     public static ICollection<string> NAMECLASSES => StylesFooter.CLASSES.Keys.ToList();
     public CardFooterBrandInfo  Iinfo { get; set; }
@@ -368,7 +368,7 @@ public class CardAddFooter : ComponentBaseCard<FooterData>
 
     public override TypeComponentCard Type => throw new NotImplementedException();
 
-    public override void Build(FooterData db)
+    public override void Build(DataAddFooter db)
     {
         DataBuild = db;
         Iinfo = CardFooterBrandInfo.Create(db.Iinfo);
@@ -385,7 +385,7 @@ public class CardAddFooter : ComponentBaseCard<FooterData>
         }
        
     }
-    public static CardAddFooter Create(FooterData data)
+    public static CardAddFooter Create(DataAddFooter data)
         {
             var instance = new CardAddFooter();
             instance.Build(data);

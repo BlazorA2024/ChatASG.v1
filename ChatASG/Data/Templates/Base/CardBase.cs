@@ -107,7 +107,7 @@ namespace ChatASG.Data.Templates.Base
         bool IsActive { get; set; }
         bool IsAuth { get; set; }
 
-        T DataBuild { set; get; }
+        T DataBuild { set; get; } 
 
 
 
@@ -128,7 +128,7 @@ namespace ChatASG.Data.Templates.Base
         public abstract TypeComponentCard Type { get; }
         public bool IsActive { get; set; } = true;
         public bool IsAuth { get; set; } = false;
-        public T DataBuild { get; set; }
+        public T DataBuild { get; set; } 
 
 
 

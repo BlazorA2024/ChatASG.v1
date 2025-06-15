@@ -1,0 +1,219 @@
+﻿@* <!-- Hero Section -->
+<!-- مميزات منصة ASG -->
+ @using MyApiClient
+@using ChatASG.UI.Components.Index.FeaturesSection
+@using NWHttps
+@using global::Data.FeaturesSection
+@using global::Data.FeaturesSectionModels
+@inject IMapper<FeatureItemOutputVM, DataAddFeatures> Mapper
+@inject IWebApiClientFactory ApiClientFactory
+
+@if (FeatureData == null)
+{
+    <p>جارٍ تحميل البيانات...</p>
+}
+else if (!FeatureData.Any())
+{
+    <p>لا توجد بيانات للعرض.</p>
+}
+else
+{
+    @foreach (var item in FeatureData)
+    {
+        <FeaturesSectionTemplate Data="item" />
+    }
+}
+
+@code {
+    private List<FeatureItemOutputVM>? ApiData;
+    private List<DataAddFeatures>? FeatureData;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var client = new FeatureItemClient(await ApiClientFactory.GetClientAsync());
+            ApiData = (await client.GetAllByLanguage8Async("ar", CancellationToken.None)).ToList();
+
+            // التأكد من وجود عناصر في Items لكل عنصر
+            foreach (var item in ApiData)
+            {
+                var count = item.Items?.Count ?? 0;
+                Console.WriteLine($"العنصر {item.Name} يحتوي على {count} عناصر في Items");
+            }
+            FeatureData = ApiData.Select(vm => Mapper.Map(vm)).ToList();
+            // تحويل آمن وتأكد من أن Items ليست null بعد التحويل
+            // FeatureData = ApiData.Select(vm =>
+            // {
+            //     var mapped = Mapper.Map(vm);
+            //     mapped.Items ??= new List<DataFeatures>();
+            //     return mapped;
+            // }).ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"حدث خطأ أثناء جلب البيانات: {ex.Message}");
+            FeatureData = new();
+        }
+
+        StateHasChanged();
+    }
+}
+
+ *@
+
+
+
+
+
+
+
+
+
+@* @using MyApiClient
+@using ChatASG.UI.Components.Index.FeaturesSection
+@using NWHttps
+@using global::Data.FeaturesSection
+@inject IWebApiClientFactory ApiClientFactory
+
+@if (FeatureData == null)
+{
+    <p>جارٍ تحميل البيانات...</p>
+}
+else if (!FeatureData.Any())
+{
+    <p>لا توجد بيانات للعرض.</p>
+}
+else
+{
+    foreach (var item in FeatureData)
+    {
+        <FeaturesSectionTemplate Data="item" />
+    }
+}
+
+@code {
+    private List<FeatureItemOutputVM>? ApiData;
+    private List<DataAddFeatures>? FeatureData;
+
+    private DataAddFeatures Convert(FeatureItemOutputVM vm)
+    {
+        return new DataAddFeatures
+            {
+             
+                Name = vm.Name ?? "",
+                Description = vm.Description ?? "",
+                Items = vm.Items?.Select(x => new DataFeatures
+                {
+                   
+                    Title = x.Title,
+                    Description = x.Description,
+                    Icon = x.Icon,
+                    IconColor = x.IconColor,
+                    IconBackground = x.IconBackground
+                }).ToList() ?? new List<DataFeatures>()
+            };
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var client = new FeatureItemClient(await ApiClientFactory.GetClientAsync());
+            ApiData = (await client.GetAllByLanguage8Async("ar", CancellationToken.None)).ToList();
+
+            FeatureData = ApiData.Select(Convert).ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"حدث خطأ أثناء جلب البيانات: {ex.Message}");
+            FeatureData = new(); // عرض "لا توجد بيانات"
+        }
+
+        StateHasChanged();
+    }
+}
+ 
+ *@@* 
+ @using MyApiClient
+@using ChatASG.UI.Components.Index.FeaturesSection
+@using NWHttps
+@using global::Data.FeaturesSection
+@inject IWebApiClientFactory ApiClientFactory
+
+@if (FeatureData == null)
+{
+    <p>جارٍ تحميل البيانات...</p>
+}
+else if (!FeatureData.Any())
+{
+    <p>لا توجد بيانات للعرض.</p>
+}
+else
+{
+    foreach (var item in FeatureData)
+    {
+        <FeaturesSectionTemplate Data="item" />
+    }
+}
+
+@code {
+    private List<FeatureItemOutputVM>? ApiData;
+    private List<DataAddFeatures>? FeatureData;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var client = new FeatureItemClient(await ApiClientFactory.GetClientAsync());
+            ApiData = (await client.GetAllByLanguage8Async("ar", CancellationToken.None)).ToList();
+
+            var mapper = new GenericMapper<FeatureItemOutputVM, DataAddFeatures>();
+
+            FeatureData = ApiData.Select(vm => mapper.Map(vm)).ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"حدث خطأ أثناء جلب البيانات: {ex.Message}");
+            FeatureData = new(); // عرض "لا توجد بيانات"
+        }
+
+        StateHasChanged();
+    }
+}
+ *@
+@* 
+@code {
+    private List<FeatureItemOutputVM>? ApiData;
+    private List<DataAddFeatures>? FeatureData;
+    private readonly GenericMapper _mapperRegistry = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // تسجيل المحول مرة واحدة
+            _mapperRegistry.Register(new FeatureMapper());
+
+            var client = new FeatureItemClient(await ApiClientFactory.GetClientAsync());
+            ApiData = (await client.GetAllByLanguage8Async("ar", CancellationToken.None)).ToList();
+
+            // تحويل تلقائي باستخدام registry
+            FeatureData = ApiData
+    .Select(vm => _mapperRegistry.Map<FeatureItemOutputVM, DataAddFeatures>(vm))
+    .ToList();
+
+            // FeatureData = ApiData
+            //     .Select(vm => (DataAddFeatures)_mapperRegistry.Map(vm, typeof(DataAddFeatures))!)
+            //     .ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"حدث خطأ أثناء جلب البيانات: {ex.Message}");
+            FeatureData = new(); // عرض "لا توجد بيانات"
+        }
+
+        StateHasChanged();
+    }
+}
+ *@

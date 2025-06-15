@@ -1,0 +1,75 @@
+﻿@using global::Data.AddAuth
+@if (Prams != null)
+{
+    <button @onclick="() => signuplogin(Prams.Button)"
+            class="flex-1 py-2 px-4 rounded-lg font-medium transition-all duration-300
+                   @(ActiveTab == Prams.Button ? "tab-active" : "text-gray-600")">
+        @Prams.Button
+    </button>
+}
+
+@code {
+    [Parameter] public DataButtons? Prams { get; set; }
+
+    // اسم التبويب النشط لتلوين الزر
+    [Parameter] public string ActiveTab { get; set; } = "Login";
+
+    // استدعاء الحدث عند النقر
+    [Parameter] public EventCallback<string> OnTabClicked { get; set; }
+
+    private async Task signuplogin(string tab)
+    {
+        if (OnTabClicked.HasDelegate)
+        {
+            await OnTabClicked.InvokeAsync(tab);
+        }
+    }
+}
+
+@* @if (Prams != null)
+{
+    <button id="login-tab"
+            @onclick="signuplogin"
+            class="@GetTabClasses("login")">
+        @Prams.Button
+    </button>
+   
+}
+
+@code {
+    [Parameter] public DataButtons? Prams { get; set; }
+
+    // هذا الحدث يمكن استدعاؤه عند الضغط على الزر
+    [Parameter] public EventCallback OnHelpClicked { get; set; }
+
+    private async Task signuplogin()
+    {
+        // إذا تم تمرير حدث من الصفحة الأم، يتم تنفيذه هنا
+        if (OnHelpClicked.HasDelegate)
+        {
+            await OnHelpClicked.InvokeAsync(null);
+        }
+    }
+    
+}
+ *@
+
+@*
+   <button id="login-tab"
+            @onclick="signuplogin"
+            class="flex-1 py-2 px-4 rounded-lg font-medium tab-active transition-all duration-300">
+        @Prams.Button
+    </button>
+<button class="@Prams.DataBuild.ClassButton  @ClassButton">
+    <a href="@Prams.DataBuild.Link ">  @Prams.DataBuild.Button <i class="@Prams.DataBuild.Icon    @Prams.DataBuild.IconColor @ClassIcon "></i> </a>
+</button> *@
+@*  <!-- Tabs -->
+<div class="flex mb-8 bg-gray-100 rounded-lg p-1">
+    <button id="login-tab" class="flex-1 py-2 px-4 rounded-lg font-medium tab-active transition-all-300">
+        Login
+    </button>
+    <button id="signup-tab" class="flex-1 py-2 px-4 rounded-lg font-medium text-gray-600 transition-all-300">
+        Sign Up
+    </button>
+</div>
+ *@

@@ -1,4 +1,5 @@
 @using global::Data.FAQ
+@using global::Data.FAQModels
 @inherits StylesFaqCard
 @if (Prams != null)
 {
@@ -6,15 +7,15 @@
         <button class="@ClassHeader" @onclick="HandleClick">
         <h4 class="font-bold text-lg">@Prams.DataBuild.Question</h4>
         <i class="@ClassIcon"></i>
-    </button>
-    <div class="@ClassContent">
-        <p>@Prams.DataBuild.Answer</p>
+    </button> 
+        <div class="@ClassContent   mt-4 text-gray-400">
+            <p class="text-gray-400 mb-4">@Prams.DataBuild.Answer</p>
         @if (Prams.DataBuild.BulletPoints != null && Prams.DataBuild.BulletPoints.Any())
         {
             <ul class="@ClassBulletList mt-4">
                 @foreach (var point in Prams.DataBuild.BulletPoints)
                 {
-                    <li class="@ClassBulletItem">
+                    <li class="@ClassBulletItem" style="gap:12px;">
                         @if (Prams.DataBuild.HasIconList)
                         {
                             <div class="text-accent mr-2 mt-1">
@@ -29,12 +30,15 @@
     </div>
 </div>
 }
+
 @code {
     [Parameter] public CardFAQ? Prams { get; set; }
-
+    [Parameter] public EventCallback<DataFaq> OnClick { get; set; }
     private async Task HandleClick()
     {
-        
+        ClassContent = ClassContent == "" ? "accordion-content" : "";
+        StateHasChanged();
+        await OnClick.InvokeAsync(Prams.DataBuild);
     }
     protected override async Task OnInitializedAsync()
     {

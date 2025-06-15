@@ -1,0 +1,76 @@
+﻿@using global::Data.Visualization
+
+<AddVisualization Prams="Prams" />
+
+@code {
+
+    private List<DataButton> studios = new()
+    {
+
+            new DataButton
+            {
+                Icon = "fas fa-network-wired mr-2",
+                ClassButton = "tab-btn px-4 py-2 font-medium text-blue-600 border-b-2 border-blue-600 flex items-center",
+                Datatab="graph",
+                Button=" Graph View"
+            },
+            new DataButton
+            {
+               Icon = "fas fa-list-ul mr-2",
+                Button = "Sequence View",
+              ClassButton = "tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 flex items-center",
+              Datatab="sequence"
+            },
+             new DataButton
+            {
+               Icon = "fas fa-shield-alt mr-2",
+                Button = " Validation",
+              ClassButton = "tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 flex items-center",
+              Datatab="validation"
+            },
+
+    };
+    private DataContents contents = new()
+    {
+            Title = "Graph visualization will appear here after generation"
+    };
+    private DataAttack attack = new()
+        {
+            Name = "Attack Scenario Sequence",
+            Icon = "fas fa-list-ol",
+            Title = "No sequence generated yet"
+        };
+    private DataValidation validation = new()
+        {
+            Name = "Validation Against ICS Incidents",
+            Icon = "fas fa-shield-alt",
+            Title = " No validation results yet",
+            Icons = "fas fa-check-circle",
+            Description = "Generate scenarios and click Validate"
+        };
+    [Parameter]
+    public DataAddVisualization? DataBuild { get; set; }
+    private CardAddVisualization Prams = new();
+    protected override void OnInitialized()
+    {
+        if (DataBuild == null)
+        {
+            DataBuild = new DataAddVisualization
+                {
+                    Icon = "fas fa-bug",
+                    Name = " Attack Techniques",
+                    Items = studios,
+                    IContents = contents,
+                    IAttack = attack,
+                    IValidation = validation
+
+                   
+                  
+                };
+        }
+
+        Prams = CardAddVisualization.Create(DataBuild);
+        base.OnInitialized();
+    }
+}
+

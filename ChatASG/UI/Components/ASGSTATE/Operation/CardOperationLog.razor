@@ -1,0 +1,37 @@
+﻿@using global::Data.Operation
+@inherits StylesCardOperation
+@if (Prams != null)
+{
+    <div class="@ClassContainer ">
+        <h2 class="@ClassName ">
+            <i class="@Prams.DataBuild.Icon  @ClassIcon  "></i>@Prams.DataBuild.Name
+        </h2>
+        <button id="clear-logs" class="@ClassButton ">
+            <i class="@Prams.DataBuild.Icons   @ClassIcons "></i> @Prams.DataBuild.Button
+        </button>
+    </div>
+
+
+
+}
+@code {
+    
+
+    [Parameter] public CardOperation? Prams { get; set; }
+    [Parameter] public EventCallback OnHelpClicked { get; set; }
+
+   
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}
+@*  <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+            <i class="fas fa-terminal mr-2 text-blue-600"></i> Operation Log
+        </h2>
+        <button id="clear-logs" class="text-gray-500 hover:text-gray-700 text-sm">
+            <i class="fas fa-broom mr-1"></i> Clear
+        </button>
+    </div> *@

@@ -1,19 +1,15 @@
 ﻿using ChatASG.Data.Templates.Base;
+using Data.FeaturesSectionModels;
 using Data.HeaderModels;
 using Microsoft.AspNetCore.Components;
 
 namespace Data.FeaturesSection;
-public class DataFeatures : ModulsBase
-{
-    public string? Icon { get; set; }
-    public string? Title { get; set; }
-    public string? Description { get; set; }
-    public string? IconColor { get; set; }
-    public string? IconBackground { get; set; }
-}
+//<!-- مميزات منصة ASG -->
+
 public class StylesFeaturesCard : StyleBaseComponentCard
 {
     [Parameter] public string? ClassIcon { get; set; }
+
     [Parameter] public string? ClassTitle { get; set; }
     [Parameter] public string? ClassDescription { get; set; }
     [Parameter] public string? ClassCard { get; set; }
@@ -75,12 +71,8 @@ public class CardFeaturesModul : ComponentBaseCard<DataFeatures>
 
 
 
-public class DataAddFeatures : ModulsBase
-{
-  
-   // public DataHeroImageStats? IStats { get; set; } 
-    public List<DataFeatures> Items { get; set; } = new();
-}
+
+
 public class StylesCardAddFeatures : StyleBaseComponentCard
 {
     [Parameter] public string? ClassName { get; set; }
@@ -137,7 +129,7 @@ public class StylesCardAddFeatures : StyleBaseComponentCard
 
 public class CardAddFeatures : ComponentBaseCard<DataAddFeatures>
 {
-    public List<CardFeaturesModul> Items { get; set; } = new();
+    public List<CardFeaturesModul> Items { get; set; } = new List<CardFeaturesModul>();
 
     public override TypeComponentCard Type => throw new NotImplementedException();
 
@@ -162,11 +154,7 @@ public class CardAddFeatures : ComponentBaseCard<DataAddFeatures>
         return instance;
     }
 
-    //protected override async Task OnInitializedAsync()
-    //{
-    //    await UpdateStyleAsync(StylesHeroIntro.CLASSES);
-    //    await base.OnInitializedAsync();
-    //}
+   
 }
 
 

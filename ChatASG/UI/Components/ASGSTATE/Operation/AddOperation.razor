@@ -1,0 +1,25 @@
+﻿@using global::Data.Operation
+@inherits StylesCardAddOperation
+  <!-- Operation Log Card -->
+<div class="@ClassContainer " style="padding:3%">
+    <CardOperationLog Prams="Prams.IOperation" />
+   
+   <Operation Prams="Prams.Isystem" />
+</div>
+
+
+@code {
+
+
+
+    [Parameter] public CardAddOperation Prams { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+
+}
+
+

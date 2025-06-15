@@ -1,0 +1,108 @@
+﻿@using global::Data.ScenarioGeneration
+
+<AddCardScenario Prams="Prams" />
+
+@code {
+ 
+    private List<DataGeneration> studios = new()
+    {
+
+            new DataGeneration
+            {
+                Icon = "fas fa-play  mr-2",
+                Button = "Generate Scenarios",
+                ClassButton = "bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-md transition flex items-center justify-center transform hover:scale-[1.02] glow",
+
+            },
+            new DataGeneration
+            {
+               Icon = "fas fa-check-circle mr-2",
+                Button = "Validate Scenarios",
+              ClassButton = "bg-purple-600 hover:bg-purple-700 text-white px-4 py-3 rounded-md transition flex items-center justify-center transform hover:scale-[1.02]",
+
+            },
+
+
+    };
+    private DataResults Results = new()
+    {
+            Name = "Generated Scenarios",
+            Icon = " fas fa-list-ol",
+            Title = " No scenarios generated yet",
+            Icons = "fas fa-project-diagram",
+            Description = "Configure states and techniques, then click Generate"
+    };
+    [Parameter]
+    public DataAddScenario? DataBuild { get; set; }
+    private CardAddScenario Prams = new();
+    protected override void OnInitialized()
+    {
+        if (DataBuild == null)
+        {
+            DataBuild = new DataAddScenario
+                {
+                    Icon = "fas fa-server",
+                    Items = studios,
+                    results = Results,
+                };
+        }
+
+        Prams = CardAddScenario.Create(DataBuild);
+        base.OnInitialized();
+    }
+}
+
+
+
+@* @using global::Data.ASGSTATE
+@using global::Data.Pricing
+<AddCardMContent Prams="Prams" />
+
+@code {
+
+
+    private List<DataButton> studios = new()
+    {
+
+            new DataButton
+            {
+                Icon = "fas fa-volume-up",
+                ClassButton = "bg-gray-200 hover:bg-gray-300 p-2 rounded-full text-gray-700",
+                
+            },
+            new DataButton
+            {
+               Icon = "fas fa-question-circle  mr-2 ",
+                Button = "Help",
+              ClassButton = "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center",
+
+            },
+          
+
+    };
+    
+    [Parameter]
+    public DataAddHeader? DataBuild { get; set; }
+    private CardAddHeader Prams = new();
+        protected override void OnInitialized()
+        {
+            if (DataBuild == null)
+            {
+            DataBuild = new DataAddHeader
+                    {
+                    Name = "CyberShield ASG",
+                    Description = "State-Based Attack Scenario Generator",
+                    Icon = "fas fa-shield-alt",
+                    Items = studios,
+                   //Iquiz = Quiz,
+                    };
+            }
+
+        Prams = CardAddHeader.Create(DataBuild);
+            base.OnInitialized();
+        }
+
+}
+
+
+ *@

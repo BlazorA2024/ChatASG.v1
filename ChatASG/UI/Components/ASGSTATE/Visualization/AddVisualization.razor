@@ -1,0 +1,48 @@
+﻿@using ChatASG.UI.Components.ASGSTATE.Visualization.Tabs
+@using global::Data.Visualization
+@inherits StylesCardAddVisualization
+@if (Prams != null)
+{
+    <div style="padding:3%">
+        <div class="@ClassContainer  ">
+            <!-- Tabs -->
+            <div class="flex border-b mb-4">
+                @foreach (var itam in Prams.Items)
+                {
+                    <TabsButton Prams="itam" />
+                }
+              
+            </div>
+
+            <!-- Tab Contents -->
+            <TabContents Prams="Prams.IContents" />
+         
+            <TabAttack Prams="Prams.IAttack" />
+          
+
+            <TabValidation Prams="Prams.IValidation" />
+          
+        </div>
+    </div>
+}
+
+
+
+        @code {
+
+
+
+        [Parameter] public CardAddVisualization Prams { get; set; }
+
+        protected override async Task OnInitializedAsync()
+        {
+            await UpdateStyleAsync(CLASSES);
+            await base.OnInitializedAsync();
+        }
+
+}
+
+
+
+
+

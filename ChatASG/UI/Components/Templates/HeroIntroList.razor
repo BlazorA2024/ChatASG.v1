@@ -1,0 +1,143 @@
+﻿@* @using MyApiClient
+@using ChatASG.UI.Components.Index.HeroSection
+
+@using NWHttps
+@using global::Data.Section
+@using global::Data.SectionModels
+@inject IWebApiClientFactory ApiClientFactory
+@inject IMapper<HeroIntroOutputVM, DataHeroIntro> Mapper
+<!-- 1  منصة ASG للذكاء الاصطناعي -->
+
+@if (HeroData == null)
+{
+    <p>جارٍ تحميل البيانات...</p>
+}
+else if (!HeroData.Any())
+{
+    <p>لا توجد بيانات للعرض.</p>
+}
+else
+{
+    foreach (var data in HeroData)
+    {
+        <SectionTemplate Data="data" />
+    }
+}
+
+@code {
+    private List<HeroIntroOutputVM>? HeroI;
+    private List<DataHeroIntro>? HeroData;
+
+    
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var client = new HeroIntroClient(await ApiClientFactory.GetClientAsync());
+
+            // استدعاء API لجلب البيانات (مثال للغة العربية)
+            HeroI = (await client.GetAllByLanguage11Async("ar", CancellationToken.None)).ToList();
+            HeroData = HeroI.Select(vm => Mapper.Map(vm)).ToList();
+
+            // تحويل البيانات الى نموذج العرض
+           // HeroData = HeroI.Select(Convert).ToList();
+        }
+        catch (Exception ex)
+        {
+            // يمكن إضافة لوج أو رسالة خطأ
+            Console.Error.WriteLine($"خطأ في جلب البيانات: {ex.Message}");
+            HeroData = new List<DataHeroIntro>(); // عرض رسالة "لا توجد بيانات" بدلًا من تعطل الصفحة
+        }
+
+        StateHasChanged();
+    }
+}
+
+
+
+
+ *@
+
+
+
+
+
+
+
+@* @using MyApiClient
+@using ChatASG.UI.Components.Index.HeroSection
+
+@using NWHttps
+@using global::Data.Section
+@inject IWebApiClientFactory ApiClientFactory
+
+@if (HeroData == null)
+{
+    <p>جارٍ تحميل البيانات...</p>
+}
+else if (!HeroData.Any())
+{
+    <p>لا توجد بيانات للعرض.</p>
+}
+else
+{
+    foreach (var data in HeroData)
+    {
+        <SectionTemplate Data="data" />
+    }
+}
+
+@code {
+    private List<HeroIntroOutputVM>? HeroI;
+    private List<DataHeroIntro>? HeroData;
+
+    // دالة تحويل من API model إلى UI model
+    private DataHeroIntro Convert(HeroIntroOutputVM vm)
+    {
+        return new DataHeroIntro
+        {
+            Name = vm.Name,
+            Title = vm.Title,
+            Label = vm.Label,
+            Description = vm.Description,
+            IStats = vm.IStats == null ? null : new DataHeroImageStats
+            {
+                Image = "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop",
+                Name = vm.IStats.Name,
+                Title = vm.IStats.Title,
+                Description = vm.IStats.Description
+            },
+            Items = vm.Items?.Select(item => new DataButtons
+            {
+                Button = item.Button,
+                Icon = item.Icon,
+                Link = item.Link,
+                ClassButton = item.ClassButton
+            }).ToList()
+        };
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var client = new HeroIntroClient(await ApiClientFactory.GetClientAsync());
+
+            // استدعاء API لجلب البيانات (مثال للغة العربية)
+            HeroI = (await client.GetAllByLanguage11Async("ar", CancellationToken.None)).ToList();
+
+            // تحويل البيانات الى نموذج العرض
+            HeroData = HeroI.Select(Convert).ToList();
+        }
+        catch (Exception ex)
+        {
+            // يمكن إضافة لوج أو رسالة خطأ
+            Console.Error.WriteLine($"خطأ في جلب البيانات: {ex.Message}");
+            HeroData = new List<DataHeroIntro>(); // عرض رسالة "لا توجد بيانات" بدلًا من تعطل الصفحة
+        }
+
+        StateHasChanged();
+    }
+}
+ *@

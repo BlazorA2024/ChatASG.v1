@@ -1,0 +1,136 @@
+
+:root {
+    --primary: #3b82f6;
+    --primary-dark: #2563eb;
+    --secondary: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --dark: #1e293b;
+    --light: #f8fafc;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f1f5f9;
+    color: var(--dark);
+}
+
+.mono {
+    font-family: 'Roboto Mono', monospace;
+}
+
+.card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+.node {
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+    .node:hover {
+        transform: scale(1.05);
+        filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
+    }
+
+.connection {
+    stroke-dasharray: 5;
+    animation: dash 30s linear infinite;
+}
+
+@keyframes dash {
+    to {
+        stroke-dashoffset: 1000;
+    }
+}
+
+.pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease-in;
+}
+
+    .tab-content.active {
+        display: block;
+    }
+
+.log-entry {
+    border-left: 3px solid var(--primary);
+    transition: all 0.3s ease;
+}
+
+    .log-entry:hover {
+        background-color: rgba(59, 130, 246, 0.05);
+    }
+
+    .log-entry.warning {
+        border-left-color: var(--warning);
+    }
+
+    .log-entry.error {
+        border-left-color: var(--danger);
+    }
+
+    .log-entry.success {
+        border-left-color: var(--secondary);
+    }
+
+.glow {
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.7);
+}
+
+.terminal {
+    background-color: #1e293b;
+    color: #f8fafc;
+    font-family: 'Roboto Mono', monospace;
+    border-radius: 0.5rem;
+}
+
+.terminal-cursor {
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+    from, to {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}

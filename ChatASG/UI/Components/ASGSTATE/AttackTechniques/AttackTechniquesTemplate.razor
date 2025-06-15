@@ -1,0 +1,59 @@
+﻿@using global::Data.AttackTechniques
+
+<AttackTechniques Prams="Prams" />
+
+@code {
+    private DataTechnique stateConfig = new()
+    {
+
+            Title = "Add State Field",
+
+        AvailableFields = new()
+        {
+        new DataStateField { Key = "", DisplayName = "-- Select a technique --" },
+        new DataStateField { Key = "nmap", DisplayName = "Nmap Scanning" },
+        new DataStateField { Key = "cve-exploit", DisplayName = "CVE-2016-3714 Exploit" },
+        new DataStateField { Key = "system-investigation", DisplayName = "System Investigation (Unix)" },
+        new DataStateField { Key = "download-wget", DisplayName = "Download (Wget)" },
+        new DataStateField { Key = "privilege-escalation", DisplayName = "Privilege Escalation" },
+        new DataStateField { Key = "lateral-movement", DisplayName = "Lateral Movement" },
+        new DataStateField { Key = "credential-dumping", DisplayName = "Credential Dumping" },
+        new DataStateField { Key = "persistence", DisplayName = "Persistence Mechanism" }
+    },
+
+            IButton = new() {
+                Icon = "fas fa-cog mr-2",
+                ClassButton = "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition w-full flex items-center justify-center transform hover:scale-[1.02]",
+                Button = "Configure Conditions"
+            },
+            Statecards = new()
+            {
+                Icon = "fas fa-list-ul",
+                Title = "Selected Techniques",
+                Selected = " No techniques selected"
+            },
+         
+        
+    };
+    [Parameter]
+    public DataAddAttack? DataBuild { get; set; }
+    private CardAddAttack Prams = new();
+    protected override void OnInitialized()
+    {
+        if (DataBuild == null)
+        {
+            DataBuild = new DataAddAttack
+                {
+                    Icon = "fas fa-bug",
+                    Name = " Attack Techniques",
+                    Tag = "0 selected",
+                    stateConfig = stateConfig,
+                  
+                };
+        }
+
+        Prams = CardAddAttack.Create(DataBuild);
+        base.OnInitialized();
+    }
+}
+

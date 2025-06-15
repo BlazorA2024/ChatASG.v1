@@ -1,0 +1,382 @@
+﻿
+@using ChatASG.UI.Components.ASGSTATE.AttackTechniques
+@using ChatASG.UI.Components.ASGSTATE.HeaderLogo
+@using ChatASG.UI.Components.ASGSTATE.MainContent
+@using ChatASG.UI.Components.ASGSTATE.Operation
+@using ChatASG.UI.Components.ASGSTATE.ScenarioGeneration
+@using ChatASG.UI.Components.ASGSTATE.Visualization
+
+
+
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <!-- Header with Logo -->
+        <HeaderTemplate />
+@*         <header class="mb-8 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-blue-600 text-white p-2 rounded-lg">
+                    <i class="fas fa-shield-alt text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800">CyberShield ASG</h1>
+                    <p class="text-gray-600">State-Based Attack Scenario Generator</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="sound-toggle" class="bg-gray-200 hover:bg-gray-300 p-2 rounded-full text-gray-700">
+                    <i class="fas fa-volume-up"></i>
+                </button>
+                <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center">
+                    <i class="fas fa-question-circle mr-2"></i> Help
+                </button>
+            </div>
+        </header> *@
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 py-1">
+            <!-- Left Panel - State Configuration -->
+            <MContentTemplate />
+            @* <div class="lg:col-span-1 space-y-6">
+                <!-- State Configuration Card -->
+                <div class="card bg-white rounded-xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+                            <i class="fas fa-server mr-2 text-blue-600"></i> System State
+                        </h2>
+                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">9 Fields</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Add State Field</label>
+                            <div class="flex items-center space-x-2">
+                                <select id="state-field" class="flex-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                                    <option value="address">IP Address</option>
+                                    <option value="protocol">Protocol</option>
+                                    <option value="os">Operating System</option>
+                                    <option value="ports">Ports</option>
+                                    <option value="shell">Shell</option>
+                                    <option value="privilege">Privilege</option>
+                                    <option value="binaries">Binaries</option>
+                                    <option value="cwd">Current Working Directory</option>
+                                    <option value="misudo">Misudo Configurations</option>
+                                </select>
+                                <button id="add-state-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md transition-all duration-300 transform hover:scale-105">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- State Cards Container -->
+                        <div id="state-cards" class="space-y-3 max-h-64 overflow-y-auto pr-2">
+                            <!-- State cards will be added here dynamically -->
+                            <div class="text-center py-4 text-gray-500" id="empty-state-message">
+                                <i class="fas fa-info-circle mb-1"></i>
+                                <p class="text-sm">Add state fields to begin</p>
+                            </div>
+                        </div>
+
+                        <div class="pt-2 flex justify-between items-center">
+                            <button id="clear-states" class="text-red-600 hover:text-red-800 text-sm transition flex items-center">
+                                <i class="fas fa-trash mr-1"></i> Clear All
+                            </button>
+                            <span class="text-xs text-gray-500" id="state-count">0 fields added</span>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+ *@
+
+         <ScenarioTemplate />
+          @*   <!-- Right Panel - Scenario Generation & Visualization -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Scenario Generation Card -->
+                <div class="card bg-white rounded-xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+                            <i class="fas fa-project-diagram mr-2 text-purple-600"></i> Scenario Generation
+                        </h2>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full" id="scenario-count">0 scenarios</span>
+                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full hidden" id="valid-count">0 validated</span>
+                        </div>
+                    </div>
+
+                    <!-- Generation Controls -->
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <button id="generate-scenarios" class="bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-md transition flex items-center justify-center transform hover:scale-[1.02] glow">
+                            <i class="fas fa-play mr-2"></i> Generate Scenarios
+                        </button>
+                        <button id="validate-scenarios" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-3 rounded-md transition flex items-center justify-center transform hover:scale-[1.02]">
+                            <i class="fas fa-check-circle mr-2"></i> Validate Scenarios
+                        </button>
+                    </div>
+
+                    <!-- Scenario Results -->
+                    <div class="border rounded-md p-4 bg-gray-50 max-h-64 overflow-y-auto">
+                        <h3 class="text-sm font-medium text-gray-700 mb-3 flex items-center">
+                            <i class="fas fa-list-ol mr-1 text-gray-500"></i> Generated Scenarios
+                        </h3>
+                        <div id="scenario-results" class="space-y-3">
+                            <div class="text-center py-8 text-gray-500">
+                                <i class="fas fa-project-diagram text-2xl mb-2"></i>
+                                <p class="text-sm">No scenarios generated yet</p>
+                                <p class="text-xs mt-1">Configure states and techniques, then click Generate</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+ *@
+
+            <!-- Middle Panel - Attack Techniques -->
+          <AttackTechniquesTemplate />
+         @*    <div class="lg:col-span-1 space-y-6">
+                <!-- Attack Techniques Card -->
+                <div class="card bg-white rounded-xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+                            <i class="fas fa-bug mr-2 text-red-600"></i> Attack Techniques
+                        </h2>
+                        <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full" id="selected-count">0 selected</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Select Technique</label>
+                            <select id="technique-select" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                                <option value="">-- Select a technique --</option>
+                                <option value="nmap">Nmap Scanning</option>
+                                <option value="cve-exploit">CVE-2016-3714 Exploit</option>
+                                <option value="system-investigation">System Investigation (Unix)</option>
+                                <option value="download-wget">Download (Wget)</option>
+                                <option value="privilege-escalation">Privilege Escalation</option>
+                                <option value="lateral-movement">Lateral Movement</option>
+                                <option value="credential-dumping">Credential Dumping</option>
+                                <option value="persistence">Persistence Mechanism</option>
+                            </select>
+                        </div>
+
+                        <!-- Selected Techniques List -->
+                        <div class="border rounded-md p-3 bg-gray-50 max-h-64 overflow-y-auto">
+                            <h3 class="text-sm font-medium text-gray-700 mb-2 flex items-center">
+                                <i class="fas fa-list-ul mr-1 text-gray-500"></i> Selected Techniques
+                            </h3>
+                            <ul id="selected-techniques" class="space-y-2">
+                                <!-- Selected techniques will appear here -->
+                                <li class="text-center py-4 text-gray-500 text-sm" id="empty-tech-message">
+                                    No techniques selected
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Pre/Post Conditions Button -->
+                        <div class="mt-4">
+                            <button id="configure-conditions" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition w-full flex items-center justify-center transform hover:scale-[1.02]">
+                                <i class="fas fa-cog mr-2"></i> Configure Conditions
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        *@
+        </div>
+    </div>
+    <!-- Visualization Panel -->
+    <VisualizationTemplate />
+   @*  <div style="padding:3%">
+        <div class="card bg-white rounded-xl p-6 ">
+            <!-- Tabs -->
+            <div class="flex border-b mb-4">
+                <button class="tab-btn px-4 py-2 font-medium text-blue-600 border-b-2 border-blue-600 flex items-center" data-tab="graph">
+                    <i class="fas fa-network-wired mr-2"></i> Graph View
+                </button>
+                <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 flex items-center" data-tab="sequence">
+                    <i class="fas fa-list-ul mr-2"></i> Sequence View
+                </button>
+                <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 flex items-center" data-tab="validation">
+                    <i class="fas fa-shield-alt mr-2"></i> Validation
+                </button>
+            </div>
+
+            <!-- Tab Contents -->
+            <div class="tab-content active" id="graph-tab">
+                <div class="graph-container bg-gray-50 rounded-lg p-4 h-64 flex items-center justify-center relative" id="attack-graph">
+                    <svg width="100%" height="100%" viewBox="0 0 800 300" id="graph-svg">
+                        <!-- Graph visualization will be rendered here -->
+                        <text x="400" y="150" text-anchor="middle" fill="#64748b" font-size="14" font-family="Inter">
+                            Graph visualization will appear here after generation
+                        </text>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="tab-content" id="sequence-tab">
+                <div class="bg-gray-50 p-4 rounded-md h-64 overflow-y-auto">
+                    <h3 class="font-medium text-gray-700 mb-3 flex items-center">
+                        <i class="fas fa-list-ol mr-2 text-gray-500"></i> Attack Scenario Sequence
+                    </h3>
+                    <ol id="scenario-sequence" class="list-decimal pl-5 space-y-2">
+                        <li class="text-gray-600">No sequence generated yet</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="tab-content" id="validation-tab">
+                <div class="bg-gray-50 p-4 rounded-md h-64 overflow-y-auto">
+                    <h3 class="font-medium text-gray-700 mb-3 flex items-center">
+                        <i class="fas fa-shield-alt mr-2 text-gray-500"></i> Validation Against ICS Incidents
+                    </h3>
+                    <div id="validation-results" class="space-y-4">
+                        <div class="text-center py-8 text-gray-500">
+                            <i class="fas fa-check-circle text-2xl mb-2"></i>
+                            <p class="text-sm">No validation results yet</p>
+                            <p class="text-xs mt-1">Generate scenarios and click Validate</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> *@
+    <!-- Operation Log Card -->
+    <OperationTemplate />
+   @*  <div class="card bg-white rounded-xl p-6 " style="padding:3%">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+                <i class="fas fa-terminal mr-2 text-blue-600"></i> Operation Log
+            </h2>
+            <button id="clear-logs" class="text-gray-500 hover:text-gray-700 text-sm">
+                <i class="fas fa-broom mr-1"></i> Clear
+            </button>
+        </div>
+        <div id="operation-log" class="space-y-2 text-sm max-h-64 overflow-y-auto pr-2">
+            <div class="log-entry bg-gray-50 px-3 py-2 rounded">
+                <div class="flex items-start">
+                    <span class="text-blue-600 mr-2">></span>
+                    <span>System initialized. Ready to configure attack scenarios.</span>
+                </div>
+                <div class="text-xs text-gray-500 mt-1 ml-4">[SYSTEM] Just now</div>
+            </div>
+        </div>
+    </div> *@
+    <!-- Terminal Simulation -->
+    <!--<div class="card terminal rounded-xl p-4 ">
+        <div class="flex items-center mb-3">
+            <div class="flex space-x-2 mr-3">
+                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+            </div>
+            <div class="text-sm">attack-scenario-generator</div>
+        </div>
+        <div id="terminal-output" class="text-green-400 text-sm font-mono h-48 overflow-y-auto">
+            <div class="mb-1">CyberShield ASG v1.0.0</div>
+            <div class="mb-1">Initializing subsystems...</div>
+            <div class="mb-1">Loading attack technique database...</div>
+            <div class="mb-1">Ready. Awaiting user input.</div>
+            <div class="flex items-center" id="terminal-prompt">
+                <span class="text-blue-400 mr-2">user@cybershield:~$</span>
+                <span id="terminal-input" class="terminal-cursor">_</span>
+            </div>
+        </div>
+    </div>-->
+    <!-- Pre/Post Conditions Modal -->
+    <div id="conditions-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-xl shadow-2xl p-6 w-full max-w-4xl animate-fade-in">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                    <i class="fas fa-cog mr-2 text-blue-600"></i>
+                    <span id="modal-tech-name">Configure Conditions</span>
+                </h3>
+                <button id="close-modal" class="text-gray-500 hover:text-gray-700 transition">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <!-- Pre-Conditions -->
+                <div>
+                    <h4 class="text-sm font-medium text-gray-700 mb-2 flex items-center">
+                        <i class="fas fa-sign-in-alt mr-2 text-blue-600"></i> Pre-Conditions
+                    </h4>
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-2">
+                            <select id="pre-condition-select" class="flex-1 border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                                <option value="">Select condition...</option>
+                                <option value="address">IP Address</option>
+                                <option value="protocol">Protocol</option>
+                                <option value="os">Operating System</option>
+                                <option value="ports">Ports</option>
+                                <option value="shell">Shell</option>
+                                <option value="privilege">Privilege</option>
+                                <option value="binaries">Binaries</option>
+                                <option value="cwd">Current Working Directory</option>
+                                <option value="misudo">Misudo Configurations</option>
+                            </select>
+                            <button id="add-pre-condition" class="bg-blue-600 text-white px-3 py-2 rounded-md text-sm hover:bg-blue-700">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div id="pre-conditions-list" class="space-y-2">
+                            <!-- Pre-conditions will be added here -->
+                            <div class="text-center py-4 text-gray-500 text-sm" id="empty-pre-conditions">
+                                No pre-conditions configured
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Post-Conditions -->
+                <div>
+                    <h4 class="text-sm font-medium text-gray-700 mb-2 flex items-center">
+                        <i class="fas fa-sign-out-alt mr-2 text-green-600"></i> Post-Conditions
+                    </h4>
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-2">
+                            <select id="post-condition-select" class="flex-1 border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                                <option value="">Select condition...</option>
+                                <option value="shell:TEMPORAL">Shell: TEMPORAL</option>
+                                <option value="shell:DOWNLOADED">Shell: DOWNLOADED</option>
+                                <option value="shell:PERMANENT">Shell: PERMANENT</option>
+                                <option value="privilege:user">Privilege: User</option>
+                                <option value="privilege:superuser">Privilege: Superuser</option>
+                                <option value="ports:SC">Ports: SC</option>
+                                <option value="os:SC">OS: SC</option>
+                                <option value="binaries:UNDEFINED">Binaries: UNDEFINED</option>
+                            </select>
+                            <button id="add-post-condition" class="bg-green-600 text-white px-3 py-2 rounded-md text-sm hover:bg-green-700">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div id="post-conditions-list" class="space-y-2">
+                            <!-- Post-conditions will be added here -->
+                            <div class="text-center py-4 text-gray-500 text-sm" id="empty-post-conditions">
+                                No post-conditions configured
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 flex justify-end space-x-3">
+                <button id="cancel-conditions" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100 transition">
+                    Cancel
+                </button>
+                <button id="save-conditions" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+                    Save Conditions
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Elements for Sound Effects -->
+    <audio id="click-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.mp3" preload="auto"></audio>
+    <audio id="success-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3" preload="auto"></audio>
+    <audio id="error-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3" preload="auto"></audio>
+    <audio id="generate-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.mp3" preload="auto"></audio>
+    <audio id="validate-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-positive-interface-beep-221.mp3" preload="auto"></audio>
+

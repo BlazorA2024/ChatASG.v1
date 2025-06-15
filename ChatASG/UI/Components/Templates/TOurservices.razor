@@ -1,0 +1,177 @@
+﻿@*  @using ChatASG.UI.Components.Index.Ourservices
+@using MyApiClient
+@using NWHttps
+@using global::Data.Ourservices
+@using global::Data.OurservicesModels
+@inject IMapper<DataAddOurservicesOutputVM, DataAddOurservices> Mapper
+@inject IWebApiClientFactory ApiClientFactory
+
+<!--4 Services Section -->
+<!-- خدماتنا المتكاملة    -->
+
+@if (OurservicesData == null)
+{
+    <p>جارٍ تحميل البيانات...</p>
+}
+else if (!OurservicesData.Any())
+{
+    <p>لا توجد بيانات للعرض.</p>
+}
+else
+{
+    @foreach (var item in OurservicesData)
+    {
+        <OurservicesTemplate Data="item" />
+    }
+}
+
+@code {
+    private List<DataAddOurservicesOutputVM>? ApiData;
+    private List<DataAddOurservices>? OurservicesData;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var client = new DataAddOurservicesClient(await ApiClientFactory.GetClientAsync());
+            ApiData = (await client.GetAllByLanguage2Async("ar", CancellationToken.None)).ToList();
+
+            // التحويل باستخدام GenericMapper فقط
+            OurservicesData = ApiData.Select(vm => Mapper.Map(vm)).ToList();
+            //        OurservicesData = ApiData.Select(vm =>
+            // {
+            // var item = Mapper.Map(vm);
+
+            // // نسخ الخاصية المركبة يدويًا
+            // foreach (var card in item.Items ?? new List<DataOurservicesCard>())
+            // {
+            //     if (card.dataOurservice == null && vm.Items != null)
+            //     {
+            //         var original = vm.Items.FirstOrDefault(x => x.Icon == card.Icon);
+            //         if (original?.DataOurservice != null)
+            //         {
+            //             var service = new GenericMapper<DataOurserviceOutputVM, DataOurservice>().Map(original.DataOurservice);
+            //                 card.dataOurservice = service;
+            //         }
+            //     }
+            // }
+
+            // return item;
+            // }).ToList();
+
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"حدث خطأ أثناء جلب البيانات: {ex.Message}");
+            OurservicesData = new List<DataAddOurservices>();
+        }
+
+        StateHasChanged();
+    }
+}
+
+
+ *@
+
+
+
+
+
+
+
+@* @using ChatASG.UI.Components.Index.Ourservices
+@using MyApiClient
+@using NWHttps
+@using global::Data.Ourservices
+
+@inject IMapper<DataAddOurservicesOutputVM, DataAddOurservices> Mapper
+@inject IWebApiClientFactory ApiClientFactory
+
+@if (OurservicesData == null)
+{
+    <p>جارٍ تحميل البيانات...</p>
+}
+else if (!OurservicesData.Any())
+{
+    <p>لا توجد بيانات للعرض.</p>
+}
+else
+{
+    @foreach (var item in OurservicesData)
+    {
+       
+            <OurservicesTemplate Data="item" />
+        
+    }
+}
+
+@code {
+    private List<DataAddOurservicesOutputVM>? ApiData;
+    private List<DataAddOurservices>? OurservicesData;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var client = new DataAddOurservicesClient(await ApiClientFactory.GetClientAsync());
+            ApiData = (await client.GetAllByLanguage2Async("ar", CancellationToken.None)).ToList();
+
+            // التأكد من وجود عناصر في Items لكل عنصر
+            // foreach (var item in ApiData)
+            // {
+            //     var count = item.Items?.Count ?? 0;
+            //     Console.WriteLine($"العنصر {item.Name} يحتوي على {count} عناصر في Items");
+            // }
+
+           // OurservicesData = ApiData.Select(vm => Mapper.Map(vm)).ToList();
+            // تحويل آمن وتأكد من أن Items ليست null بعد التحويل
+            // OurservicesData = ApiData.Select(vm =>
+            // {
+            //     var mapped = Mapper.Map(vm);
+            //     mapped.Items ??= new List<DataOurservicesCard>();
+            //     return mapped;
+            // }).ToList();
+            OurservicesData = ApiData.Select(vm =>
+     {
+     var mapped = Mapper.Map(vm);
+     mapped.Items ??= new List<DataOurservicesCard>();
+
+     foreach (var item in mapped.Items)
+     {
+         if (item.dataOurservice == null)
+         {
+                 item.dataOurservice = new DataOurservice(); // تهيئة يدوية حتى لا تكون null
+         }
+         else
+         {
+             // تحويل يدوي إن احتجت تحويل من DataOurserviceOutputVM إلى DataOurservice
+             var source = vm.Items?.FirstOrDefault(i => i.Icon == item.Icon)?.DataOurservice;
+             if (source != null)
+             {
+                     item.dataOurservice = new DataOurservice
+                         {
+                             Title = source.Title,
+                             Description = source.Description,
+                             IconColor = source.IconColor,
+                             Features = source.Features?.ToList() ?? new List<string>()
+                         };
+
+             }
+         }
+     }
+
+     return mapped;
+     }).ToList();
+
+
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"حدث خطأ أثناء جلب البيانات: {ex.Message}");
+            OurservicesData = new List<DataAddOurservices>();
+        }
+
+        StateHasChanged();
+    }
+}
+ *@

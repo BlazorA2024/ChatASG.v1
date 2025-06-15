@@ -1,0 +1,35 @@
+﻿@using global::Data.ASGSTATE
+@inherits StylesCardAddHeader
+
+<header class="@ClassContainer ">
+    <div class="@ClassItem ">
+        <div class="@ClassIconrounded ">
+            <i class="@Prams.DataBuild.Icon     @ClassIcon "></i>
+        </div>
+        <div>
+            <h1 class="@ClassName ">@Prams.DataBuild.Name</h1>
+            <p class="@ClassDescription">@Prams.DataBuild.Description</p>
+        </div>
+    </div>
+    <div class="@ClassItems ">
+
+
+        @foreach (var item in Prams.Items)
+        {
+            <CardButtons Prams="item" />
+        }            
+       
+       
+    </div>
+</header>
+
+@code {
+    [Parameter] public CardAddHeader Prams { get; set; } 
+    //= "CyberShield ASG";
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+   
+}

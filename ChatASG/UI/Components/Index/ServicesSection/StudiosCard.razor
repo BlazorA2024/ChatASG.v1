@@ -1,6 +1,7 @@
 ﻿@using global::Data.ServicesSection
 @inherits StylesStudiosCard
-
+@if(Prams !=null)
+{
 <a href="@Prams.DataBuild.Link" class="block group">
     <div class="@ClassContainer">
         <div class="p-4">
@@ -10,7 +11,7 @@
         <iframe src="@Prams.DataBuild.FrameSrc" style="height:350px" class="@ClassIframe"></iframe>
     </div>
 </a>
-
+}
 @code {
     [Parameter]
     public CardStudios Prams { get; set; } = new();

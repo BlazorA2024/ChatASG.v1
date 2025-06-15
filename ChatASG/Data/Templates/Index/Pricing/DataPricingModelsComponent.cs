@@ -1,20 +1,21 @@
 ﻿using ChatASG.Data.Templates.Base;
+using Data.ModulsPricing;
 using Microsoft.AspNetCore.Components;
 
 namespace Data.Pricing;
 
-public class DataPricingCard :ModulsBase
-{
-    public string? ClassCard { get; set; } 
+//public class DataPricingCard :ModulsBase
+//{
+//    public string? ClassCard { get; set; } 
 
-    public string Price { get; set; } = "";
-    public string Period { get; set; } = "";
-    public List<string> Features { get; set; } = new();
-    public List<string> DisabledFeatures { get; set; } = new();
-    public string ButtonText { get; set; } = "";
-    public string BadgeText { get; set; } = "";
-    public bool IsPopular { get; set; } = false;
-}
+//    public string Price { get; set; } = "";
+//    public string Period { get; set; } = "";
+//    public List<string> Features { get; set; } = new();
+//    public List<string> DisabledFeatures { get; set; } = new();
+//    public string ButtonText { get; set; } = "";
+//    public string BadgeText { get; set; } = "";
+//    public bool IsPopular { get; set; } = false;
+//}
 public class StylesPricingCard : StyleBaseComponentCard
 {
     [Parameter] public string? ClassCardContainer { get; set; }
@@ -91,11 +92,11 @@ public class CardPricing : ComponentBaseCard<DataPricingCard>
     }
 }
 
-public class DataPricingQuiz :ModulsBase
-{
+//public class DataPricingQuiz :ModulsBase
+//{
 
-    public string? ButtonIconClass { get; set; }
-}
+//    public string? ButtonIconClass { get; set; }
+//}
 public class StylesPricingQuiz : StyleBaseComponentCard
 {
     [Parameter] public string? ClassTitle { get; set; }
@@ -150,11 +151,11 @@ public class CardPricingQuiz : ComponentBaseCard<DataPricingQuiz>
 
 
 }
-public class DataAddPricing : ModulsBase
-{
-    public DataPricingQuiz Iquiz { get; set; }
-    public List<DataPricingCard> Items { get; set; } = new();
-}
+//public class DataAddPricing : ModulsBase
+//{
+//    public DataPricingQuiz Iquiz { get; set; }
+//    public List<DataPricingCard> Items { get; set; } = new();
+//}
 public class StylesCardAddPricing : StyleBaseComponentCard
 {
     [Parameter] public string? ClassName { get; set; }

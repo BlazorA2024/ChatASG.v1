@@ -1,0 +1,33 @@
+﻿@using global::Data.Visualization
+@if (Prams != null)
+{
+    <button @onclick="HandleClick" data-tab="@Prams.DataBuild.Datatab " class="@Prams.DataBuild.ClassButton ">
+        <i class="@Prams.DataBuild.Icon "></i>@Prams.DataBuild.Button
+</button>
+
+}
+@code {
+
+
+    [Parameter] public CardButton? Prams { get; set; }
+    [Parameter] public EventCallback<DataButton> OnClick { get; set; }
+   
+    private async Task HandleClick()
+    {
+        if (Prams?.DataBuild != null)
+        {
+            StateHasChanged();
+            await OnClick.InvokeAsync(Prams.DataBuild);
+        }
+    }
+   
+}
+ @*  <button class="tab-btn px-4 py-2 font-medium text-blue-600 border-b-2 border-blue-600 flex items-center" data-tab="graph">
+               <i class="fas fa-network-wired mr-2"></i> Graph View
+            </button>
+            <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 flex items-center" data-tab="sequence">
+                <i class="fas fa-list-ul mr-2"></i> Sequence View
+            </button>
+            <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 flex items-center" data-tab="validation">
+                <i class="fas fa-shield-alt mr-2"></i> Validation
+            </button> *@

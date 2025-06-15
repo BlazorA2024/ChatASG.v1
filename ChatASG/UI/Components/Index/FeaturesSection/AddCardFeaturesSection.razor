@@ -1,6 +1,7 @@
 ﻿@using global::Data.FeaturesSection
 @inherits StylesCardAddFeatures
-
+@if (Prams !=null)
+{
 <section id="features" class="@ClassContainer ">
     <div class="@ClassItem ">
         <div class="@ClassTitle ">
@@ -18,7 +19,7 @@
         </div>
     </div>
 </section>
-
+}
 @code {
     [Parameter]
     public CardAddFeatures Prams { get; set; } = new();

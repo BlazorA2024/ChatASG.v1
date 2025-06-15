@@ -1,0 +1,121 @@
+﻿@using global::Data.MainContent
+
+<AddCardMContent Prams="Prams" />
+
+@code {
+    private DataStateConfig stateConfig = new()
+    {
+
+            Title = "Add State Field",
+
+        AvailableFields = new()
+        {
+            new DataStateField { Key = "address", DisplayName = "IP Address" },
+            new DataStateField { Key = "protocol", DisplayName = "Protocol" },
+            new DataStateField { Key = "os", DisplayName = "Operating System" },
+            new DataStateField { Key = "ports", DisplayName = "Ports" },
+            new DataStateField { Key = "shell", DisplayName = "Shell" },
+            new DataStateField { Key = "privilege", DisplayName = "Privilege" },
+            new DataStateField { Key = "binaries", DisplayName = "Binaries" },
+            new DataStateField { Key = "cwd", DisplayName = "Current Working Directory" },
+            new DataStateField { Key = "misudo", DisplayName = "Misudo Configurations" }
+        },
+
+            IButton = new() {
+                Icon = "fas fa-plus",
+                ClassButton = "bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md transition-all duration-300 transform hover:scale-105"
+            },
+            Statecards = new()
+            {
+                Icon = "fas fa-info-circle",
+                Title = " Add state fields to begin"
+            },
+            clearAll = new()
+            {
+                Icon = "fas fa-trash",
+                Button = "Clear All",
+                StateCount=0,
+                Statefields = "fields added"
+            }
+        
+    };
+    [Parameter]
+    public DataAddStateField? DataBuild { get; set; }
+    private CardAddStateField Prams = new();
+    protected override void OnInitialized()
+    {
+        if (DataBuild == null)
+        {
+            DataBuild = new DataAddStateField
+                {
+                    Icon = "fas fa-server",
+                    Name = " System State",
+                    Tag = "9 Fields",
+                    stateConfig = stateConfig,
+                    // Name = "CyberShield ASG",
+                    // Description = "State-Based Attack Scenario Generator",
+                    // Icon = "fas fa-shield-alt",
+                    // Items = studios,
+                    //Iquiz = Quiz,
+                };
+        }
+
+        Prams = CardAddStateField.Create(DataBuild);
+        base.OnInitialized();
+    }
+}
+
+
+
+@* @using global::Data.ASGSTATE
+@using global::Data.Pricing
+<AddCardMContent Prams="Prams" />
+
+@code {
+
+
+    private List<DataButton> studios = new()
+    {
+
+            new DataButton
+            {
+                Icon = "fas fa-volume-up",
+                ClassButton = "bg-gray-200 hover:bg-gray-300 p-2 rounded-full text-gray-700",
+                
+            },
+            new DataButton
+            {
+               Icon = "fas fa-question-circle  mr-2 ",
+                Button = "Help",
+              ClassButton = "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center",
+
+            },
+          
+
+    };
+    
+    [Parameter]
+    public DataAddHeader? DataBuild { get; set; }
+    private CardAddHeader Prams = new();
+        protected override void OnInitialized()
+        {
+            if (DataBuild == null)
+            {
+            DataBuild = new DataAddHeader
+                    {
+                    Name = "CyberShield ASG",
+                    Description = "State-Based Attack Scenario Generator",
+                    Icon = "fas fa-shield-alt",
+                    Items = studios,
+                   //Iquiz = Quiz,
+                    };
+            }
+
+        Prams = CardAddHeader.Create(DataBuild);
+            base.OnInitialized();
+        }
+
+}
+
+
+ *@

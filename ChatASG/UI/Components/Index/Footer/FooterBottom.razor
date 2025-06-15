@@ -6,7 +6,7 @@
     <div class="@ClassContainer">
         <p class="@ClassTitle ">@Prams.DataBuild.Title</p>
         <div class="@ClassItem">
-            @foreach (var link in Prams.DataBuild.Links)
+            @foreach (var link in Prams.DataBuild.ILinks)
             {
                 <a href="@link.Url" class="@($"{ClassLink} text-sm")">@link.Text</a>
             }

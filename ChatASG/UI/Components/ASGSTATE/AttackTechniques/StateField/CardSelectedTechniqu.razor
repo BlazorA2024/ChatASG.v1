@@ -1,0 +1,32 @@
+﻿@using global::Data.AttackTechniques
+@inherits StylesCardSelectedTechniques
+@if (Prams != null)
+{
+    
+    <div class="@ClassItem ">
+        <h3 class="@ClassTitle">
+            <i class="@Prams.DataBuild.Icon     @ClassIcon "></i>@Prams.DataBuild.Title 
+        </h3>
+        <ul id="selected-techniques" class="space-y-2">
+            <!-- Selected techniques will appear here -->
+            <li class="@ClassSelected " id="empty-tech-message">
+                @Prams.DataBuild.Selected
+            </li>
+        </ul>
+    </div>
+
+
+    
+
+}
+@code {
+   
+
+    [Parameter] public CardSelectedTechniques? Prams { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+    
+}

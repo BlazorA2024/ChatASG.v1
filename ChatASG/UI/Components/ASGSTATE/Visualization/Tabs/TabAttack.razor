@@ -1,0 +1,41 @@
+﻿@using global::Data.Visualization
+@inherits StylesCardAttack
+@if (Prams != null)
+{
+    <div class="@ClassContainer " id="sequence-tab">
+        <div class="@ClassItem ">
+            <h3 class="@ClassName ">
+                <i class="@Prams.DataBuild.Icon     @ClassIcon  "></i>@Prams.DataBuild.Name 
+            </h3>
+            <ol id="scenario-sequence" class="@ClassTitle ">
+                <li class="text-gray-600">@Prams.DataBuild.Title  </li>
+            </ol>
+        </div>
+    </div>
+
+
+    
+
+}
+@code {
+   
+   
+    [Parameter] public CardAttack? Prams { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+    
+}
+ @*  <div class="tab-content" id="sequence-tab">
+                <div class="bg-gray-50 p-4 rounded-md h-64 overflow-y-auto">
+                    <h3 class="font-medium text-gray-700 mb-3 flex items-center">
+                        <i class="fas fa-list-ol mr-2 text-gray-500"></i> Attack Scenario Sequence
+                    </h3>
+                    <ol id="scenario-sequence" class="list-decimal pl-5 space-y-2">
+                        <li class="text-gray-600">No sequence generated yet</li>
+                    </ol>
+                </div>
+            </div>
+ *@

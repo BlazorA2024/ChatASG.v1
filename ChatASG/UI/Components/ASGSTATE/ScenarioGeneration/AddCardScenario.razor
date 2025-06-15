@@ -1,0 +1,55 @@
+﻿@using global::Data.ScenarioGeneration
+  <!-- Right Panel - Scenario Generation & Visualization -->
+<div class="lg:col-span-2 space-y-6">
+    <!-- Scenario Generation Card -->
+    <div class="card bg-white rounded-xl p-6">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+                <i class="fas fa-project-diagram mr-2 text-purple-600"></i> Scenario Generation
+            </h2>
+            <div class="flex items-center space-x-2">
+                <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full" id="scenario-count">0 scenarios</span>
+                <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full hidden" id="valid-count">0 validated</span>
+            </div>
+        </div>
+
+        <!-- Generation Controls -->
+        <div class="grid grid-cols-2 gap-4 mb-6">
+            @foreach(var item in Prams.Items){
+                <CardGenerations Prams="item" />
+            }
+        </div>
+
+        <!-- Scenario Results -->
+        <ScenarioResults Prams="Prams.results"  />
+       @*  <div class="border rounded-md p-4 bg-gray-50 max-h-64 overflow-y-auto">
+            <h3 class="text-sm font-medium text-gray-700 mb-3 flex items-center">
+                <i class="fas fa-list-ol mr-1 text-gray-500"></i> Generated Scenarios
+            </h3>
+            <div id="scenario-results" class="space-y-3">
+                <div class="text-center py-8 text-gray-500">
+                    <i class="fas fa-project-diagram text-2xl mb-2"></i>
+                    <p class="text-sm">No scenarios generated yet</p>
+                    <p class="text-xs mt-1">Configure states and techniques, then click Generate</p>
+                </div>
+            </div>
+        </div> *@
+    </div>
+
+
+</div>
+
+@code {
+   
+
+
+    [Parameter] public CardAddScenario Prams { get; set; }
+
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     await UpdateStyleAsync(CLASSES);
+    //     await base.OnInitializedAsync();
+    // }
+   
+}
+

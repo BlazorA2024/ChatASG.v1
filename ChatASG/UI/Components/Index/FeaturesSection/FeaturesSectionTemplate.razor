@@ -1,5 +1,7 @@
 ﻿@using ChatASG.UI.Components.Index.HeroSection.CardSection
 @using global::Data.FeaturesSection
+@using global::Data.FeaturesSectionModels
+
 
 <AddCardFeaturesSection Prams="Prams" />
 
@@ -77,55 +79,43 @@
         base.OnInitialized();
     }
 }
+ @* <!-- مميزات منصة ASG -->
+@using ChatASG.UI.Components.Index.HeroSection.CardSection
+@using global::Data.FeaturesSection
+@using global::Data.FeaturesSectionModels
 
-@* 
+<AddCardFeaturesSection Prams="Prams" />
+
+
 @code {
-    private DataHeroIntro introData = new()
-        {
-            Name = "منصة",
-            Title = "ASG",
-            Label="للذكاء الاصطناعي في الأمن السيبراني",
-            Description = "نظام متكامل يستخدم الذكاء الاصطناعي لتحليل وتوليد سيناريوهات الهجمات الإلكترونية بشكل مبتكر وتفاعلي، مع تقديم حلول دفاعية متقدمة.",
-          IStats= new DataHeroImageStats
-         {
-            Image = "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop",
-            Name = "أكثر من",
-            Title = "500M+",
-            Description = "سيناريو هجومي",
-         },
-            // ✅ هذه قائمة من الأزرار (List<DataButtons>)
-            Items = new List<DataButtons>
-        {
-            new DataButtons
-            {
-                Button = "ابدأ الآن",
-                Icon = "fas fa-arrow-left",
-                Link = "/Chat"
-            },
-            new DataButtons
-            {
-                Button = "شاهد الفيديو",
-                Icon = "fas fa-play-circle",
-                ClassButton="bg-gray-800 hover:bg-gray-700 text-white px-6 py-3 rounded-md text-lg font-medium transition duration-300 flex items-center justify-center",
-                Link = "#"
-            }
-        }
-        };
-
     [Parameter]
-    public DataHeroIntro? DataBuild { get; set; }
+    public DataAddFeatures? Data { get; set; }
 
-    private CardHeroIntro Prams;
+    private CardAddFeatures? Prams;
 
-    protected override void OnInitialized()
+    protected override void OnParametersSet()
     {
-        if (DataBuild == null)
+        if (Data == null)
         {
-            DataBuild = introData;
+            throw new ArgumentNullException(nameof(Data), "Data parameter must be provided.");
         }
 
-        Prams = CardHeroIntro.Create(DataBuild);
-        base.OnInitialized();
+        // if (Data.Items == null)
+        // {
+        //     Console.WriteLine("تحذير: خاصية Items تساوي null، سيتم تهيئتها كقائمة فارغة.");
+        //     Data.Items = new List<DataFeatures>();
+        // }
+
+        // if (!Data.Items.Any())
+        // {
+        //     Console.WriteLine("تحذير: خاصية Items فارغة.");
+        // }
+
+        Prams = CardAddFeatures.Create(Data);
+
+        base.OnParametersSet();
     }
 }
+
+
  *@

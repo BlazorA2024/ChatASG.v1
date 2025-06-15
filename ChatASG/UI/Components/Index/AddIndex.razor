@@ -7,6 +7,9 @@
 @using ChatASG.UI.Components.Index.Pricing
 @using ChatASG.UI.Components.Index.ServicesSection
 @using ChatASG.UI.Components.Index.Technology
+@using ChatASG.UI.Components.Index.FeaturesSection
+
+@using ChatASG.UI.Components.Templates
 
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
@@ -117,19 +120,27 @@
 <body class="cyber-pattern">
     
     <!-- Hero Section -->
-    <SectionTemplate />
-
+     <SectionTemplate  /> 
+@*     <HeroIntroList />
+ *@   
 
     <!-- Features Section -->
-    <ChatASG.UI.Components.Index.FeaturesSection.FeaturesSectionTemplate />
-
-
+     <ChatASG.UI.Components.Index.FeaturesSection.FeaturesSectionTemplate /> 
+@*     <FeatureItemOut />
+ *@
     <br/>
     <br/>
+    <!-- Explore of Studios -->
+<!-- 3 استكشاف الاستوديوهات    -->
     <ServicesSectionTemplate />
+ 
+@*        <Studios />
+ *@    <!--4 Services Section -->
+    <!-- خدماتنا المتكاملة    -->
+         <OurservicesTemplate />
+     @*  <TOurservices /> *@
 
-    <!-- Services Section -->
-    <OurservicesTemplate />
+    <!-- 5  -->
 
  <TechnologyTemplate />
 
@@ -143,7 +154,7 @@
     <!-- Final CTA -->
     <FinalCTATemplate />
    <!-- Contact Section -->
-  <ContactSectionTemplate />
+  <ContactSectionTemplate   />
 
     <!-- Footer -->
     <FooterTemplate />

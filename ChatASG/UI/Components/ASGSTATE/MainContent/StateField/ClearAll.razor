@@ -1,0 +1,37 @@
+﻿@using global::Data.MainContent
+@inherits StylesCardClearAll
+@if (Prams != null)
+{
+    <div class="@ClassItem ">
+        <button id="clear-states" @onclick="HandleClear" class="@Classbutton ">
+            <i class="@Prams.DataBuild.Icon   @ClassIcon "></i> @Prams.DataBuild.Button
+        </button>
+
+        <span class="@ClassCount " id="state-count">@($"{Prams.DataBuild.StateCount} {Prams.DataBuild.Statefields} ")</span>
+
+    </div>
+
+}
+
+@code {
+   
+    [Parameter] public CardClearAll? Prams { get; set; }
+    [Parameter] public EventCallback<DataClearAll> OnClearClicked { get; set; }
+    private async Task HandleClear()
+    {
+
+        StateHasChanged();
+        await OnClearClicked.InvokeAsync(Prams.DataBuild);
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}
+   @*  <div class="pt-2 flex justify-between items-center">
+            <button id="clear-states" class="text-red-600 hover:text-red-800 text-sm transition flex items-center">
+                <i class="fas fa-trash mr-1"></i> Clear All
+            </button>
+            <span class="text-xs text-gray-500" id="state-count">0 fields added</span>
+        </div> *@

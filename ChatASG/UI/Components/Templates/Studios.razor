@@ -1,0 +1,63 @@
+﻿@* @using ChatASG.UI.Components.Index.ServicesSection
+@using MyApiClient
+@using NWHttps
+@using global::Data.ServicesSection
+@using global::Data.ServicesSectionModels
+
+@inject IMapper<DataAddStudiosOutputVM, DataAddStudios> Mapper
+@inject IWebApiClientFactory ApiClientFactory
+<!-- Explore of Studios -->
+<!-- 3 استكشاف الاستوديوهات    -->
+@if (StudiosData == null)
+{
+    <p>جارٍ تحميل البيانات...</p>
+}
+else if (!StudiosData.Any())
+{
+    <p>لا توجد بيانات للعرض.</p>
+}
+else
+{
+    @foreach (var item in StudiosData)
+    {
+        <ServicesSectionTemplate Data="item" />
+
+    }
+}
+
+@code {
+    private List<DataAddStudiosOutputVM>? ApiData;
+    private List<DataAddStudios>? StudiosData;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var client = new DataAddStudiosClient(await ApiClientFactory.GetClientAsync());
+            ApiData = (await client.GetAllByLanguage3Async("en", CancellationToken.None)).ToList();
+
+            // التأكد من وجود عناصر في Items لكل عنصر
+            foreach (var item in ApiData)
+            {
+                var count = item.Items?.Count ?? 0;
+                Console.WriteLine($"العنصر {item.Name} يحتوي على {count} عناصر في Items");
+            }
+           StudiosData = ApiData.Select(vm => Mapper.Map(vm)).ToList();
+            // تحويل آمن وتأكد من أن Items ليست null بعد التحويل
+            // StudiosData = ApiData.Select(vm =>
+            // {
+            //     var mapped = Mapper.Map(vm);
+            //     mapped.Items ??= new List<DataStudios>();
+            //     return mapped;
+            // }).ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"حدث خطأ أثناء جلب البيانات: {ex.Message}");
+            StudiosData = new();
+        }
+
+        StateHasChanged();
+    }
+}
+ *@

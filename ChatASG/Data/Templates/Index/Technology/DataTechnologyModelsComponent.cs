@@ -1,14 +1,16 @@
 ﻿using ChatASG.Data.Templates.Base;
 using Data.HeaderModels;
+using Data.ModulsTechnology;
 using Microsoft.AspNetCore.Components;
 
 namespace Data.Technology;
-public class DataTechnology : ModulsBase
-{
+
+//public class DataTechnology : ModulsBase
+//{
    
-    public string ColorIcon { get; set; } = "";
-    public string BgIcon { get; set; } = "";
-}
+//    public string ColorIcon { get; set; } = "";
+//    public string BgIcon { get; set; } = "";
+//}
 public class StylesTechnologyCard : StyleBaseComponentCard
 {
     [Parameter] public string? ClassTitle { get; set; }
@@ -67,14 +69,14 @@ public class CardTechnology : ComponentBaseCard<DataTechnology>
 }
 
 
-public class DataTechnologyImage
-{
-    public string ImageUrl { get; set; } = "";
-    public string AltText { get; set; } = "";
-    public string LabelTop { get; set; } = "";
-    public string LabelNumber { get; set; } = "";
-    public string LabelBottom { get; set; } = "";
-}
+//public class DataTechnologyImage
+//{
+//    public string ImageUrl { get; set; } = "";
+//    public string AltText { get; set; } = "";
+//    public string LabelTop { get; set; } = "";
+//    public string LabelNumber { get; set; } = "";
+//    public string LabelBottom { get; set; } = "";
+//}
 
 
 public class StylesTechnologyImageCard : StyleBaseComponentCard
@@ -135,11 +137,11 @@ public class CardTechnologyImage : ComponentBaseCard<DataTechnologyImage>
 
 }
 
-public class MarketItem : ModulsBase
-{
-    public string IconClass { get; set; } = "";
+//public class MarketItem : ModulsBase
+//{
+//    public string IconClass { get; set; } = "";
   
-}
+//}
 public class StylesCardMarketItem : StyleBaseComponentCard
 {
     [Parameter] public string? ClassTitle { get; set; }
@@ -175,14 +177,14 @@ public class StylesCardMarketItem : StyleBaseComponentCard
         return base.UpdateStyleAsync(classes);
     }
 }
-public class CardMarketItem : ComponentBaseCard<MarketItem>
+public class CardMarketItem : ComponentBaseCard<DataTargetMarketItem>
 {
     public override TypeComponentCard Type => throw new NotImplementedException();
-    public override void Build(MarketItem db)
+    public override void Build(DataTargetMarketItem db)
     {
         DataBuild = db;
     }
-    public static CardMarketItem Create(MarketItem data)
+    public static CardMarketItem Create(DataTargetMarketItem data)
     {
         var instance = new CardMarketItem();
         instance.Build(data);
@@ -191,13 +193,13 @@ public class CardMarketItem : ComponentBaseCard<MarketItem>
 
 
 }
-public class DataGrowthAnalytics : ModulsBase
-{
+//public class DataGrowthAnalytics : ModulsBase
+//{
    
-    public string GrowthRange { get; set; } = "";
-    public string GrowthAmount { get; set; } = "";
-    public int Progress { get; set; } = 0;
-}
+//    public string GrowthRange { get; set; } = "";
+//    public string GrowthAmount { get; set; } = "";
+//    public int Progress { get; set; } = 0;
+//}
 public class StylesGrowthAnalyticsBox : StyleBaseComponentCard
 {
     [Parameter] public string? ClassBox { get; set; }
@@ -257,17 +259,17 @@ public class CardGrowthAnalyticsBox : ComponentBaseCard<DataGrowthAnalytics>
     }
 }
 
-public class DataTargetMarket : ModulsBase
-{
+//public class DataTargetMarket : ModulsBase
+//{
   
-    public List<MarketItem> Items { get; set; } = new();
-    public DataGrowthAnalytics? IGrowth { get; set; }
-    public string TitleGrowth { get; set; } = "";
-    public string DescriptionGrowth { get; set; } = "";
-    public string GrowthLabel { get; set; } = "";
+//    public List<DataTargetMarketItem> Items { get; set; } = new();
+//    public DataGrowthAnalytics? IGrowth { get; set; }
+//    public string TitleGrowth { get; set; } = "";
+//    public string DescriptionGrowth { get; set; } = "";
+//    public string GrowthLabel { get; set; } = "";
   
   
-}
+//}
 
 
 public class StylesTargetMarketSection : StyleBaseComponentCard
@@ -347,14 +349,14 @@ public class CardAddTargetMarket : ComponentBaseCard<DataTargetMarket>
 }
 
 
-public class DataAddTechnology : ModulsBase
-{
+//public class DataAddTechnology : ModulsBase
+//{
  
-    public DataTechnologyImage ITechnol { get; set; }
-    public DataTargetMarket IMarket { get; set; }
+//    public DataTechnologyImage ITechnol { get; set; }
+//    public DataTargetMarket IMarket { get; set; }
 
-    public List<DataTechnology> Items { get; set; } = new();
-}
+//    public List<DataTechnology> Items { get; set; } = new();
+//}
 public class StylesTechnologySection : StyleBaseComponentCard
 {
     [Parameter] public string? ClassName { get; set; }

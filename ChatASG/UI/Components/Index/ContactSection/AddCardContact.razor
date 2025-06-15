@@ -1,7 +1,7 @@
 ﻿@using ChatASG.UI.Components.Index.ContactSection.Maelumat
 @using Microsoft.AspNetCore.Components
 @using global::Data.ContactSection
-@inherits StylesContactCard
+@inherits StylesCardAddContact
 @if(Prams != null)
 {
 <section id="contact" class="@ClassSection">
@@ -13,7 +13,7 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
             <CardForrm Prams="Prams.Iform" />
-         <ContactInfoSection Prams="Prams.contact2"/>
+                <ContactInfoSection Prams="Prams.ISection" />
 
            
         </div>
@@ -22,7 +22,7 @@
 }
 
 @code {
-    [Parameter] public CardContact? Prams { get; set; }
+    [Parameter] public CardAddContact? Prams { get; set; }
     protected override async Task OnInitializedAsync()
     {
         await UpdateStyleAsync(CLASSES);

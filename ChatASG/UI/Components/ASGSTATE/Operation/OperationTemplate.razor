@@ -1,0 +1,44 @@
+﻿@using global::Data.Operation
+
+<AddOperation Prams="Prams" />
+
+@code {
+
+   
+    private DataOperation Operation = new()
+        {
+            Name = " Operation Log",
+            Icon = "fas fa-terminal",
+            Button = "Clear",
+            Icons = "fas fa-broom"
+        };
+    private DataSystem System = new()
+        {
+            Name = "System initialized. Ready to configure attack scenarios.",
+           
+            YSTEM = " YSTEM",
+            
+        };
+    [Parameter]
+    public DataAddOperation? DataBuild { get; set; }
+    private CardAddOperation Prams = new();
+    protected override void OnInitialized()
+    {
+        if (DataBuild == null)
+        {
+            DataBuild = new DataAddOperation
+                {
+                    
+                    IOperation = Operation,
+                    Isystem = System,
+
+                   
+                  
+                };
+        }
+
+        Prams = CardAddOperation.Create(DataBuild);
+        base.OnInitialized();
+    }
+}
+

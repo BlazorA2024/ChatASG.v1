@@ -1,9 +1,10 @@
 ﻿
+
 @using global::Data.ContactSection
 
 <AddCardContact Prams="Prams" />
 @code {
-    private ContactData2 studios = new()
+    private DataCardContactSection studios = new()
     {
             Title = "معلومات التواصل",
             Label = "تابعنا على ",
@@ -14,7 +15,7 @@
                     new() { Icon = "fas fa-phone-alt", Title = "الهاتف", Text = "+966 12 345 6789", Bg = "bg-red-900/20 text-red-400" },
                     new() { Icon = "fas fa-clock", Title = "ساعات العمل", Text = "الأحد - الخميس: 8 صباحًا - 5 مساءً", Bg = "bg-green-900/20 text-green-400" }
                 },
-            Socials = new List<SocialLink>
+            Socials = new List<DataSocialLink>
                 {
                     new() { Icon = "fab fa-twitter", Url = "#", BgColor = "bg-gray-700 hover:bg-blue-600" },
                     new() { Icon = "fab fa-linkedin-in", Url = "#", BgColor = "bg-gray-700 hover:bg-blue-800" },
@@ -32,25 +33,25 @@
             SubmitButtonText = "إرسال الرسالة"
     };
     [Parameter]
-    public ContactData? DataBuild { get; set; }
+    public DataAddContact? DataBuild { get; set; }
 
-    private CardContact Prams = new();
+    private CardAddContact Prams = new();
 
     protected override void OnInitialized()
     {
         if (DataBuild == null)
         {
-            DataBuild = new ContactData
+            DataBuild = new DataAddContact
                 {
                     Title = "تواصل معنا",
                     Description = "لديك استفسار أو ترغب في معرفة المزيد عن منصة ASG؟ فريقنا جاهز لمساعدتك",
-                    contact2 = studios,
+                    ISection = studios,
                     Iform = form,
                    
                 };
         }
 
-        Prams = CardContact.Create(DataBuild);
+        Prams = CardAddContact.Create(DataBuild);
         base.OnInitialized();
     }
 }

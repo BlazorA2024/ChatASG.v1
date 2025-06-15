@@ -1,0 +1,28 @@
+﻿@using global::Data.ASGSTATE
+@inject IJSRuntime JS
+@if (Prams != null)
+{
+    <button id="sound-toggle" @onclick="ToggleSound" class="@Prams.DataBuild.ClassButton ">
+        <i class="@Prams.DataBuild.Icon "></i>@Prams.DataBuild.Button
+</button>
+
+
+
+}
+@code {
+
+
+    [Parameter] public CardButton? Prams { get; set; }
+    [Parameter] public EventCallback OnHelpClicked { get; set; }
+
+    private async Task ToggleSound()
+    {
+        await JS.InvokeVoidAsync("soundManager.toggleSound");
+    }
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     await UpdateStyleAsync(CLASSES);
+    //     await base.OnInitializedAsync();
+    // }
+}
+ 

@@ -1,8 +1,9 @@
 ﻿@using ChatASG.UI.Components.Index.HeroSection.CardSection
 @using global::Data.Section
-
+@using global::Data.SectionModels
         <AddCardSection Prams="Prams" />
       
+
    
 @code {
     private DataHeroIntro introData = new()
@@ -53,3 +54,31 @@
         base.OnInitialized();
     }
 }
+@*
+@using ChatASG.UI.Components.Index.HeroSection.CardSection
+@using global::Data.Section
+@using global::Data.SectionModels
+<!-- 1 منصة ASG للذكاء الاصطناعي -->
+
+
+    <AddCardSection Prams="Prams" />
+
+
+
+@code {
+
+
+    [Parameter]
+    public DataHeroIntro? Data { get; set; }
+
+    private CardHeroIntro Prams;
+
+    protected override void OnParametersSet()
+    {
+        if (Data == null)
+            throw new ArgumentNullException(nameof(Data), "Data parameter must be provided.");
+        Prams = CardHeroIntro.Create(Data);
+        base.OnInitialized();
+    }
+}
+ *@

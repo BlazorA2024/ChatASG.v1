@@ -1,0 +1,64 @@
+﻿@using global::Data.MainContent
+@inherits StylesCardStateField
+
+@if (Prams != null)
+{
+    <div class="@ClassContainer ">
+    <div>
+            <label class="@ClassTitle">@Prams.DataBuild.Title  </label>
+            <div class="@ClassItem ">
+                <select id="state-field" class="@ClassSelect ">
+
+                @foreach (var field in Prams.DataBuild.AvailableFields)
+                {
+                    <option value="@field.Key">@field.DisplayName</option>
+                }
+
+            </select>
+            <CardButtons Prams="Prams.IButton" />
+           @*  <button id="add-state-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md transition-all duration-300 transform hover:scale-105">
+                <i class="fas fa-plus"></i>
+            </button> *@
+        </div>
+    </div>
+   
+      
+
+        <!-- State Cards Container -->
+        <CardState Prams="Prams.Statecards" />
+      
+        <ClearAll Prams="Prams.clearAll" />
+    
+    </div>
+
+}
+@code {
+
+   
+    [Parameter] public CardStateField? Prams { get; set; }
+
+   
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+}
+ @*  <div class="space-y-4">
+
+            <!-- State Cards Container -->
+            <div id="state-cards" class="space-y-3 max-h-64 overflow-y-auto pr-2">
+                <!-- State cards will be added here dynamically -->
+                <div class="text-center py-4 text-gray-500" id="empty-state-message">
+                    <i class="fas fa-info-circle mb-1"></i>
+                    <p class="text-sm">Add state fields to begin</p>
+                </div>
+            </div>
+
+            <div class="pt-2 flex justify-between items-center">
+                <button id="clear-states" class="text-red-600 hover:text-red-800 text-sm transition flex items-center">
+                    <i class="fas fa-trash mr-1"></i> Clear All
+                </button>
+                <span class="text-xs text-gray-500" id="state-count">0 fields added</span>
+            </div>
+        </div> *@

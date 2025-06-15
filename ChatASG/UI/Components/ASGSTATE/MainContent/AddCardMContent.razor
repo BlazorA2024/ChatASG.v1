@@ -1,0 +1,119 @@
+﻿@using ChatASG.UI.Components.ASGSTATE.MainContent.StateField
+@using global::Data.MainContent
+@inherits StylesCardAddStateField
+
+<div class="@ClassContainer ">
+    <!-- State Configuration Card -->
+    <div class="@ClassItem ">
+        <div class="@ClassItems ">
+            <h2 class="@ClassName">
+                <i class="@Prams.DataBuild.Icon    @ClassIcon"></i>@Prams.DataBuild.Name
+            </h2>
+            <span class="@ClassTag ">@Prams.DataBuild.Tag  </span>
+        </div>
+        <StateFieldSelector Prams="Prams.stateConfig " />
+
+      
+    </div>
+
+
+</div>
+
+@code {
+   
+
+
+    [Parameter] public CardAddStateField Prams { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateStyleAsync(CLASSES);
+        await base.OnInitializedAsync();
+    }
+   
+}
+
+
+
+@* @using global::Data.MainContent
+@inherits StylesCardAddHeader
+
+<div class="card bg-white rounded-xl p-6">
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+            <i class="@Data.Icon mr-2 text-blue-600"></i> @Data.Title
+        </h2>
+        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">@Data.Tag</span>
+    </div>
+
+    <div class="space-y-4">
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Add State Field</label>
+            <div class="flex items-center space-x-2">
+                <select @bind="SelectedField" class="flex-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                    @foreach (var field in Data.AvailableFields)
+                    {
+                        <option value="@field.Key">@field.DisplayName</option>
+                    }
+                </select>
+                <button @onclick="AddField" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md transition-all duration-300 transform hover:scale-105">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="space-y-3 max-h-64 overflow-y-auto pr-2">
+            @if (!Data.SelectedFields.Any())
+            {
+                <div class="text-center py-4 text-gray-500">
+                    <i class="fas fa-info-circle mb-1"></i>
+                    <p class="text-sm">Add state fields to begin</p>
+                </div>
+            }
+            else
+            {
+                @foreach (var field in Data.SelectedFields)
+                {
+                    <div class="bg-gray-100 rounded-md px-4 py-2 text-sm flex justify-between items-center">
+                        <span>@field</span>
+                        <button @onclick="() => RemoveField(field)" class="text-red-500 hover:text-red-700">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                }
+            }
+        </div>
+
+        <div class="pt-2 flex justify-between items-center">
+            <button @onclick="ClearFields" class="text-red-600 hover:text-red-800 text-sm transition flex items-center">
+                <i class="fas fa-trash mr-1"></i> Clear All
+            </button>
+            <span class="text-xs text-gray-500">@Data.SelectedFields.Count field(s) added</span>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public CardStateConfig Data { get; set; }
+
+    private string SelectedField { get; set; }
+
+    private void AddField()
+    {
+        if (!string.IsNullOrWhiteSpace(SelectedField) && !Data.SelectedFields.Contains(SelectedField))
+        {
+            Data.SelectedFields.Add(SelectedField);
+        }
+    }
+
+    private void RemoveField(string field)
+    {
+        Data.SelectedFields.Remove(field);
+    }
+
+    private void ClearFields()
+    {
+        Data.SelectedFields.Clear();
+    }
+}
+ *@

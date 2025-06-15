@@ -66,6 +66,8 @@ public class Cardform : ComponentBaseCard<Dataform>
         DataBuild = db;
     }
 }
+
+
 public class StylesCardContactInfo : StyleBaseComponentCard
 {
     [Parameter] public string? ClassIconBox { get; set; }
@@ -125,7 +127,7 @@ public class CardContactInfo : ComponentBaseCard<ContactInfo>
         DataBuild = db;
     }
 }
-public class StylesContactCard2 : StyleBaseComponentCard
+public class StylesCardContactSection : StyleBaseComponentCard
 {
     [Parameter] public string? ClassSection { get; set; }
     [Parameter] public string? ClassTitle { get; set; }
@@ -139,7 +141,8 @@ public class StylesContactCard2 : StyleBaseComponentCard
     public static string KeyClassContainer = "classContainer";
     public static string KeyTitle = "title";
     public static string KeyDescription = "description";
-    
+    public static string KeyClassItem { get; set; } = "classItem";
+
     public static string KeyLabel = "label";
     public static string KeyContactBox = "contactBox";
    
@@ -149,7 +152,8 @@ public class StylesContactCard2 : StyleBaseComponentCard
         { KeySection, "py-20 px-4 sm:px-6 lg:px-8 bg-gray-800" },
         { KeyClassContainer, "max-w-7xl mx-auto" },
         { KeyTitle, "text-xl font-bold mb-6" },
-        { KeyDescription, "text-gray-400 max-w-3xl mx-auto" },      
+        { KeyDescription, "text-gray-400 max-w-3xl mx-auto" },
+        {KeyClassItem,"flex space-x-4 space-x-reverse" },
         { KeyLabel, "font-bold mb-4" },
         { KeyContactBox, "bg-gray-900/50 p-8 rounded-2xl h-full" },
         
@@ -157,13 +161,22 @@ public class StylesContactCard2 : StyleBaseComponentCard
 
     public override Task<bool> UpdateStyleAsync(Dictionary<string, string> classes)
     {
-        ClassSection ??= "";
-        ClassContainer ??= "";
-        ClassTitle ??= "";
-        ClassDescription ??= "";
+        if(ClassSection == null)
+        ClassSection = " ";
+        if (KeyClassContainer == null) ClassContainer = " ";
+        if (ClassTitle == null) ClassTitle = " ";
+        if(ClassDescription == null) ClassDescription = " ";
+        if (KeyClassItem == null) ClassItem = " ";
+        if (ClassLabel == null) ClassLabel = " ";
+        if (ClassContactBox == null) ClassContactBox = " ";
+        if(KeySection == null) KeySection = " ";
+       
+        //ClassContainer ??= "";
+        //ClassTitle ??= "";
+        //ClassDescription ??= "";
         
-        ClassLabel ??= "";
-        ClassContactBox ??= "";
+        //ClassLabel ??= "";
+        //ClassContactBox ??= "";
        
 
         if (classes == null || IsIgnoredStyle)
@@ -173,6 +186,7 @@ public class StylesContactCard2 : StyleBaseComponentCard
         ClassContainer += " " + classes[KeyClassContainer];
         ClassTitle += " " + classes[KeyTitle];
         ClassDescription += " " + classes[KeyDescription];
+        ClassItem += " " + classes[KeyClassItem];
         ClassLabel += " " + classes[KeyLabel];
 
         ClassContactBox += " " + classes[KeyContactBox];
@@ -181,18 +195,18 @@ public class StylesContactCard2 : StyleBaseComponentCard
         return base.UpdateStyleAsync(classes);
     }
 }
-public class CardContact2 : ComponentBaseCard<ContactData2>
+public class CardContactSection : ComponentBaseCard<DataCardContactSection>
 {
-    public static ICollection<string> NAMECLASSES => StylesContactCard2.CLASSES.Keys.ToList();
+    public static ICollection<string> NAMECLASSES => StylesCardContactSection.CLASSES.Keys.ToList();
     public Cardform Iform { get; set; }
     public List<CardContactInfo> Info { get; set; } = new();
 
     public override TypeComponentCard Type => throw new NotImplementedException();
 
-    public override void Build(ContactData2 db)
+    public override void Build(DataCardContactSection db)
     {
         DataBuild = db;
-        Iform = Cardform.Create(db.Iform);
+      //  Iform = Cardform.Create(db.Iform);
         foreach (var item in db.Info)
         {
             var listUnifiedButtonModel = CardContactInfo.Create(item);
@@ -202,16 +216,16 @@ public class CardContact2 : ComponentBaseCard<ContactData2>
         }
      
     }
-        public static CardContact2 Create(ContactData2 data)
+        public static CardContactSection Create(DataCardContactSection data)
         {
-            var instance = new CardContact2();
+            var instance = new CardContactSection();
             instance.Build(data);
             return instance;
         }
     }
 
 
-public class StylesContactCard : StyleBaseComponentCard
+public class StylesCardAddContact : StyleBaseComponentCard
 {
     [Parameter] public string? ClassSection { get; set; }
     [Parameter] public string? ClassTitle { get; set; }
@@ -263,20 +277,20 @@ public class StylesContactCard : StyleBaseComponentCard
         return base.UpdateStyleAsync(classes);
     }
 }
-public class CardContact : ComponentBaseCard<ContactData>
+public class CardAddContact : ComponentBaseCard<DataAddContact>
 {
-    public static ICollection<string> NAMECLASSES => StylesContactCard.CLASSES.Keys.ToList();
+    public static ICollection<string> NAMECLASSES => StylesCardAddContact.CLASSES.Keys.ToList();
     public Cardform Iform { get; set; }
     public List<CardContactInfo> Info { get; set; } = new();
-    public CardContact2 contact2 { get; set; }
+    public CardContactSection ISection { get; set; }
 
     public override TypeComponentCard Type => throw new NotImplementedException();
 
-    public override void Build(ContactData db)
+    public override void Build(DataAddContact db)
     {
         DataBuild = db;
 
-    contact2 = CardContact2.Create(db.contact2);
+        ISection = CardContactSection.Create(db.ISection);
         Iform = Cardform.Create(db.Iform);
         foreach (var item in db.Info)
         {
@@ -287,9 +301,9 @@ public class CardContact : ComponentBaseCard<ContactData>
         }
        
     }
-    public static CardContact Create(ContactData data)
+    public static CardAddContact Create(DataAddContact data)
     {
-        var instance = new CardContact();
+        var instance = new CardAddContact();
         instance.Build(data);
         return instance;
     }

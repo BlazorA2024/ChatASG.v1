@@ -1,15 +1,9 @@
 ﻿using ChatASG.Data.Templates.Base;
+using Data.FAQModels;
 using Microsoft.AspNetCore.Components;
 
 namespace Data.FAQ;
-public class DataFaq
-{
-    public string Question { get; set; } = string.Empty;
-    public string Answer { get; set; } = string.Empty;
-    public List<string>? BulletPoints { get; set; } // Optional
-    public bool HasIconList { get; set; } = false;   // Use icons if true
-      public Func<Task>? OnClick { get; set; }
-}
+
 public class StylesFaqCard : StyleBaseComponentCard
 {
     [Parameter] public string? ClassHeader { get; set; }
@@ -29,10 +23,10 @@ public class StylesFaqCard : StyleBaseComponentCard
     {
         { KeyContainer, "accordion glass-card rounded-xl p-6" },
         { KeyHeader, "accordion-header w-full flex justify-between items-center text-left" },
-        { KeyContent, "accordion-content mt-4 text-gray-400" },
+        { KeyContent, "accordion-content " },
         { KeyIcon, "fas fa-chevron-down text-accent transition-transform duration-300" },
-        { KeyBulletList, "space-y-3 text-gray-400" },
-        { KeyBulletItem, "flex items-start" }
+        { KeyBulletList, "grid sm:grid-cols-2 gap-2 text-gray-400" },
+        { KeyBulletItem, "flex items-center" }
     };
 
     public override Task<bool> UpdateStyleAsync(Dictionary<string, string> classes)
@@ -87,25 +81,21 @@ public class CardFAQ : ComponentBaseCard<DataFaq>
 }
 
 
-public class DataStillFAQ : ModulsBase
-{
-  
-}
 public class StylesCardStillFAQ : StyleBaseComponentCard
 {
-    [Parameter] public string? ClassTitle { get; set; }
+    [Parameter] public string? ClassName { get; set; }
     [Parameter] public string? ClassDescription { get; set; }
     [Parameter] public string? ClassButton { get; set; }
 
     public static string KeyClassContainer = "classContainer";
-    public static string KeyClassTitle = "classTitle";
+    public static string KeyClassName = "className";
     public static string KeyClassDescription = "classDescription";
     public static string KeyClassButton = "classButton";
 
     public static readonly new Dictionary<string, string> CLASSES = new()
     {
         { KeyClassContainer, "text-center mt-16" },
-        { KeyClassTitle, "text-xl font-bold mb-4" },
+        { KeyClassName, "text-xl font-bold mb-4" },
         { KeyClassDescription, "text-gray-400 mb-6" },
         { KeyClassButton, "px-6 py-3 bg-gradient-to-r from-accent to-accent2 text-dark font-bold rounded-lg hover:opacity-90 transition" },
     };
@@ -114,8 +104,8 @@ public class StylesCardStillFAQ : StyleBaseComponentCard
     {
         if (KeyClassContainer == null)
             ClassContainer = " ";
-        if (ClassTitle == null)
-            ClassTitle = " ";
+        if (ClassName == null)
+            ClassName = " ";
         if (ClassDescription == null)
             ClassDescription = " ";
         if (ClassButton == null)
@@ -125,7 +115,7 @@ public class StylesCardStillFAQ : StyleBaseComponentCard
         if (classes == null || IsIgnoredStyle) return Task.FromResult(false);
 
         ClassContainer = classes[KeyClassContainer];
-        ClassTitle = classes[KeyClassTitle];
+        ClassName = classes[KeyClassName];
         ClassDescription = classes[KeyClassDescription];
         ClassButton = classes[KeyClassButton];
 
@@ -151,11 +141,7 @@ public class CardStillFAQ : ComponentBaseCard<DataStillFAQ>
 
 
 }
-public class DataAddFAQ : ModulsBase
-{
-  public DataStillFAQ? IstillFAQ { get; set; }
-    public List<DataFaq> Items { get; set; } = new();
-}
+
 public class StylesCardAddFAQ : StyleBaseComponentCard
 {
     [Parameter] public string? ClassName { get; set; }

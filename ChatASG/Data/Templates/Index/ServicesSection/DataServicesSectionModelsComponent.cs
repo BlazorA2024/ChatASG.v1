@@ -1,13 +1,11 @@
 ﻿using ChatASG.Data.Templates.Base;
 using Data.HeaderModels;
+using Data.ServicesSectionModels;
 using Microsoft.AspNetCore.Components;
 
 namespace Data.ServicesSection;
-public class DataStudios : ModulsBase
-{
-   
-    public string? FrameSrc { get; set; }
-}
+//<!-- Explore of Studios -->
+//<!-- 3 استكشاف الاستوديوهات    -->
 public class StylesStudiosCard : StyleBaseComponentCard
 {
     [Parameter] public string? ClassTitle { get; set; }
@@ -67,10 +65,7 @@ public class CardStudios : ComponentBaseCard<DataStudios>
     }
 }
 
-public class DataAddStudios : ModulsBase
-{
-    public List<DataStudios> Items { get; set; } = new();
-}
+
 
 public class StylesCardAddStudios : StyleBaseComponentCard
 {

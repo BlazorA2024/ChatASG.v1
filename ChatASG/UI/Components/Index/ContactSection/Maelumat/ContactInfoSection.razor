@@ -1,5 +1,5 @@
 @using global::Data.ContactSection
-@inherits StylesContactCard2
+@inherits StylesCardContactSection
 
 @if (Prams != null)
 {
@@ -16,7 +16,7 @@
 
             <div class="mt-8">
                 <h4 class="@ClassLabel "> @Prams.DataBuild.Label</h4>
-                <div class="flex space-x-4 space-x-reverse">
+                <div class="@ClassItem ">
                     @foreach (var social in Prams.DataBuild.Socials)
                     {
                         <a href="@social.Url" class="@social.BgColor text-white w-10 h-10 rounded-full flex items-center justify-center transition duration-300">
@@ -32,7 +32,7 @@
 @code {
 
     @code {
-        [Parameter] public CardContact2? Prams { get; set; }
+        [Parameter] public CardContactSection? Prams { get; set; }
         protected override async Task OnInitializedAsync()
         {
             await UpdateStyleAsync(CLASSES);

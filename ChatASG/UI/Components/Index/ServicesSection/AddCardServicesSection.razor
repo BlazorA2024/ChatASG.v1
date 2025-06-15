@@ -1,5 +1,7 @@
 ﻿@using global::Data.ServicesSection
 @inherits StylesCardAddStudios
+@if(Prams !=null)
+{
 <h2 class="@ClassName ">@Prams.DataBuild.Name</h2>
 
 <div class="@ClassItem " style="padding:3%">
@@ -8,7 +10,7 @@
         <StudiosCard Prams="item"   />
     }
 </div>
-  
+}
 @code {
     [Parameter]
     public CardAddStudios? Prams { get; set; }

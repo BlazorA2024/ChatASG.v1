@@ -1,13 +1,11 @@
-﻿using ChatASG.Data.Templates.Base;
+﻿using ApexCharts;
+using ChatASG.Data.Templates.Base;
+using Data.FinalCTAModul;
 using Microsoft.AspNetCore.Components;
 
 namespace Data.FinalCTA;
-public class DataCardFinalCTA : ModulsBase
-{
-    
-    public string InputPlaceholder { get; set; } = string.Empty;
-    
-}
+   // <!-- Final CTA -->
+
 
 
 public class StylesCardFinalCT : StyleBaseComponentCard
@@ -58,18 +56,18 @@ public class StylesCardFinalCT : StyleBaseComponentCard
         return base.UpdateStyleAsync(classes);
     }
 }
-public class CardFinalCT : ComponentBaseCard<DataCardFinalCTA>
+public class CardFinalCT : ComponentBaseCard<DataFinalCTA>
 {
     public static ICollection<string> NAMECLASSES => StylesCardFinalCT.CLASSES.Keys.ToList();
 
     public override TypeComponentCard Type => throw new NotImplementedException();
 
-    public override void Build(DataCardFinalCTA db)
+    public override void Build(DataFinalCTA db)
     {
         DataBuild = db;
     }
 
-    public static CardFinalCT Create(DataCardFinalCTA data)
+    public static CardFinalCT Create(DataFinalCTA data)
     {
         var instance = new CardFinalCT();
         instance.Build(data);
@@ -78,23 +76,13 @@ public class CardFinalCT : ComponentBaseCard<DataCardFinalCTA>
 }
 
 
-public class FinalCtaData
-{
-    public string Title { get; set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
-    public string InputPlaceholder { get; set; } = string.Empty;
-    public string ButtonText { get; set; } = string.Empty;
-    public List<string> Features { get; set; } = new();
-    public DataCardFinalCTA ICTA { get; set; }
-}
-public class StylesFinalCtaCard : StyleBaseComponentCard
+
+public class StylesCardAddFinalCTA : StyleBaseComponentCard
 {
     [Parameter] public string? ClassSection { get; set; }
     [Parameter] public string? ClassTitle { get; set; }
     [Parameter] public string? ClassDescription { get; set; }
-   // [Parameter] public string? ClassInputGroup { get; set; }
-  //  [Parameter] public string? ClassInput { get; set; }
-  //  [Parameter] public string? ClassButton { get; set; }
+   
     [Parameter] public string? ClassFeatures { get; set; }
     [Parameter] public string? ClassFeatureItem { get; set; }
     [Parameter] public string? ClassFeatureIcon { get; set; }
@@ -103,9 +91,7 @@ public class StylesFinalCtaCard : StyleBaseComponentCard
     public static string KeyClassContainer = "classContainer";
     public static string KeyTitle = "title";
     public static string KeyDescription = "description";
-    //public static string KeyInputGroup = "inputGroup";
-    //public static string KeyInput = "input";
-    //public static string KeyButton = "button";
+    
     public static string KeyFeatures = "features";
     public static string KeyFeatureItem = "featureItem";
     public static string KeyFeatureIcon = "featureIcon";
@@ -116,9 +102,7 @@ public class StylesFinalCtaCard : StyleBaseComponentCard
         { KeyClassContainer, "max-w-3xl mx-auto" },
         { KeyTitle, "text-3xl sm:text-4xl font-bold mb-6" },
         { KeyDescription, "text-lg text-gray-300 mb-10" },
-        //{ KeyInputGroup, "flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6 max-w-lg mx-auto" },
-        //{ KeyInput, "w-full px-5 py-4 rounded-full bg-dark border border-gray-700 focus:outline-none focus:ring-2 focus:ring-accent" },
-        //{ KeyButton, "absolute right-1 top-1 bg-gradient-to-r from-accent to-accent2 text-dark font-bold px-4 py-3 rounded-full hover:opacity-90 transition" },
+        
         { KeyFeatures, "flex justify-center mt-8 space-x-4" },
         { KeyFeatureItem, "flex items-center text-sm text-gray-400" },
         { KeyFeatureIcon, "text-green-400 mr-2" }
@@ -134,12 +118,7 @@ public class StylesFinalCtaCard : StyleBaseComponentCard
             ClassTitle = " ";
          if(ClassDescription == null)
              ClassDescription = " ";
-        // if(ClassInputGroup == null)
-        //    ClassInputGroup = " ";
-        //if (ClassInput == null)           
-        //     ClassInput = " ";
-        //if (KeyButton == null)
-        //    ClassButton = " ";
+       
         if(ClassFeatures ==null)
         ClassFeatures  = " ";
         if (ClassFeatureItem == null)
@@ -154,9 +133,7 @@ public class StylesFinalCtaCard : StyleBaseComponentCard
         ClassContainer += " " + classes[KeyClassContainer];
         ClassTitle += " " + classes[KeyTitle];
         ClassDescription += " " + classes[KeyDescription];
-        //ClassInputGroup += " " + classes[KeyInputGroup];
-        //ClassInput += " " + classes[KeyInput];
-        //ClassButton += " " + classes[KeyButton];
+       
         ClassFeatures += " " + classes[KeyFeatures];
         ClassFeatureItem += " " + classes[KeyFeatureItem];
         ClassFeatureIcon += " " + classes[KeyFeatureIcon];
@@ -164,25 +141,25 @@ public class StylesFinalCtaCard : StyleBaseComponentCard
         return base.UpdateStyleAsync(classes);
     }
 }
-public class CardFinalCta : ComponentBaseCard<FinalCtaData>
+public class CardAddFinalCTA : ComponentBaseCard<DataAddFinalCTA>
 {
-    public CardFinalCT ICTA { get; set; }
+    public CardFinalCT? IFinalCTA { get; set; }
 
-    public static ICollection<string> NAMECLASSES => StylesFinalCtaCard.CLASSES.Keys.ToList();
+    public static ICollection<string> NAMECLASSES => StylesCardAddFinalCTA.CLASSES.Keys.ToList();
 
     public override TypeComponentCard Type => throw new NotImplementedException();
 
-    public override void Build(FinalCtaData db)
+    public override void Build(DataAddFinalCTA db)
     {
         DataBuild = db;
-        ICTA = CardFinalCT.Create(db.ICTA);
+        IFinalCTA = CardFinalCT.Create(db.IFinalCTA);
         // IStats = CardHeroImageStats.Create(db.IStats);
 
     }
 
-    public static CardFinalCta Create(FinalCtaData data)
+    public static CardAddFinalCTA Create(DataAddFinalCTA data)
     {
-        var instance = new CardFinalCta();
+        var instance = new CardAddFinalCTA();
         instance.Build(data);
         return instance;
     }

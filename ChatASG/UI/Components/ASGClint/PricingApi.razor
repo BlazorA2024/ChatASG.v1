@@ -1,11 +1,169 @@
-﻿@using ChatASG.UI.Components.Index.Pricing
+﻿@page "/plans"
+@using ChatASG.UI.Components.Index.Pricing
+@using MyApiClient
+@using NWHttps
+@using global::Data.ModulsPricing
+@using System.Linq
+
+@inject IWebApiClientFactory ApiClientFactory
+    @inject AuthenticationStateProvider AuthStateProvider
+
+<h2 class="text-2xl font-bold mb-4">Available Plans</h2>
+
+@if (ConvertedParams == null)
+{
+    <p>Loading plans...</p>
+}
+else
+{
+    
+    <PricingTemplate DataBuild="ConvertedParams" />
+}
+
+@code {
+    private List<PlanOutputVM> Plans = new();
+    private DataAddPricing? ConvertedParams;
+
+   
+        protected override async Task OnInitializedAsync()
+        {
+            // // var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+            // // var user = authState.User;
+
+            // // if (!user.Identity?.IsAuthenticated ?? false)
+            // // {
+            // //     Console.WriteLine("❌ [Plans] User not authenticated. Skipping API call.");
+            // //     return;
+            // // }
+
+            try
+            {
+                var client = new PlanClient(await ApiClientFactory.GetClientAsync());
+                var result = await client.GetAllByLanguage15Async("en");
+
+                Plans = result?.ToList() ?? new List<PlanOutputVM>();
+                if (Plans.Any())
+                    ConvertedParams = ConvertToDataAddPricing(Plans);
+            }
+            catch (ApiException ex)
+            {
+                Console.WriteLine($"❌ [Plans API Error] {ex.StatusCode} - {ex.Message}");
+            }
+        }
+    
+
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     try
+    //     {
+    //         var client = new PlanClient(await ApiClientFactory.GetClientAsync());
+
+    //         // ✅ تصحيح التحويل من ICollection إلى List
+    //         var result = await client.GetAllByLanguage15Async("en");
+    //         Plans = result?.ToList() ?? new List<PlanOutputVM>();
+
+    //         // ✅ تحقق أن البيانات غير فارغة قبل التحويل
+    //         if (Plans.Any())
+    //         {
+    //             ConvertedParams = ConvertToDataAddPricing(Plans);
+    //         }
+    //         else
+    //         {
+    //             Console.WriteLine("[Plans Warning] No plans returned from API.");
+    //         }
+    //     }
+    //     catch (ApiException apiEx)
+    //     {
+    //         Console.WriteLine($"[API Error] Status: {apiEx.StatusCode} - {apiEx.Message}");
+    //         Console.WriteLine($"[API Error Body]: {apiEx.Response}");
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         Console.WriteLine($"[Plans Error] {ex.Message}");
+    //     }
+    // }
+
+    private DataAddPricing ConvertToDataAddPricing(List<PlanOutputVM> plans)
+    {
+        var cards = plans.Select(plan => new DataPricingCard
+            {
+                Title = plan.ProductName ?? "Untitled",
+                Description = plan.Description ?? "No description",
+                Price = plan.Amount == 0 ? "$0" : $"${plan.Amount}",
+                Period = !string.IsNullOrEmpty(plan.BillingPeriod) ? "/" + plan.BillingPeriod : "",
+                Features = new List<string> { "Basic task automation" }, // عدّل لاحقًا حسب البيانات الحقيقية
+                DisabledFeatures = new List<string> { "Priority support" },
+                Button = "Choose Plan",
+                IsPopular = false
+            }).ToList();
+
+        return new DataAddPricing
+            {
+                Name = "Our Pricing Plans",
+                Description = "Choose the plan that fits your needs",
+                Items = cards,
+                Iquiz = new DataPricingQuiz
+                {
+                    Title = "Not sure which plan is right?",
+                    Description = "Take a quick quiz to find out.",
+                    Button = "Start Quiz",
+                    ButtonIconClass = "fas fa-arrow-right ml-2"
+                }
+            };
+    }
+}
+
+
+
+@* @page "/plans"
+@using ChatASG.UI.Components.Index.Pricing
+@using MyApiClient
+@using NWHttps
+@inject IWebApiClientFactory ApiClientFactory
+
+<h2 class="text-2xl font-bold mb-4">Available Plans</h2>
+
+@if (Plans == null)
+{
+    <p>Loading plans...</p>
+}
+else
+{
+    <div class="grid md:grid-cols-3 gap-6">
+        @foreach (var plan in Plans)
+        {
+            <PricingTemplate DataBuild="plan" />
+        }
+    </div>
+}
+
+@code {
+    private List<PlanOutputVM> Plans;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+
+            var client = new PlanClient(await ApiClientFactory.GetClientAsync());
+            Plans = await client.PlanGETAsync("en"); // ← تأكد أن هذا هو اسم الميثود الفعلي
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[Plans Error] {ex.Message}");
+        }
+    }
+} *@
+
+
+@* @using ChatASG.UI.Components.Index.Pricing
 @using ChatASG.UI.Components.Index.ServicesSection
 @using MyApiClient
 @using NWHttps
 @using global::Data.ServicesSection
 @using global::Data.ModulsPricing
 
-@* @inject IMapper<DataAddStudiosOutputVM, DataAddStudios> Mapper *@
+@* @inject IMapper<DataAddStudiosOutputVM, DataAddStudios> Mapper 
  @inject IWebApiClientFactory ApiClientFactory
 <!-- Explore of Studios -->
 <!-- 3 استكشاف الاستوديوهات    -->
@@ -61,3 +219,4 @@ else
         StateHasChanged();
     }
 }
+ *@

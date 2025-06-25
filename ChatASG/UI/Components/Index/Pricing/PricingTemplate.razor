@@ -1,86 +1,28 @@
 ﻿@using global::Data.ModulsPricing
 @using global::Data.Pricing
-<AddCardPricing Prams="Prams" />
 
-
-@code {
-
-
-    private List<DataPricingCard> studios = new()
-    {
-
-            new DataPricingCard
-            {
-                Title = "Starter",
-                Description = "For individuals getting started with AI productivity",
-                ClassCard="pricing-card glass-card p-8 rounded-2xl border border-gray-700 transition duration-300 hover:shadow-xl",
-                Price = "$0",
-                Period = "/month",
-                Features = new() { "Basic task automation", "Simple scheduling" },
-                DisabledFeatures = new() { "Advanced analytics", "Team features", "Priority support" },
-                Button = "Get Started",
-                IsPopular = false
-            },
-
-            new DataPricingCard
-            {
-                Title = "Professional",
-                Description = "For professionals serious about productivity",
-                ClassCard="pricing-card glass-card p-8 rounded-2xl border-2 border-accent transition duration-300 hover:shadow-xl relative overflow-hidden",
-                Price = "$19",
-                Period = "/month",
-                Features = new() { "All Starter features", "Advanced AI automation", "Deep insights & analytics", "Smart integrations" },
-                DisabledFeatures = new() { "Team dashboard" },
-                ClassButton="w-full py-3 rounded-lg bg-gradient-to-r from-accent to-accent2 text-dark font-medium hover:opacity-90 transition",
-                Button = "Try Free for 14 Days",
-                BadgeText = "POPULAR",
-                IsPopular = true
-            },
-            new DataPricingCard
-            {
-                Title = "Enterprise",
-                Description = "For teams and organizations",
-                ClassCard="pricing-card glass-card p-8 rounded-2xl border border-gray-700 transition duration-300 hover:shadow-xl",
-                Price = "Custom",
-                Period = "",
-                Features = new() { "All Professional features", "Team dashboard & analytics", "Custom AI training", "Dedicated support", "API access" },
-                DisabledFeatures = new(),
-                Button = "Contact Sales",
-                IsPopular = false
-            }
-
-
-    };
-    private DataPricingQuiz Quiz = new()
-        {
-            Title = "Not sure which plan is right for you?",
-            Description = "Take our 30-second quiz to find the perfect plan based on your needs.",
-            Button = "Take the quiz",
-            ButtonIconClass = "fas fa-arrow-right ml-2"
-        };
-    [Parameter]
-    public DataAddPricing? DataBuild { get; set; }
-    private CardAddPricing Prams = new();
-    protected override void OnInitialized()
-    {
-        if (DataBuild == null)
-        {
-            DataBuild = new DataAddPricing
-                {
-                    Name = "Simple, Transparent Pricing",
-                    Description = "Choose the plan that fits your needs. Try risk-free with our 14-day money back guarantee.",
-                    Items = studios,
-                    Iquiz = Quiz,
-                };
-        }
-
-        Prams = CardAddPricing.Create(DataBuild);
-        base.OnInitialized();
-    }
-
-    //
+@if (Prams != null)
+{
+    <AddCardPricing Prams="Prams" />
 }
 
+@code {
+    [Parameter]
+    public DataAddPricing? DataBuild { get; set; }
+
+    private CardAddPricing? Prams;
+
+    protected override void OnInitialized()
+    {
+        // استخدم فقط البيانات القادمة من الخارج
+        if (DataBuild != null)
+        {
+            Prams = CardAddPricing.Create(DataBuild);
+        }
+
+        base.OnInitialized();
+    }
+}
 
 
 
